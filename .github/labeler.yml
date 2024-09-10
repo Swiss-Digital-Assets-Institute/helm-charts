@@ -1,0 +1,22 @@
+repo:
+  - changed-files:
+    - any-glob-to-any-file:
+      - "*"
+      - ".github/**"
+
+universal-chart:
+  - changed-files:
+    - any-glob-to-any-file: 'charts/universal-chart/**'
+
+tha-app:
+  - changed-files:
+    - any-glob-to-any-file: 'charts/tha-app/**'
+
+feature:
+  - head-branch: ['^feature', 'feature']
+
+hotfix:
+  - head-branch: ['^hotfix', 'hotfix', '^bugfix', 'bugfix']
+
+release:
+  - head-branch: ['^release', 'release']
