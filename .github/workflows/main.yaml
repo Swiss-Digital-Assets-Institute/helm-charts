@@ -154,7 +154,7 @@ jobs:
 
       - name: Generate updated index.yaml 📦
         run: |
-          helm repo index . --url "https://raw.githubusercontent.com/devxp-tech/helm-charts/artifacts/"
+          helm repo index . --url "https://raw.githubusercontent.com/Swiss-Digital-Assets-Institute/helm-charts/artifacts/"
 
       - name: Persist index.yaml 📦
         uses: actions/upload-artifact@v4
