@@ -28,6 +28,7 @@ serviceAccount:
 serviceAccountGeneral: ""
 
 podAnnotations: {}
+
 podLabels: {}
 
 podSecurityContext: {}
