@@ -8,7 +8,7 @@ on:
 
 jobs:
   env:
-    uses: devxp-tech/.github/.github/workflows/env.yaml@main
+    uses: Swiss-Digital-Assets-Institute/.github/.github/workflows/env.yaml@main
 
   lint-chart:
     name: Chart Lint 🔎
@@ -74,7 +74,7 @@ jobs:
         run: .github/kubeval.sh
 
   # quality-gate:
-  #   uses: devxp-tech/.github/.github/workflows/sonarqube.yaml@main
+  #   uses: Swiss-Digital-Assets-Institute/.github/.github/workflows/sonarqube.yaml@main
   #   secrets: inherit
   #   needs:
   #     - env
@@ -224,7 +224,7 @@ jobs:
   #         fi
 
   notify:
-    uses: devxp-tech/.github/.github/workflows/notify.yaml@main
+    uses: Swiss-Digital-Assets-Institute/.github/.github/workflows/notify.yaml@main
     if: always()
     secrets: inherit
     needs:
