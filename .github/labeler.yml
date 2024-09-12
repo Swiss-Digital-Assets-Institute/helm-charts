@@ -12,6 +12,10 @@ tha-app:
   - changed-files:
     - any-glob-to-any-file: 'charts/tha-app/**'
 
+webapp:
+  - changed-files:
+    - any-glob-to-any-file: 'charts/webapp/**'
+
 feature:
   - head-branch: ['^feature', 'feature']
 
