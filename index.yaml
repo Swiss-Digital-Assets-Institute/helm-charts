@@ -3,7 +3,7 @@ entries:
   tha-app:
   - apiVersion: v2
     appVersion: 1.16.0
-    created: "2024-09-12T07:46:03.694380987Z"
+    created: "2024-09-12T07:48:43.512746066Z"
     description: A Helm chart for Kubernetes
     digest: eb69750e7a25525628f2c4cbe85393086c2783ec871f39313dbf238c2d6a67ad
     name: tha-app
@@ -13,7 +13,7 @@ entries:
     version: 0.1.1
   - apiVersion: v2
     appVersion: 1.16.0
-    created: "2024-09-12T07:46:03.693750991Z"
+    created: "2024-09-12T07:48:43.512087874Z"
     description: A Helm chart for Kubernetes
     digest: 96fbf5e8b752883f1a8de50cb186716409026140117ed7507d24627785072875
     name: tha-app
@@ -24,7 +24,7 @@ entries:
   universal-chart:
   - apiVersion: v2
     appVersion: 1.16.0
-    created: "2024-09-12T07:46:03.69476801Z"
+    created: "2024-09-12T07:48:43.51314683Z"
     description: A Helm chart for Kubernetes
     digest: 34f8d4b4c67988418234df8cd63ac355b18bd5b75340f249bf012e5d9fcb6c04
     name: universal-chart
@@ -32,4 +32,4 @@ entries:
     urls:
     - https://raw.githubusercontent.com/Swiss-Digital-Assets-Institute/helm-charts/artifacts/universal-chart-0.1.0.tgz
     version: 0.1.0
-generated: "2024-09-12T07:46:03.692944665Z"
+generated: "2024-09-12T07:48:43.510515541Z"
