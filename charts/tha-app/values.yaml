@@ -1,110 +1,97 @@
-# Default values for tha-app.
-# This is a YAML-formatted file.
-# Declare variables to be passed into your templates.
+generic:
+  extraVolumes: []
+  usePredefinedAffinity: true
 
-replicaCount: 1
+podAffinityPreset: soft
 
-image:
-  repository: nginx
-  pullPolicy: IfNotPresent
-  # Overrides the image tag whose default is the chart appVersion.
-  tag: ""
+podAntiAffinityPreset: soft
 
-imagePullSecrets: []
-nameOverride: ""
-fullnameOverride: ""
+nodeAffinityPreset:
+  type: ""
+  key: ""
+  values: []
 
-serviceAccount:
-  # Specifies whether a service account should be created
-  create: true
-  # Automatically mount a ServiceAccount's API credentials?
-  automount: true
-  # Annotations to add to the service account
-  annotations: {}
-  # The name of the service account to use.
-  # If not set and create is true, a name is generated using the fullname template
-  name: ""
+releasePrefix: "-"
 
-serviceAccountGeneral: ""
-
-podAnnotations: {}
-
-podLabels: {}
-
-podSecurityContext: {}
-  # fsGroup: 2000
-
-securityContext: {}
-  # capabilities:
-  #   drop:
-  #   - ALL
-  # readOnlyRootFilesystem: true
-  # runAsNonRoot: true
-  # runAsUser: 1000
-
-service:
-  type: ClusterIP
-  port: 80
-
-ingress:
+diagnosticMode:
   enabled: false
-  className: ""
-  annotations: {}
-    # kubernetes.io/ingress.class: nginx
-    # kubernetes.io/tls-acme: "true"
-  hosts:
-    - host: chart-example.local
-      paths:
-        - path: /
-          pathType: ImplementationSpecific
-  tls: []
-  #  - secretName: chart-example-tls
-  #    hosts:
-  #      - chart-example.local
+  command: ["sleep"]
+  args: ["infinity"]
 
-resources: {}
-  # We usually recommend not to specify default resources and to leave this as a conscious
-  # choice for the user. This also increases chances charts run on environments with little
-  # resources, such as Minikube. If you do want to specify resources, uncomment the following
-  # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
-  # limits:
-  #   cpu: 100m
-  #   memory: 128Mi
-  # requests:
-  #   cpu: 100m
-  #   memory: 128Mi
+defaultImage: ""
+defaultImageTag: "latest"
+defaultImagePullPolicy: "IfNotPresent"
+ingressHostname: ""
 
-livenessProbe:
-  httpGet:
-    path: /
-    port: http
-readinessProbe:
-  httpGet:
-    path: /
-    port: http
+ingresses:
+  thg-fp-app:
+    ingressClassName: alb
+    annotations:
+      alb.ingress.kubernetes.io/scheme: internet-facing
+      alb.ingress.kubernetes.io/healthcheck-path: /v1/health
+      alb.ingress.kubernetes.io/listen-ports: '[{"HTTPS": 443}]'
+      external-dns.alpha.kubernetes.io/hostname: '{{ $.Values.ingressHostname }}'
+    hosts:
+      - hostname: '{{ $.Values.ingressHostname }}'
+        paths:
+          - serviceName: thg-fp-app
+            servicePort: http
+            path: /
 
-autoscaling:
-  enabled: false
-  minReplicas: 1
-  maxReplicas: 100
-  targetCPUUtilizationPercentage: 80
-  # targetMemoryUtilizationPercentage: 80
+services:
+  thg-fp-app:
+    type: NodePort
+    ports:
+      - name: http
+        protocol: TCP
+        port: 80
+        targetPort: 3000
+        nodePort:
+    extraSelectorLabels:
+      app/name: thg-fp-app
 
-# Additional volumes on the output Deployment definition.
-volumes: []
-# - name: foo
-#   secret:
-#     secretName: mysecret
-#     optional: false
+deployments:
+  thg-fp-app:
+    podLabels:
+      app/name: thg-fp-app
+    podAnnotations:
+      checksum/upgrade-date: "Updated at {{ now | toString }}"
+    replicas: 1
+    containers:
+      - name: thg-fp-app
+        imagePullPolicy: IfNotPresent
+        ports:
+          - name: http
+            containerPort: 3000
+            protocol: TCP
+        resources:
+          limits:
+            cpu: 500m
+            memory: 1024Mi
+          requests:
+            cpu: 200m
+            memory: 256Mi
+        livenessProbe:
+          httpGet:
+            path: /
+            port: http
+          initialDelaySeconds: 30
+          periodSeconds: 15
+          timeoutSeconds: 10
+          successThreshold: 1
+          failureThreshold: 5
+        readinessProbe:
+          httpGet:
+            path: /
+            port: http
+          initialDelaySeconds: 30
+          periodSeconds: 5
+          timeoutSeconds: 3
+          successThreshold: 1
+          failureThreshold: 3
+        envSecrets:
+          - app-secret
 
-# Additional volumeMounts on the output Deployment definition.
-volumeMounts: []
-# - name: foo
-#   mountPath: "/etc/foo"
-#   readOnly: true
-
-nodeSelector: {}
-
-tolerations: []
-
-affinity: {}
+secrets:
+  app-secret:
+    data:
