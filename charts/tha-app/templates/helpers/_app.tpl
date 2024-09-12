@@ -33,9 +33,7 @@ app.kubernetes.io/managed-by: {{ .Release.Service }}
 {{- if .Chart.AppVersion }}
 app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
 {{- end }}
-{{- with .Values.generic.labels }}
-{{ include "helpers.tplvalues.render" (dict "value" . "context" $) }}
-{{- end }}
+
 {{- end }}
 
 {{- define "helpers.app.selectorLabels" -}}
