@@ -223,10 +223,10 @@ jobs:
   #           echo "nothing to do!!!"
   #         fi
 
-  notify:
-    uses: Swiss-Digital-Assets-Institute/.github/.github/workflows/notify.yaml@main
-    if: always()
-    secrets: inherit
-    needs:
-      - index
-      # - changelog
+  # notify:
+  #   uses: Swiss-Digital-Assets-Institute/.github/.github/workflows/notify.yaml@main
+  #   if: always()
+  #   secrets: inherit
+  #   needs:
+  #     - index
+  #     # - changelog
