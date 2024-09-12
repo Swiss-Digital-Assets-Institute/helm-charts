@@ -52,13 +52,13 @@ jobs:
 
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-  auto-assign:
-    name: Auto Assign PR 🏷️
-    uses: Swiss-Digital-Assets-Institute/.github/.github/workflows/auto-assign.yaml@main
-    secrets: inherit
-    with:
-      assignees: diegoluisi
-      numOfAssignee: 1
+  # auto-assign:
+  #   name: Auto Assign PR 🏷️
+  #   uses: Swiss-Digital-Assets-Institute/.github/.github/workflows/auto-assign.yaml@main
+  #   secrets: inherit
+  #   with:
+  #     assignees: diegoluisi
+  #     numOfAssignee: 1
 
   triage:
     name: Pull Request Triage 🏷️
