@@ -1,5 +1,0 @@
-apiVersion: v2
-description: Universal Helm chart
-name: universal-chart
-version: 0.0.1
-
