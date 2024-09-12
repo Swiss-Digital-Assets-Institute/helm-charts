@@ -1,0 +1,33 @@
+{{- if .Values.argoRollouts.enabled }}
+apiVersion: argoproj.io/v1alpha1
+kind: AnalysisTemplate
+metadata:
+  name: {{ .Values.name }}
+  namespace: {{ include "namespace" . }}
+  labels: {{ include "webapp.labels" . | nindent 4 }}
+spec:
+  # this analysis template requires a service name and namespace to be supplied to the query
+  args:
+    - name: service
+    - name: namespace
+  metrics:
+    - name: {{ .Values.argoRollouts.analyses.metricName | default "success-rate" }}
+      initialDelay: {{ .Values.argoRollouts.analyses.initialDelay | default "30s" }}
+      interval: {{ .Values.argoRollouts.analyses.interval | default "20s" }}
+      successCondition: {{ .Values.argoRollouts.analyses.successCondition | default "len(result) == 0 || isNaN(result[0]) || isInf(result[0]) || result[0] >= 0.95" }}
+      failureLimit: {{ .Values.argoRollouts.analyses.failureLimit | default 1 }}
+      provider:
+        prometheus:
+          address: {{ .Values.global.prometheus.server }}
+          query: >+
+            sum(irate(istio_requests_total{
+              reporter="source",
+              destination_service=~"{{ .Values.name }}.{{ .Values.name }}.svc.{{ .Values.global.cluster }}",
+              response_code!~"5.*"}[40s])
+            )
+            /
+            sum(irate(istio_requests_total{
+              reporter="source",
+              destination_service=~"{{ .Values.name }}.{{ .Values.name }}.svc.{{ .Values.global.cluster }}"}[40s])
+            )
+{{- end }}

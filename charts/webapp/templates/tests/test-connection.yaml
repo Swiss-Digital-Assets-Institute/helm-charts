@@ -1,0 +1,22 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: "{{ include "webapp.name" . }}-test-connection"
+  labels:
+    {{- include "webapp.labels" . | nindent 4 }}
+  annotations:
+    "helm.sh/hook": test
+spec:
+  containers:
+    - name: wget
+      image: busybox
+      command: ['wget']
+      args: ['{{ include "webapp.name" . }}:{{ .Values.container.port }}']
+      resources:
+          limits:
+            cpu: 10m
+            memory: 64Mi
+          requests:
+            cpu: 10m
+            memory: 64Mi
+  restartPolicy: Never

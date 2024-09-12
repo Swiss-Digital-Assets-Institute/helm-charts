@@ -1,0 +1,46 @@
+{{- if .Values.instrumentation }}
+apiVersion: opentelemetry.io/v1alpha1
+kind: Instrumentation
+metadata:
+  name: {{ .Values.name }}
+spec:
+  exporter:
+    endpoint: {{ .Values.global.otel.endpoint }}
+  propagators:
+    - tracecontext
+    - baggage
+    - b3
+  sampler:
+    type: parentbased_traceidratio
+    argument: "1"
+  dotnet:
+    env:
+      - name: OTEL_SERVICE_NAME
+        value: {{ .Values.name }}
+      - name: OTEL_LOGS_EXPORTER
+        value: otlp
+  go:
+    env:
+      - name: OTEL_SERVICE_NAME
+        value: {{ .Values.name }}
+      - name: OTEL_LOGS_EXPORTER
+        value: otlp
+  java:
+    env:
+      - name: OTEL_SERVICE_NAME
+        value: {{ .Values.name }}
+      - name: OTEL_LOGS_EXPORTER
+        value: otlp
+  nodejs:
+    env:
+      - name: OTEL_SERVICE_NAME
+        value: {{ .Values.name }}
+      - name: OTEL_LOGS_EXPORTER
+        value: otlp
+  python:
+    env:
+      - name: OTEL_SERVICE_NAME
+        value: {{ .Values.name }}
+      - name: OTEL_LOGS_EXPORTER
+        value: otlp
+{{- end }}

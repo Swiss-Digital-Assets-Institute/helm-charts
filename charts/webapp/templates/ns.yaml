@@ -1,0 +1,10 @@
+{{- if .Values.namespace.enabled }}
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: {{ include "namespace" . }}
+  annotations: {{- include "ns-annotaions" . | nindent 4 }}
+  labels: {{- include "ns-labels" . | nindent 4 }}
+spec: {}
+status: {}
+{{- end }}
