@@ -23,21 +23,6 @@ defaultImageTag: "latest"
 defaultImagePullPolicy: "IfNotPresent"
 ingressHostname: ""
 
-ingresses:
-  thg-fp-app:
-    ingressClassName: alb
-    annotations:
-      alb.ingress.kubernetes.io/scheme: internet-facing
-      alb.ingress.kubernetes.io/healthcheck-path: /v1/health
-      alb.ingress.kubernetes.io/listen-ports: '[{"HTTPS": 443}]'
-      external-dns.alpha.kubernetes.io/hostname: '{{ $.Values.ingressHostname }}'
-    hosts:
-      - hostname: '{{ $.Values.ingressHostname }}'
-        paths:
-          - serviceName: thg-fp-app
-            servicePort: http
-            path: /
-
 services:
   thg-fp-app:
     type: NodePort
