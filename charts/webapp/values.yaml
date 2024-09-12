@@ -1,0 +1,488 @@
+# Default values for webapp.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+# --name is the GitHub repository name of this application deployment
+name: ""
+
+# --nameOverride allows partial override of the name
+nameOverride: {}
+
+# --fullnameOverride allows full override of the name
+fullnameOverride: {}
+
+global:
+  # --cluster sets the Cluster Name
+  cluster: cluster.local
+  # --commonLabels sets common labels for all resources
+  commonLabels: {}
+  # team_name: dev
+  # --prometheus sets the Prometheus server URL
+  prometheus:
+    # --server sets prometheus endpoint
+    server: http://mimir-nginx.monitoring.svc:80/prometheus
+  # -- Network configuration
+  network:
+    # --domain sets the Default Domain
+    domain: devxp-tech.io
+  # --otel sets the endpoint for OpenTelemetry collector
+  otel:
+    endpoint: http://otel-collector.observability.svc.cluster.local:4317 #4318
+
+
+# --namespace configuration
+namespace:
+  # --Specifies whether the namespace is enabled
+  enabled: true
+  # --Labels to be added to the namespace
+  labels: {}
+  # --Annotations to be added to the namespace
+  annotations: {}
+  # --Example annotation to enable Jaeger tracing sidecar injection
+  # sidecar.jaegertracing.io/inject: "true"
+
+
+# --deployment Disabled Deployment
+deployment:
+  # --Specifies whether the standard deployment is enabled
+  # --default is false
+
+  # --Annotations to be added to the deployment
+  annotations: {}
+
+
+# --argoRollouts enable Argo Rollouts Deployment
+argoRollouts:
+  # --Specifies whether Argo Rollouts is enabled
+  enabled: true
+  # --Specifies the number of old ReplicaSets to retain for rollback purposes
+  revisionHistoryLimit: 3
+  analyses:
+    # --Specifies whether analysis runs should be created during the rollout
+    enabled: true
+    # --Specifies the success condition for the analysis, as a percentage
+    successCondition: "len(result) == 0 || isNaN(result[0]) || isInf(result[0]) || result[0] >= 0.95"
+    # --Specifies the maximum number of failed analysis runs allowed before the rollout fails
+    failureLimit: 3
+    # Name of the metric to be used in the analysis template
+    metricName: "success-rate"
+    # The initial delay before the first measurement is taken
+    initialDelay: "30s"
+    # The interval between each measurement
+    interval: "20s"
+  # --Specifies whether the stable ReplicaSet should be dynamically scaled during rollout
+  dynamicStableScale: true
+  strategy:
+    steps:
+      # --Sets the percentage of traffic to send to the new version
+      - setWeight: 5
+      # --Pauses the rollout for a specified duration
+      - pause:
+          duration: 10s
+      # --Sets the percentage of traffic to send to the new version
+      - setWeight: 20
+      # --Pauses the rollout for a specified duration
+      - pause:
+          duration: 10s
+      # --Sets the percentage of traffic to send to the new version
+      - setWeight: 40
+      # --Pauses the rollout for a specified duration
+      - pause:
+          duration: 10s
+      # --Sets the percentage of traffic to send to the new version
+      - setWeight: 60
+      # --Pauses the rollout for a specified duration
+      - pause:
+          duration: 10s
+      # --Sets the percentage of traffic to send to the new version
+      - setWeight: 80
+      # --Pauses the rollout for a specified duration
+      - pause:
+          duration: 10s
+
+
+# cronjobs list of cronjobs to be included in the application
+cronjobs:
+  # --suspend used to disable all cronjobs in the list
+  suspend: false
+  # --list is an array of spec for create multiples cronjobs
+  list:
+    []
+    # - name: cron1
+    #   schecule: "* * * * *"
+    #   command:
+    #     - echo "ok"
+
+# --consumers is the object to configure an array of consumers
+consumers:
+  # --terminationGracePeriodSeconds configures terminationGracePeriodSeconds
+  terminationGracePeriodSeconds: 30
+  # --list is the array of consumer definition
+  list:
+    []
+    # - name: required
+    #   command:
+    #     - required
+
+# --service
+service:
+  # --service.enabled to enable and disable the creation of service
+  enabled: true
+  # --Service An abstract way to expose an application running on a set of Pods as a network service.
+  type: ClusterIP
+  # --service.port Define the Service Port
+  port:
+    # --Name of the port, used for service discovery
+    name: tcp-node
+    # --Port is the port your application runs under
+    port: 80
+  # --Annotations to add to the service
+  annotations: {}
+  # --Labels to add to the service
+  labels: {}
+  # --service.externalDns to enable and disable the creation of external DNS
+  externalDns:
+    # --Enable or disable external DNS for the service
+    enabled: false
+  # --The port to expose on each node in a cluster, only used if type is NodePort or LoadBalancer
+  nodePort: {}
+
+
+# --istio Set default Istio
+istio:
+  # enable istio-injection label on namespace
+  enabled: true
+  # --istio.virtualServices Set Istio virtualServices parameters
+  virtualServices:
+    # --istio.virtualServices.enable Set Istio virtualServices enabled
+    enabled: true
+    custom:
+      hosts: []
+  # --PeerAuthentication defines how traffic will be tunneled (or not) to the sidecar.
+  peerAuthentication:
+    # --enable peerAuthentication
+    enabled: true
+    # --set peerAuthentication mode, values (UNSET, DISABLE, PERMISSIVE, STRICT)
+    mode: PERMISSIVE
+  # --gateways set default gateway for virtual-service
+  gateways: istio-ingress/istio-ingressgateway
+
+# --ServiceAccount A service account provides an identity for processes that run in a Pod, about more: https://kubernetes.io/docs/tasks/configure-pod-container/configure-service-account/
+serviceAccount:
+  name: {}
+  # --Specifies whether a service account should be created
+  enabled: true
+  # --Annotations to add to the service account
+  annotations: {}
+  # --serviceAccount.annotations Automont Service Account Token
+  automountServiceAccountToken: true
+
+# --replicaCount is used when autoscaling.enabled is false to set a manually number of pods
+replicaCount: 1
+# --autoscaling is the main object of autoscaling
+autoscaling:
+  # --enabled is the flag to sinalize this funcionality is enabled
+  enabled: true
+  # --minReplicas is the number of mim pods to be running
+  minReplicas: 1
+  # --maxReplicas is the number of maximum scaling pods
+  maxReplicas: 2
+  # --targetCPUUtilizationPercentage is the percentage of cpu when reached to scale new pods
+  targetCPUUtilizationPercentage: 80
+  # --targetMemoryUtilizationPercentage is the percentage of memoty when reached to scale new pods
+  targetMemoryUtilizationPercentage: 80
+  # --customRules is a place to customize your application autoscaler using the original API available at: https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale/
+  customRules:
+    []
+    # - type: Resource
+    #   resource:
+    #     name: memory
+    #     target:
+    #       type: Utilization
+    #       averageUtilization: 20
+
+container:
+  # --port is the port your application runs under
+  port: 8080
+  readOnlyRootFilesystem: true
+
+  # --image is the object to specify the image to run in the deployment
+image:
+  # --repository: is the registry of your application ex:556684128444.dkr.ecr.us-east-1.amazonaws.com/YOU-APP-ECR-REPO-NAME
+  # if empty this helm will auto generate the image using aws.registry/values.name:values.image.tag
+  repository: ""
+  # --pullPolicy is the prop to setup the behavior of pull police. options is: IfNotPresent \| allways
+  pullPolicy: IfNotPresent
+  # --especify the tag of your image to deploy
+  tag: "latest"
+
+# --imagePullSecrets secret used to download image on private container registry
+imagePullSecrets:
+  # --imagePullSecrets.enabled create secret do pull docker images in private registrys
+  enabled: true
+  name: ghcr-secret
+
+# --resources set deployment resources
+resources:
+  # --Resource requests are the minimum amount of CPU and memory that Kubernetes guarantees for the container
+  requests:
+    # --The amount of CPU requested for the container
+    cpu: "50m"
+    # --The amount of memory requested for the container
+    memory: "64Mi"
+  # --Resource limits are the maximum amount of CPU and memory that the container is allowed to use
+  limits:
+    # --The maximum amount of CPU the container can use
+    cpu: "100m"
+    # --The maximum amount of memory the container can use
+    memory: "128Mi"
+
+## Health Check
+# --livenessProbe indicates whether the application is running and alive
+livenessProbe:
+  # --Specifies whether the liveness probe is enabled
+  enabled: true
+  # --The HTTP path to check for liveness
+  path: /health-check/liveness
+  # --The scheme to use for the liveness probe (e.g., HTTP or HTTPS)
+  scheme: HTTP
+  # --Specifies a command to run inside the container to determine liveness
+  exec: {}
+  # --Number of seconds after the container has started before liveness probes are initiated
+  initialDelaySeconds: 10
+  # --Number of seconds after which the liveness probe times out
+  timeoutSeconds: 3
+  # --How often (in seconds) to perform the liveness probe
+  periodSeconds: 10
+  # --Minimum consecutive failures for the probe to be considered failed after having succeeded
+  failureThreshold: 3
+  # --Minimum consecutive successes for the probe to be considered successful after having failed
+  successThreshold: 1
+  httpHeaders: []
+
+
+# --readinessProbe indicates whether the application is ready to serve requests
+readinessProbe:
+  # --Specifies whether the readiness probe is enabled
+  enabled: true
+  # --The HTTP path to check for readiness
+  path: /health-check/readiness
+  # --The scheme to use for the readiness probe (e.g., HTTP or HTTPS)
+  scheme: HTTP
+  # --Specifies a command to run inside the container to determine readiness
+  exec: {}
+  # --Number of seconds after the container has started before readiness probes are initiated
+  initialDelaySeconds: 10
+  # --Number of seconds after which the readiness probe times out
+  timeoutSeconds: 3
+  # --How often (in seconds) to perform the readiness probe
+  periodSeconds: 10
+  # --Minimum consecutive failures for the probe to be considered failed after having succeeded
+  failureThreshold: 3
+  # --Minimum consecutive successes for the probe to be considered successful after having failed
+  successThreshold: 1
+  httpHeaders: []
+
+# Actuator settings for exposing application metrics and health checks
+actuator:
+  # -- If enabled, create default actuator path and metrics
+  enabled: false
+  port:
+    # -- The name of the port for actuator metrics
+    name: tcp-metrics
+    # -- The port number for actuator metrics
+    port: 9090
+    # -- The target port in the container for actuator metrics
+    targetPort: 9090
+    # -- The protocol used to service
+    protocol: TCP
+  metrics:
+    # -- The path to expose Prometheus metrics
+    path: /actuator/prometheus
+  liveness:
+    # -- The path to check liveness of the application
+    path: /actuator/health/liveness
+    # --The scheme to use for the readiness probe (e.g., HTTP or HTTPS)
+    scheme: HTTP
+    # --Number of seconds after the container has started before readiness probes are initiated
+    initialDelaySeconds: 120
+    # --Number of seconds after which the readiness probe times out
+    timeoutSeconds: 3
+    # --How often (in seconds) to perform the readiness probe
+    periodSeconds: 10
+    # --Minimum consecutive failures for the probe to be considered failed after having succeeded
+    failureThreshold: 3
+    # --Minimum consecutive successes for the probe to be considered successful after having failed
+    successThreshold: 1
+    httpHeaders: []
+  readiness:
+    # -- The path to check readiness of the application
+    path: /actuator/health/readiness
+    # --The scheme to use for the readiness probe (e.g., HTTP or HTTPS)
+    scheme: HTTP
+    # --Number of seconds after the container has started before readiness probes are initiated
+    initialDelaySeconds: 120
+    # --Number of seconds after which the readiness probe times out
+    timeoutSeconds: 3
+    # --How often (in seconds) to perform the readiness probe
+    periodSeconds: 10
+    # --Minimum consecutive failures for the probe to be considered failed after having succeeded
+    failureThreshold: 3
+    # --Minimum consecutive successes for the probe to be considered successful after having failed
+    successThreshold: 1
+    httpHeaders: []
+
+# --instrumentation set default auto-instrumentation, allowed values dotnet, go, java, nodejs and python
+instrumentation:
+  enabled: false
+  language: ""
+
+# --nodeSelector allows you to constrain a Pod to only be able to run on particular node(s)
+nodeSelector: {}
+
+# --tolerations allows the pods to schedule onto nodes with taints
+tolerations: []
+
+# --affinity allows you to define rules for pod scheduling based on node labels
+affinity: {}
+
+# --podAnnotations adds custom annotations to the pod
+podAnnotations: {}
+
+# --A security context defines privilege and access control settings for a Pod or Container. About more: https://kubernetes.io/docs/tasks/configure-pod-container/security-context/
+podSecurityContext:
+  {}
+  # --fsGroup: 2000
+securityContext:
+  {}
+  # --capabilities:
+  # --drop:
+  # ---ALL
+  # --readOnlyRootFilesystem: true
+  # --runAsNonRoot: true
+  # --runAsUser: 1000
+
+envs:
+  []
+  # examples:
+  # please note that when the value is a number, you must quote the value to cast to string!
+  # - name: ENVIROMENT
+  #   value: dev
+  # - name: ENVIROMENT1
+  #   value: true
+
+envFrom:
+  []
+  # examples:
+  # please note that when the value is a number, you must quote the value to cast to string!
+  # - configMapRef
+  #     name: postgres-configs
+
+# --volumes specifies pod volumes
+volumes:
+  []
+  # - name: sensitive-config
+  #   secret:
+  #     secretName: app-secrets
+
+# --volumeMounts specifies where Kubernetes will mount Pod volumes
+volumeMounts:
+  []
+  # - name: sensitive-config
+  #   mountPath: /sensitive-config/
+  #   readOnly: true
+
+# --sealedSecrets enable creation of a secret to pull images
+sealedSecrets:
+  # --enabled create a Sealed Secret in the namespace
+  enabled: true
+  # --encryptedData hash to create secret
+  encryptedData: AgDGBqpFurhI5BktCG/olnD7r2MuhAel/zkL1IL0BxrcaDUmR8JUf3TEkMqKbiRgb9iKYcwX7zVOXI4xDJeiyWyWDbckn8Yc+RBTw7qpKhh3kMUasPVo9blEcrKq4HjSEAEKapegBDT+H1LhjUToDoqwXVmGFEVYpiHtb0OA0OCtUuDZ2dYD4cLpMSVgZ/8hRfilRdD4PqXD+k1NEVZfRgKGl9fV0mazKm9e7w0rRI1brryhWx9+VZcvSi6RLHiELX7VOObxxjQ0W4gCuHKDRztgHoNDR+KVNum6YpVz8vOXQ/XpBxlASundsryNBAVcPwv0HYQDmsNFfMwXaLkLA+Hg6frWXi1CJvSrJc45U8RQ2sAfbCN6QQw1r6O+Lgqc2hmWnx3RzOva6zIq2UqUNRDrKxn99zZUCU4GpmVLFnj08ogq0p86zUXqzA6o1Qz1KRZu2S0QaQQyMquN4vqByXRfbXrgG5rtQRALsRG3o7q7OfOoy1sa1mF6kMyktpbawE7eT0k0FGPdjEtgg5FzLD88pj5OphL1aNTVzgSLVMpT0KY8GHVlB5AlMxz+ilB0bfSs+S5fGsY5u4iOpUAioAQ2lZH/aK8tMMug4pCRsYvDD6AUWlCupzGHhjVNeWDvhGpUG8anpr0htCxqLAGLJaMGV/hcuwbRzdxgKbPjqd/HFpzwi9ZN17IN1vtQhGm3xR781WTBAeLzU7XykzLh8VuUPhS6c8vdNsXXXYubSXrCAddAycXc5YThp/TzfOlPzn/3kkQZZRKUs3Qp393djTaEG75W/CpnQXG4Pnvk9a4swUCm2ZwNYCZdCjBccutcahlKa8mNG4sDeYbpLOG4ZICo2MuKNoJG2DqmemSUGKeThSyhW8v2CjoKqKhGSKbpUjI43c5dK4TueC88DYMZGX2TF5yOtXwmQbjsutAd3n2ELujLpg==
+
+# --ResourceQuota provides constraints that limit aggregate resource consumption per namespace
+quota:
+  # --Specifies whether a resource quota should be created
+  enabled: true
+  # --resources Specifies the hard resources
+  resources:
+    hard:
+      # --requests.cpu Specifies the total CPU requests allowed for all pods in the namespace
+      requests.cpu: "1"
+      # --requests.memory Specifies the total memory requests allowed for all pods in the namespace
+      requests.memory: 1Gi
+      # --limits.cpu Specifies the total CPU limits allowed for all pods in the namespace
+      limits.cpu: "2"
+      # --limits.memory Specifies the total memory limits allowed for all pods in the namespace
+      limits.memory: 2Gi
+
+
+# --migration Set liquibase migration
+migration:
+  # -- migration.enable liquibase migration
+  enabled: false
+
+# --monitoring Enable Monitoring Features
+monitoring:
+  rules:
+    # -- If enabled, create PrometheusRule resource with app recording rules
+    enabled: false
+    # -- Include alerting rules
+    alerting: true
+    # -- Alternative namespace to create recording rules PrometheusRule resource in
+    namespace: null
+    # -- Additional annotations for the rules PrometheusRule resource
+    annotations: {}
+    # -- Additional labels for the rules PrometheusRule resource
+    labels: {}
+    # -- Additional groups to add to the rules file
+    additionalGroups: []
+    # - name: additional-app-rules
+    #   rules:
+    #     - record: job:app_request_duration_seconds_bucket:sum_rate
+    #       expr: sum(rate(app_request_duration_seconds_bucket[1m])) by (le, job)
+    #     - record: job_route:app_request_duration_seconds_bucket:sum_rate
+    #       expr: sum(rate(app_request_duration_seconds_bucket[1m])) by (le, job, route)
+    #     - record: node_namespace_pod_container:container_cpu_usage_seconds_total:sum_rate
+    #       expr: sum(rate(container_cpu_usage_seconds_total[1m])) by (node, namespace, pod, container)
+
+  # Alerting rules for monitoring app
+  alerts:
+    # -- If enabled, create PrometheusRule resource with app alerting rules
+    enabled: false
+    # -- Alternative namespace to create alerting rules PrometheusRule resource in
+    namespace: null
+    # -- Additional annotations for the alerts PrometheusRule resource
+    annotations: {}
+    # -- Additional labels for the alerts PrometheusRule resource
+    labels: {}
+
+# ServiceMonitor configuration
+  serviceMonitor:
+    # -- If enabled, ServiceMonitor resources for Prometheus Operator are created
+    enabled: false
+    # -- Alternative namespace for ServiceMonitor resources
+    namespace: null
+    # -- Namespace selector for ServiceMonitor resources
+    namespaceSelector: {}
+    # -- ServiceMonitor annotations
+    annotations: {}
+    # -- Additional ServiceMonitor labels
+    labels: {}
+    # -- ServiceMonitor scrape interval
+    interval: 60s
+    # -- ServiceMonitor path to scrape
+    path: /metrics
+    # -- ServiceMonitor scrape timeout in Go duration format (e.g. 15s)
+    scrapeTimeout: 15s
+    # -- ServiceMonitor relabel configs to apply to samples before scraping
+    # https://github.com/prometheus-operator/prometheus-operator/blob/master/Documentation/api.md#relabelconfig
+    relabelings: []
+    # -- ServiceMonitor will use http by default, but you can pick https as well
+    scheme: http
+    # -- ServiceMonitor will use these tlsConfig settings to make the health check requests
+    extraPort:
+      enabled: false
+      name: tcp-metrics
+      number: 9090
+      targetPort: 9090
+      protocol: TCP

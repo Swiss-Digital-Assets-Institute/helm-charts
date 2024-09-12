@@ -24,6 +24,7 @@ class UpgradeType(Enum, metaclass=MyEnumMeta):
 class ProductType(Enum, metaclass=MyEnumMeta):
     NONE = 'none'
     THA_APP = 'tha-app'
+    WEBAPP = 'webapp'
     UNIVERSAL_CHART = 'universal_chart'
 
 
