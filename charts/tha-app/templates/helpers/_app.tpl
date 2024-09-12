@@ -33,12 +33,21 @@ app.kubernetes.io/managed-by: {{ .Release.Service }}
 {{- if .Chart.AppVersion }}
 app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
 {{- end }}
-
+{{- with .Values.generic.labels }}
+{{ include "helpers.tplvalues.render" (dict "value" . "context" $) }}
+{{- end }}
 {{- end }}
 
 {{- define "helpers.app.selectorLabels" -}}
 app.kubernetes.io/name: {{ include "helpers.app.name" . }}
 app.kubernetes.io/instance: {{ .Release.Name }}
+{{- include "helpers.app.genericSelectorLabels" $ }}
+{{- end }}
+
+{{- define "helpers.app.genericSelectorLabels" -}}
+{{- with .Values.generic.extraSelectorLabels }}
+{{- include "helpers.tplvalues.render" (dict "value" . "context" .) }}
+{{- end }}
 {{- end }}
 
 {{- define "helpers.app.genericAnnotations" -}}
@@ -51,10 +60,4 @@ app.kubernetes.io/instance: {{ .Release.Name }}
 helm.sh/hook: "pre-install,pre-upgrade"
 helm.sh/hook-weight: "-999"
 helm.sh/hook-delete-policy: before-hook-creation
-{{- end }}
-
-{{- define "helpers.app.genericSelectorLabels" -}}
-{{- if .Values.generic.extraSelectorLabels }}
-  {{- include "helpers.tplvalues.render" (dict "value" .Values.generic.extraSelectorLabels "context" .) }}
-{{- end }}
 {{- end }}

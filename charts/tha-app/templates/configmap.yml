@@ -30,4 +30,3 @@ data:
   {{- include "helpers.tplvalues.render" ( dict "value" $val.data "context" $ ) | nindent 2 }}
 {{- end -}}
 {{- end -}}
-
