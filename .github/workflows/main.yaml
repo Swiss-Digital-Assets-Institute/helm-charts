@@ -8,7 +8,7 @@ on:
 
 jobs:
   env:
-    uses: Swiss-Digital-Assets-Institute/.github/.github/workflows/env.yaml@main
+    uses: devxp-tech/.github/.github/workflows/env.yaml@main
 
   lint-chart:
     name: Chart Lint 🔎
@@ -223,10 +223,10 @@ jobs:
   #           echo "nothing to do!!!"
   #         fi
 
-  # notify:
-  #   uses: Swiss-Digital-Assets-Institute/.github/.github/workflows/notify.yaml@main
-  #   if: always()
-  #   secrets: inherit
-  #   needs:
-  #     - index
-  #     # - changelog
+  notify:
+    uses: devxp-tech/.github/.github/workflows/notify.yaml@main
+    if: always()
+    secrets: inherit
+    needs:
+      - index
+      # - changelog
