@@ -13,7 +13,11 @@ metadata:
     backstage.io/kubernetes-id: {{ .Values.name }}
 spec:
   gateways:
-  - {{ .Values.istio.gateways }}
+    {{- if .Values.istio.virtualServices.public }}
+    - istio-ingress/ingressgateway-pub
+    {{- else }}
+    - istio-ingress/ingressgateway-pvt
+    {{- end }}
   hosts:
   {{- include "vs-hosts" . | indent 2 }}
   http:
