@@ -52,4 +52,20 @@ entries:
     urls:
     - https://raw.githubusercontent.com/Swiss-Digital-Assets-Institute/helm-charts/artifacts/universal-chart-0.1.0.tgz
     version: 0.1.0
-generated: "2024-09-12T10:52:00.298600368Z"
+  webapp:
+  - apiVersion: v2
+    appVersion: 1.0.0
+    created: "2024-09-12T12:05:17.687795034Z"
+    description: Helm Charts for default Web Application
+    digest: ec036febf755624939966e2ca454763ec2bb96c16962872a1b5542bdc6b72425
+    icon: https://github.com/devxp-tech/helm-charts/blob/main/charts/tooling/helm-icon.png
+    maintainers:
+    - email: contato@diegoluisi.eti.br
+      name: diegoluisi
+      url: www.diegoluisi.eti.br
+    name: webapp
+    type: application
+    urls:
+    - https://github.com/Swiss-Digital-Assets-Institute/helm-charts/releases/download/webapp-0.0.2/webapp-0.0.2.tgz
+    version: 0.0.2
+generated: "2024-09-12T12:05:17.687812717Z"
