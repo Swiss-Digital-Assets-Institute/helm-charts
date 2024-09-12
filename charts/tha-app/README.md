@@ -1,72 +1,72 @@
 # tha-app
 
-![Version: 0.1.2](https://img.shields.io/badge/Version-0.1.1-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 1.16.0](https://img.shields.io/badge/AppVersion-1.16.0-informational?style=flat-square)
+![Version: 0.1.2](https://img.shields.io/badge/Version-0.1.2-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 1.16.0](https://img.shields.io/badge/AppVersion-1.16.0-informational?style=flat-square)
 
 A Helm chart for Kubernetes
 
 ## Values
 
-| Key                                                                           | Type   | Default                            | Description   |
-| ----------------------------------------------------------------------------- | ------ | ---------------------------------- | ------------- |
-| defaultImage                                                                  | string | `""`                               |               |
-| defaultImagePullPolicy                                                        | string | `"IfNotPresent"`                   |               |
-| defaultImageTag                                                               | string | `"latest"`                         |               |
-| deployments.thg-fp-app.containers[0].envSecrets[0]                            | string | `"app-secret"`                     |               |
-| deployments.thg-fp-app.containers[0].imagePullPolicy                          | string | `"IfNotPresent"`                   |               |
-| deployments.thg-fp-app.containers[0].livenessProbe.failureThreshold           | int    | `5`                                |               |
-| deployments.thg-fp-app.containers[0].livenessProbe.httpGet.path               | string | `"/"`                              |               |
-| deployments.thg-fp-app.containers[0].livenessProbe.httpGet.port               | string | `"http"`                           |               |
-| deployments.thg-fp-app.containers[0].livenessProbe.initialDelaySeconds        | int    | `30`                               |               |
-| deployments.thg-fp-app.containers[0].livenessProbe.periodSeconds              | int    | `15`                               |               |
-| deployments.thg-fp-app.containers[0].livenessProbe.successThreshold           | int    | `1`                                |               |
-| deployments.thg-fp-app.containers[0].livenessProbe.timeoutSeconds             | int    | `10`                               |               |
-| deployments.thg-fp-app.containers[0].name                                     | string | `"thg-fp-app"`                     |               |
-| deployments.thg-fp-app.containers[0].ports[0].containerPort                   | int    | `3000`                             |               |
-| deployments.thg-fp-app.containers[0].ports[0].name                            | string | `"http"`                           |               |
-| deployments.thg-fp-app.containers[0].ports[0].protocol                        | string | `"TCP"`                            |               |
-| deployments.thg-fp-app.containers[0].readinessProbe.failureThreshold          | int    | `3`                                |               |
-| deployments.thg-fp-app.containers[0].readinessProbe.httpGet.path              | string | `"/"`                              |               |
-| deployments.thg-fp-app.containers[0].readinessProbe.httpGet.port              | string | `"http"`                           |               |
-| deployments.thg-fp-app.containers[0].readinessProbe.initialDelaySeconds       | int    | `30`                               |               |
-| deployments.thg-fp-app.containers[0].readinessProbe.periodSeconds             | int    | `5`                                |               |
-| deployments.thg-fp-app.containers[0].readinessProbe.successThreshold          | int    | `1`                                |               |
-| deployments.thg-fp-app.containers[0].readinessProbe.timeoutSeconds            | int    | `3`                                |               |
-| deployments.thg-fp-app.containers[0].resources.limits.cpu                     | string | `"500m"`                           |               |
-| deployments.thg-fp-app.containers[0].resources.limits.memory                  | string | `"1024Mi"`                         |               |
-| deployments.thg-fp-app.containers[0].resources.requests.cpu                   | string | `"200m"`                           |               |
-| deployments.thg-fp-app.containers[0].resources.requests.memory                | string | `"256Mi"`                          |               |
-| deployments.thg-fp-app.podAnnotations.checksum/upgrade-date                   | string | `"Updated at {{ now                | toString }}"` |  |
-| deployments.thg-fp-app.podLabels.app/name                                     | string | `"thg-fp-app"`                     |               |
-| deployments.thg-fp-app.replicas                                               | int    | `1`                                |               |
-| diagnosticMode.args[0]                                                        | string | `"infinity"`                       |               |
-| diagnosticMode.command[0]                                                     | string | `"sleep"`                          |               |
-| diagnosticMode.enabled                                                        | bool   | `false`                            |               |
-| generic.extraVolumes                                                          | list   | `[]`                               |               |
-| generic.usePredefinedAffinity                                                 | bool   | `true`                             |               |
-| ingressHostname                                                               | string | `""`                               |               |
-| ingresses.thg-fp-app.annotations."alb.ingress.kubernetes.io/healthcheck-path" | string | `"/v1/health"`                     |               |
-| ingresses.thg-fp-app.annotations."alb.ingress.kubernetes.io/listen-ports"     | string | `"[{\"HTTPS\": 443}]"`             |               |
-| ingresses.thg-fp-app.annotations."alb.ingress.kubernetes.io/scheme"           | string | `"internet-facing"`                |               |
-| ingresses.thg-fp-app.annotations."external-dns.alpha.kubernetes.io/hostname"  | string | `"{{ $.Values.ingressHostname }}"` |               |
-| ingresses.thg-fp-app.hosts[0].hostname                                        | string | `"{{ $.Values.ingressHostname }}"` |               |
-| ingresses.thg-fp-app.hosts[0].paths[0].path                                   | string | `"/"`                              |               |
-| ingresses.thg-fp-app.hosts[0].paths[0].serviceName                            | string | `"thg-fp-app"`                     |               |
-| ingresses.thg-fp-app.hosts[0].paths[0].servicePort                            | string | `"http"`                           |               |
-| ingresses.thg-fp-app.ingressClassName                                         | string | `"alb"`                            |               |
-| nodeAffinityPreset.key                                                        | string | `""`                               |               |
-| nodeAffinityPreset.type                                                       | string | `""`                               |               |
-| nodeAffinityPreset.values                                                     | list   | `[]`                               |               |
-| podAffinityPreset                                                             | string | `"soft"`                           |               |
-| podAntiAffinityPreset                                                         | string | `"soft"`                           |               |
-| releasePrefix                                                                 | string | `"-"`                              |               |
-| secrets.app-secret.data                                                       | string | `nil`                              |               |
-| services.thg-fp-app.extraSelectorLabels.app/name                              | string | `"thg-fp-app"`                     |               |
-| services.thg-fp-app.ports[0].name                                             | string | `"http"`                           |               |
-| services.thg-fp-app.ports[0].nodePort                                         | string | `nil`                              |               |
-| services.thg-fp-app.ports[0].port                                             | int    | `80`                               |               |
-| services.thg-fp-app.ports[0].protocol                                         | string | `"TCP"`                            |               |
-| services.thg-fp-app.ports[0].targetPort                                       | int    | `3000`                             |               |
-| services.thg-fp-app.type                                                      | string | `"NodePort"`                       |               |
+| Key | Type | Default | Description |
+|-----|------|---------|-------------|
+| defaultImage | string | `""` |  |
+| defaultImagePullPolicy | string | `"IfNotPresent"` |  |
+| defaultImageTag | string | `"latest"` |  |
+| deployments.thg-fp-app.containers[0].envSecrets[0] | string | `"app-secret"` |  |
+| deployments.thg-fp-app.containers[0].imagePullPolicy | string | `"IfNotPresent"` |  |
+| deployments.thg-fp-app.containers[0].livenessProbe.failureThreshold | int | `5` |  |
+| deployments.thg-fp-app.containers[0].livenessProbe.httpGet.path | string | `"/"` |  |
+| deployments.thg-fp-app.containers[0].livenessProbe.httpGet.port | string | `"http"` |  |
+| deployments.thg-fp-app.containers[0].livenessProbe.initialDelaySeconds | int | `30` |  |
+| deployments.thg-fp-app.containers[0].livenessProbe.periodSeconds | int | `15` |  |
+| deployments.thg-fp-app.containers[0].livenessProbe.successThreshold | int | `1` |  |
+| deployments.thg-fp-app.containers[0].livenessProbe.timeoutSeconds | int | `10` |  |
+| deployments.thg-fp-app.containers[0].name | string | `"thg-fp-app"` |  |
+| deployments.thg-fp-app.containers[0].ports[0].containerPort | int | `3000` |  |
+| deployments.thg-fp-app.containers[0].ports[0].name | string | `"http"` |  |
+| deployments.thg-fp-app.containers[0].ports[0].protocol | string | `"TCP"` |  |
+| deployments.thg-fp-app.containers[0].readinessProbe.failureThreshold | int | `3` |  |
+| deployments.thg-fp-app.containers[0].readinessProbe.httpGet.path | string | `"/"` |  |
+| deployments.thg-fp-app.containers[0].readinessProbe.httpGet.port | string | `"http"` |  |
+| deployments.thg-fp-app.containers[0].readinessProbe.initialDelaySeconds | int | `30` |  |
+| deployments.thg-fp-app.containers[0].readinessProbe.periodSeconds | int | `5` |  |
+| deployments.thg-fp-app.containers[0].readinessProbe.successThreshold | int | `1` |  |
+| deployments.thg-fp-app.containers[0].readinessProbe.timeoutSeconds | int | `3` |  |
+| deployments.thg-fp-app.containers[0].resources.limits.cpu | string | `"500m"` |  |
+| deployments.thg-fp-app.containers[0].resources.limits.memory | string | `"1024Mi"` |  |
+| deployments.thg-fp-app.containers[0].resources.requests.cpu | string | `"200m"` |  |
+| deployments.thg-fp-app.containers[0].resources.requests.memory | string | `"256Mi"` |  |
+| deployments.thg-fp-app.podAnnotations.checksum/upgrade-date | string | `"Updated at {{ now | toString }}"` |  |
+| deployments.thg-fp-app.podLabels.app/name | string | `"thg-fp-app"` |  |
+| deployments.thg-fp-app.replicas | int | `1` |  |
+| diagnosticMode.args[0] | string | `"infinity"` |  |
+| diagnosticMode.command[0] | string | `"sleep"` |  |
+| diagnosticMode.enabled | bool | `false` |  |
+| generic.extraVolumes | list | `[]` |  |
+| generic.usePredefinedAffinity | bool | `true` |  |
+| ingressHostname | string | `""` |  |
+| ingresses.thg-fp-app.annotations."alb.ingress.kubernetes.io/healthcheck-path" | string | `"/v1/health"` |  |
+| ingresses.thg-fp-app.annotations."alb.ingress.kubernetes.io/listen-ports" | string | `"[{\"HTTPS\": 443}]"` |  |
+| ingresses.thg-fp-app.annotations."alb.ingress.kubernetes.io/scheme" | string | `"internet-facing"` |  |
+| ingresses.thg-fp-app.annotations."external-dns.alpha.kubernetes.io/hostname" | string | `"{{ $.Values.ingressHostname }}"` |  |
+| ingresses.thg-fp-app.hosts[0].hostname | string | `"{{ $.Values.ingressHostname }}"` |  |
+| ingresses.thg-fp-app.hosts[0].paths[0].path | string | `"/"` |  |
+| ingresses.thg-fp-app.hosts[0].paths[0].serviceName | string | `"thg-fp-app"` |  |
+| ingresses.thg-fp-app.hosts[0].paths[0].servicePort | string | `"http"` |  |
+| ingresses.thg-fp-app.ingressClassName | string | `"alb"` |  |
+| nodeAffinityPreset.key | string | `""` |  |
+| nodeAffinityPreset.type | string | `""` |  |
+| nodeAffinityPreset.values | list | `[]` |  |
+| podAffinityPreset | string | `"soft"` |  |
+| podAntiAffinityPreset | string | `"soft"` |  |
+| releasePrefix | string | `"-"` |  |
+| secrets.app-secret.data | string | `nil` |  |
+| services.thg-fp-app.extraSelectorLabels.app/name | string | `"thg-fp-app"` |  |
+| services.thg-fp-app.ports[0].name | string | `"http"` |  |
+| services.thg-fp-app.ports[0].nodePort | string | `nil` |  |
+| services.thg-fp-app.ports[0].port | int | `80` |  |
+| services.thg-fp-app.ports[0].protocol | string | `"TCP"` |  |
+| services.thg-fp-app.ports[0].targetPort | int | `3000` |  |
+| services.thg-fp-app.type | string | `"NodePort"` |  |
 
 ----------------------------------------------
 Autogenerated from chart metadata using [helm-docs v1.14.2](https://github.com/norwoodj/helm-docs/releases/v1.14.2)
