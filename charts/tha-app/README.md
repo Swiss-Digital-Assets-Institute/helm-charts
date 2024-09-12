@@ -1,6 +1,6 @@
 # tha-app
 
-![Version: 0.1.2](https://img.shields.io/badge/Version-0.1.2-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 1.16.0](https://img.shields.io/badge/AppVersion-1.16.0-informational?style=flat-square)
+![Version: 0.1.3](https://img.shields.io/badge/Version-0.1.3-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 1.16.0](https://img.shields.io/badge/AppVersion-1.16.0-informational?style=flat-square)
 
 A Helm chart for Kubernetes
 
@@ -44,15 +44,6 @@ A Helm chart for Kubernetes
 | generic.extraVolumes | list | `[]` |  |
 | generic.usePredefinedAffinity | bool | `true` |  |
 | ingressHostname | string | `""` |  |
-| ingresses.thg-fp-app.annotations."alb.ingress.kubernetes.io/healthcheck-path" | string | `"/v1/health"` |  |
-| ingresses.thg-fp-app.annotations."alb.ingress.kubernetes.io/listen-ports" | string | `"[{\"HTTPS\": 443}]"` |  |
-| ingresses.thg-fp-app.annotations."alb.ingress.kubernetes.io/scheme" | string | `"internet-facing"` |  |
-| ingresses.thg-fp-app.annotations."external-dns.alpha.kubernetes.io/hostname" | string | `"{{ $.Values.ingressHostname }}"` |  |
-| ingresses.thg-fp-app.hosts[0].hostname | string | `"{{ $.Values.ingressHostname }}"` |  |
-| ingresses.thg-fp-app.hosts[0].paths[0].path | string | `"/"` |  |
-| ingresses.thg-fp-app.hosts[0].paths[0].serviceName | string | `"thg-fp-app"` |  |
-| ingresses.thg-fp-app.hosts[0].paths[0].servicePort | string | `"http"` |  |
-| ingresses.thg-fp-app.ingressClassName | string | `"alb"` |  |
 | nodeAffinityPreset.key | string | `""` |  |
 | nodeAffinityPreset.type | string | `""` |  |
 | nodeAffinityPreset.values | list | `[]` |  |
