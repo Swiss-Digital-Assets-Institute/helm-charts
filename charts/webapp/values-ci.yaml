@@ -13,3 +13,11 @@ monitoring:
       enabled: true
 actuator:
   enabled: false
+
+# externalSecrets:
+#   enabled: true
+#   secrets:
+#     - secretKey: API_KEY
+#       remoteRef:
+#         key: data/tha-dev-che-eks/managed-transaction-gateway
+#         property: API_KEY
