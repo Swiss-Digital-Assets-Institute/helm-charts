@@ -1,6 +1,6 @@
 # webapp
 
-![Version: 0.0.3](https://img.shields.io/badge/Version-0.0.3-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 1.0.0](https://img.shields.io/badge/AppVersion-1.0.0-informational?style=flat-square)
+![Version: 0.0.4](https://img.shields.io/badge/Version-0.0.4-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 1.0.0](https://img.shields.io/badge/AppVersion-1.0.0-informational?style=flat-square)
 
 Helm Charts for default Web Application
 
@@ -72,6 +72,12 @@ Helm Charts for default Web Application
 | deployment.annotations | object | `{}` | Annotations to be added to the deployment |
 | envFrom | list | `[]` |  |
 | envs | list | `[]` |  |
+| externalSecrets.enabled | bool | `false` | If enabled, ExternalSecret resources will be created to sync secrets from external sources (e.g., Vault). |
+| externalSecrets.refreshInterval | string | `"30s"` | The time interval at which secrets are refreshed from the external source (e.g., Vault). Default value is "30s", meaning secrets will be refreshed every 30 seconds. |
+| externalSecrets.secretStoreRef.kind | string | `"ClusterSecretStore"` | The kind of SecretStore used to fetch secrets.  By default, this is set to "ClusterSecretStore" to allow cluster-wide secret management. |
+| externalSecrets.secretStoreRef.name | string | `"vault-backend"` | The name of the SecretStore backend. For Vault, this typically refers to the Vault connection (e.g., "vault-backend"). |
+| externalSecrets.secrets | list | `[]` | List of secrets to be synced from the external source (e.g., Vault).  Add secrets here, where each secretKey in Kubernetes will map to a corresponding key in the external store. |
+| externalSecrets.target.creationPolicy | string | `"Owner"` | The creation policy for the target Kubernetes Secret. "Owner" means ExternalSecret manages the lifecycle of the created secret, deleting it when ExternalSecret is deleted. |
 | fullnameOverride | object | `{}` | fullnameOverride allows full override of the name |
 | global.cluster | string | `"cluster.local"` | cluster sets the Cluster Name |
 | global.commonLabels | object | `{}` | commonLabels sets common labels for all resources |
