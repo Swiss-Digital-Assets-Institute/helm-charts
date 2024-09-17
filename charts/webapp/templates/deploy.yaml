@@ -30,7 +30,7 @@ spec:
         image: {{ include "image" . | quote }}
         imagePullPolicy: {{ .Values.image.pullPolicy }}
         env: {{- include "all-envs" . | nindent 12 }}
-        envFrom: {{- toYaml .Values.envFrom | nindent 12 }}
+        envFrom: {{- include "all-EnvFrom" . | nindent 12 }}
         ports:
         - name: http
           containerPort: {{ .Values.container.port }}

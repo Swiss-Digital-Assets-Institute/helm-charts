@@ -24,7 +24,7 @@ defaultImagePullPolicy: "IfNotPresent"
 ingressHostname: ""
 
 services:
-  thg-fp-app:
+  tha-app:
     type: NodePort
     ports:
       - name: http
@@ -33,17 +33,17 @@ services:
         targetPort: 3000
         nodePort:
     extraSelectorLabels:
-      app/name: thg-fp-app
+      app/name: tha-app
 
 deployments:
-  thg-fp-app:
+  tha-app:
     podLabels:
-      app/name: thg-fp-app
+      app/name: tha-app
     podAnnotations:
       checksum/upgrade-date: "Updated at {{ now | toString }}"
     replicas: 1
     containers:
-      - name: thg-fp-app
+      - name: tha-app
         imagePullPolicy: IfNotPresent
         ports:
           - name: http

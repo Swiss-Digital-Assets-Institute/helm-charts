@@ -46,3 +46,17 @@
 {{- end }}
 {{- toYaml $list }}
 {{- end }}
+
+{{/*
+Helper to merge .Values.envFrom with externalSecret if enabled.
+*/}}
+{{- define "all-EnvFrom" -}}
+{{- $envFrom := .Values.envFrom | default list -}}
+{{- if .Values.externalSecrets.enabled -}}
+  {{- $secretRef := dict "secretRef" (dict "name" (printf "kvv-%s" .Values.name)) -}}
+  {{- $merged := append $envFrom $secretRef -}}
+  {{- toYaml $merged -}}
+{{- else -}}
+  {{- toYaml $envFrom -}}
+{{- end -}}
+{{- end }}
