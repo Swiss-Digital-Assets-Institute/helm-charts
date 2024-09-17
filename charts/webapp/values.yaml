@@ -490,7 +490,6 @@ monitoring:
       targetPort: 9090
       protocol: TCP
 
-
 # ExternalSecrets configuration
 externalSecrets:
   # -- If enabled, ExternalSecret resources will be created to sync secrets from external sources (e.g., Vault).
