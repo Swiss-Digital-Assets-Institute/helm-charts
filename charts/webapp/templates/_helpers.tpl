@@ -45,6 +45,17 @@ app.kubernetes.io/version: {{ $version }}
 app.kubernetes.io/managed-by: argocd
 {{- end }}
 
+
+{{- define "all-labels-removed-istio-sidecar" }}
+{{- $labels := fromYaml (include "webapp.labels" .root) }}
+{{- $_ := set $labels "istio-injection" "disabled" }}
+{{- $_ = set $labels "app.kubernetes.io/name" .name }}
+{{- $_ = set $labels "app.kubernetes.io/instance" .name }}
+{{- $_ = set $labels "app" .name }}
+{{- toYaml $labels -}}
+{{- end }}
+
+
 {{/*
 Selector labels
 */}}
@@ -109,6 +120,17 @@ kind: Deployment
 {{- end  }}
 {{- end  }}
 
+{{- define "all-volumes" }}
+{{- $volumes := .Values.volumes }}
+{{- $configName := toString (include "nginx-config-name" . ) }}
+{{- if .Values.nginx.enabled }}
+  {{- $volumes = append $volumes (dict "name" $configName "configMap" (dict "name" $configName ))}}
+  {{- if .Values.nginx.shared.enabled }}
+    {{- $volumes = append $volumes (dict "name" "files" "emptyDir" dict )}}
+  {{- end }}
+{{- end }}
+{{- toYaml $volumes }}
+{{- end }}
 
 
 
