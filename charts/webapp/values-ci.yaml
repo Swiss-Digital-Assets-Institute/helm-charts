@@ -21,4 +21,3 @@ actuator:
 #       remoteRef:
 #         key: data/tha-dev-che-eks/managed-transaction-gateway
 #         property: API_KEY
-

@@ -20,10 +20,7 @@ spec:
       annotations: {{- include "all-pod-annotations" . | nindent 8 }}
       labels: {{- include "webapp.labels" . | nindent 8 }}
     spec:
-      {{- if not .Values.imagePullSecrets.enabled }}
-      imagePullSecrets:
-        - name: {{ .Values.imagePullSecrets.name }}
-      {{- end }}
+      imagePullSecrets: {{- toYaml (default list .Values.imagePullSecrets) | nindent 8 }}
       serviceAccountName: {{ .Values.name }}
       containers:
       - name: {{ .Values.name }}
