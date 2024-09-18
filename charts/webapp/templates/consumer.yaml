@@ -6,7 +6,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ ($consumername := printf "%s-consumer-%s" $name .name | replace "+" "_" | trunc 63 | trimSuffix "-" | lower) }}
+  name: {{ ($consumername := printf "%s-%s" $name .name | replace "+" "_" | trunc 63 | trimSuffix "-" | lower) }}
   namespace: {{ include "namespace" $root }}
   labels: {{- ($labels := (include "all-labels-removed-istio-sidecar" (dict "root" $root "name" $consumername))) | nindent 4 }}
 spec:

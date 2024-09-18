@@ -50,10 +50,7 @@ spec:
       labels: {{ include "webapp.labels" . | nindent 8 }}
     spec:
       serviceAccountName: {{ .Values.name }}
-      {{- if not .Values.imagePullSecrets.enabled }}
-      imagePullSecrets:
-        - name: {{ .Values.imagePullSecrets.name }}
-      {{- end }}
+      imagePullSecrets: {{- toYaml (default list .Values.imagePullSecrets) | nindent 8 }}
       containers:
       - name: {{ .Values.name }}
         image: {{ .Values.image.repository }}:{{ .Values.image.tag }}
