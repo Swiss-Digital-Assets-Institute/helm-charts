@@ -21,18 +21,3 @@ actuator:
 #       remoteRef:
 #         key: data/tha-dev-che-eks/managed-transaction-gateway
 #         property: API_KEY
-
-consumers:
-  terminationGracePeriodSeconds: 30
-  list:
-    - name: cron
-      image:
-        repository: 458845629758.dkr.ecr.eu-central-2.amazonaws.com/dev-transaction-gateway-cron
-        tag: 5d205f3
-      resources:
-        limits:
-          cpu: 512m
-          memory: 1G
-        requests:
-          cpu: 128m
-          memory: 256Mi
