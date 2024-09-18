@@ -1,6 +1,6 @@
 # webapp
 
-![Version: 0.0.4](https://img.shields.io/badge/Version-0.0.4-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 1.0.0](https://img.shields.io/badge/AppVersion-1.0.0-informational?style=flat-square)
+![Version: 0.0.5](https://img.shields.io/badge/Version-0.0.5-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 1.0.0](https://img.shields.io/badge/AppVersion-1.0.0-informational?style=flat-square)
 
 Helm Charts for default Web Application
 
@@ -106,10 +106,10 @@ Helm Charts for default Web Application
 | livenessProbe.failureThreshold | int | `3` | Minimum consecutive failures for the probe to be considered failed after having succeeded |
 | livenessProbe.initialDelaySeconds | int | `10` | Number of seconds after the container has started before liveness probes are initiated |
 | livenessProbe.path | string | `"/health-check/liveness"` | The HTTP path to check for liveness |
-| livenessProbe.periodSeconds | int | `10` | How often (in seconds) to perform the liveness probe |
+| livenessProbe.periodSeconds | int | `10` | How often (in seconds) to perform the probe |
 | livenessProbe.scheme | string | `"HTTP"` | The scheme to use for the liveness probe (e.g., HTTP or HTTPS) |
 | livenessProbe.successThreshold | int | `1` | Minimum consecutive successes for the probe to be considered successful after having failed |
-| livenessProbe.timeoutSeconds | int | `3` | Number of seconds after which the liveness probe times out |
+| livenessProbe.timeoutSeconds | int | `3` | Number of seconds after which the probe times out |
 | migration | object | `{"enabled":false}` | migration Set liquibase migration |
 | migration.enabled | bool | `false` | migration.enable liquibase migration |
 | monitoring | object | `{"alerts":{"annotations":{},"enabled":false,"labels":{},"namespace":null},"rules":{"additionalGroups":[],"alerting":true,"annotations":{},"enabled":false,"labels":{},"namespace":null},"serviceMonitor":{"annotations":{},"enabled":false,"extraPort":{"enabled":false,"name":"tcp-metrics","number":9090,"protocol":"TCP","targetPort":9090},"interval":"60s","labels":{},"namespace":null,"namespaceSelector":{},"path":"/metrics","relabelings":[],"scheme":"http","scrapeTimeout":"15s"}}` | monitoring Enable Monitoring Features |
@@ -140,6 +140,7 @@ Helm Charts for default Web Application
 | namespace.annotations | object | `{}` | Annotations to be added to the namespace |
 | namespace.enabled | bool | `true` | Specifies whether the namespace is enabled |
 | namespace.labels | object | `{}` | Labels to be added to the namespace |
+| nginx | object | `{"enabled":false,"image":{"imagePullPolicy":"IfNotPresent","repository":"nginx","tag":"alpine"},"livenessProbe":{"enabled":true,"exec":{},"failureThreshold":3,"initialDelaySeconds":5,"path":"/health-check/liveness","periodSeconds":10,"scheme":"HTTP","successThreshold":1,"timeoutSeconds":3},"resources":{"limits":{"cpu":"50m","memory":"50Mi"},"requests":{"cpu":"10m","memory":"10Mi"}},"shared":{"enabled":false,"path":"/var/www/html/"}}` | nginx configuration for php-fpm the nginx sidecar |
 | nodeSelector | object | `{}` | nodeSelector allows you to constrain a Pod to only be able to run on particular node(s) |
 | podAnnotations | object | `{}` | podAnnotations adds custom annotations to the pod |
 | podSecurityContext | object | `{}` | A security context defines privilege and access control settings for a Pod or Container. About more: https://kubernetes.io/docs/tasks/configure-pod-container/security-context/ |
