@@ -3,7 +3,7 @@ entries:
   tha-app:
   - apiVersion: v2
     appVersion: 1.16.0
-    created: "2024-09-17T19:08:53.995946888Z"
+    created: "2024-09-18T18:02:01.059927423Z"
     description: A Helm chart for Kubernetes
     digest: 54c8aa788be31799c7fbfc5c23e8c111fa41370f2ee7db7533f87509df5476ff
     name: tha-app
@@ -13,7 +13,7 @@ entries:
     version: 0.1.3
   - apiVersion: v2
     appVersion: 1.16.0
-    created: "2024-09-17T19:08:53.995312008Z"
+    created: "2024-09-18T18:02:01.059242286Z"
     description: A Helm chart for Kubernetes
     digest: e450210bab2592726e2ebb2b70a7be1381af808adbbe3c4d07dc091889b3f163
     name: tha-app
@@ -23,7 +23,7 @@ entries:
     version: 0.1.2
   - apiVersion: v2
     appVersion: 1.16.0
-    created: "2024-09-17T19:08:53.994598061Z"
+    created: "2024-09-18T18:02:01.05854683Z"
     description: A Helm chart for Kubernetes
     digest: eb69750e7a25525628f2c4cbe85393086c2783ec871f39313dbf238c2d6a67ad
     name: tha-app
@@ -33,7 +33,7 @@ entries:
     version: 0.1.1
   - apiVersion: v2
     appVersion: 1.16.0
-    created: "2024-09-17T19:08:53.993974052Z"
+    created: "2024-09-18T18:02:01.057906676Z"
     description: A Helm chart for Kubernetes
     digest: 96fbf5e8b752883f1a8de50cb186716409026140117ed7507d24627785072875
     name: tha-app
@@ -44,7 +44,7 @@ entries:
   universal-chart:
   - apiVersion: v2
     appVersion: 1.16.0
-    created: "2024-09-17T19:08:53.996325798Z"
+    created: "2024-09-18T18:02:01.06032805Z"
     description: A Helm chart for Kubernetes
     digest: 34f8d4b4c67988418234df8cd63ac355b18bd5b75340f249bf012e5d9fcb6c04
     name: universal-chart
@@ -55,7 +55,7 @@ entries:
   webapp:
   - apiVersion: v2
     appVersion: 1.0.0
-    created: "2024-09-18T18:01:39.568367909Z"
+    created: "2024-09-18T18:02:01.067046848Z"
     description: Helm Charts for default Web Application
     digest: 9b98e2eca38c78e42a4d320596bf1ff1569e1ad4acd91d6d713ee2e6c1a3adde
     icon: https://github.com/devxp-tech/helm-charts/blob/main/charts/tooling/helm-icon.png
@@ -66,11 +66,11 @@ entries:
     name: webapp
     type: application
     urls:
-    - https://github.com/Swiss-Digital-Assets-Institute/helm-charts/releases/download/webapp-0.0.5/webapp-0.0.5.tgz
+    - https://raw.githubusercontent.com/Swiss-Digital-Assets-Institute/helm-charts/artifacts/webapp-0.0.5.tgz
     version: 0.0.5
   - apiVersion: v2
     appVersion: 1.0.0
-    created: "2024-09-17T19:08:54.001395811Z"
+    created: "2024-09-18T18:02:01.065558824Z"
     description: Helm Charts for default Web Application
     digest: 3c15e2e74f55a5a3beaaf7dc1bb1875feaafec80fe15dad9c6ffbef0ad757fc9
     icon: https://github.com/devxp-tech/helm-charts/blob/main/charts/tooling/helm-icon.png
@@ -85,7 +85,7 @@ entries:
     version: 0.0.4
   - apiVersion: v2
     appVersion: 1.0.0
-    created: "2024-09-17T19:08:53.999981522Z"
+    created: "2024-09-18T18:02:01.064108801Z"
     description: Helm Charts for default Web Application
     digest: 78033b8af678dc3298d77becee41adf0d9d27857036adc31df1bb97d051e3f87
     icon: https://github.com/devxp-tech/helm-charts/blob/main/charts/tooling/helm-icon.png
@@ -100,7 +100,7 @@ entries:
     version: 0.0.3
   - apiVersion: v2
     appVersion: 1.0.0
-    created: "2024-09-17T19:08:53.997705933Z"
+    created: "2024-09-18T18:02:01.0626651Z"
     description: Helm Charts for default Web Application
     digest: ec036febf755624939966e2ca454763ec2bb96c16962872a1b5542bdc6b72425
     icon: https://github.com/devxp-tech/helm-charts/blob/main/charts/tooling/helm-icon.png
@@ -113,4 +113,4 @@ entries:
     urls:
     - https://raw.githubusercontent.com/Swiss-Digital-Assets-Institute/helm-charts/artifacts/webapp-0.0.2.tgz
     version: 0.0.2
-generated: "2024-09-18T18:01:39.568394779Z"
+generated: "2024-09-18T18:02:01.05710934Z"
