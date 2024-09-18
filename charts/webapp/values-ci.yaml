@@ -14,10 +14,25 @@ monitoring:
 actuator:
   enabled: false
 
-# externalSecrets:
-#   enabled: true
-#   secrets:
-#     - secretKey: API_KEY
-#       remoteRef:
-#         key: data/tha-dev-che-eks/managed-transaction-gateway
-#         property: API_KEY
+externalSecrets:
+  enabled: true
+  secrets:
+    - secretKey: FOO
+      remoteRef:
+        key: data/dev/ci
+        property: FOO
+
+consumers:
+  terminationGracePeriodSeconds: 30
+  list:
+    - name: cron
+      image:
+        repository: XXXXXXXX.dkr.ecr.eu-central-2.amazonaws.com/ci-cron
+        tag: 5d205f3
+      resources:
+        limits:
+          cpu: 512m
+          memory: 1G
+        requests:
+          cpu: 128m
+          memory: 256Mi
