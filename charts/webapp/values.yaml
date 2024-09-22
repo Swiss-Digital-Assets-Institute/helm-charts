@@ -43,6 +43,10 @@ namespace:
   # --Example annotation to enable Jaeger tracing sidecar injection
   # sidecar.jaegertracing.io/inject: "true"
 
+# --configMaps is the object to configure an array of configMaps
+configMaps: 
+  enabled: false
+  data: {}
 
 # --deployment Disabled Deployment
 deployment:
@@ -536,3 +540,25 @@ nginx:
     failureThreshold: 3
     # livenessProbe.successThreshold -- Minimum consecutive successes for the probe to be considered successful after having failed
     successThreshold: 1
+
+extraContainer:
+  enabled: false
+  name: extra-container
+  image: extra-container-image:latest
+  imagePullPolicy: Always
+  env:
+    - name: ENV_VAR
+      value: "value"
+  port:
+    name: http
+    containerPort: 8081
+  resources:
+    requests:
+      memory: "64Mi"
+      cpu: "100m"
+    limits:
+      memory: "128Mi"
+      cpu: "200m"
+  volumeMounts:
+    - name: config-volume
+      mountPath: /etc/config

@@ -6,7 +6,11 @@ metadata:
   name: {{ .Values.name }}
   namespace: {{ include "namespace" . }}
   annotations:
-    link.argocd.argoproj.io/external-link: https://{{ .Values.name }}.{{ .Values.global.network.domain }}
+    {{- if .Values.istio.virtualServices.public }}
+    link.argocd.argoproj.io/external-link: https://{{ .Values.name }}.pub.{{ .Values.global.env }}.{{ .Values.global.network.domain }}
+    {{- else }}
+    link.argocd.argoproj.io/external-link: https://{{ .Values.name }}.pvt.{{ .Values.global.env }}.{{ .Values.global.network.domain }}
+    {{- end }}  
   labels:
     app: {{ .Values.name }}
     version: {{ .Values.image.tag | quote }}
