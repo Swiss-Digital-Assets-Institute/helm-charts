@@ -4,15 +4,18 @@
 
 # --name is the github repository name of this application deploy
 name: "ci"
+
 global: 
   env: dev
-monitoring:
-  serviceMonitor:
-    enabled: true
-    extraPort:
-      enabled: true
+
 actuator:
   enabled: false
+
+monitoring:
+  serviceMonitor:
+    enabled: false
+    extraPort:
+      enabled: true
 
 externalSecrets:
   enabled: true
@@ -22,17 +25,76 @@ externalSecrets:
         key: data/dev/ci
         property: FOO
 
-consumers:
-  terminationGracePeriodSeconds: 30
-  list:
-    - name: cron
-      image:
-        repository: XXXXXXXX.dkr.ecr.eu-central-2.amazonaws.com/ci-cron
-        tag: 5d205f3
-      resources:
-        limits:
-          cpu: 512m
-          memory: 1G
-        requests:
-          cpu: 128m
-          memory: 256Mi
+extraContainer:
+  enabled: true
+  name: ci
+  image: nginx:alpine
+  imagePullPolicy: IfNotPresent
+  env:
+    - name: ENV_VAR
+      value: "value"
+  port:
+    name: http-nginx
+    containerPort: 8080
+  resources:
+    requests:
+      memory: "64Mi"
+      cpu: "100m"
+    limits:
+      memory: "128Mi"
+      cpu: "200m"
+  volumeMounts:
+    - name: ci
+      mountPath: /etc/nginx/conf.d/nginx.conf
+      subPath: nginx.conf
+
+volumes:
+- name: ci
+  type: configMap
+
+configMaps:
+  enabled: true
+  data:
+    nginx.conf: |
+      # Cache zone
+      proxy_cache_path /var/cache/nginx levels=1:2 keys_zone=STATIC:10m inactive=7d use_temp_path=off;
+
+      upstream frontend {
+      server transaction-gateway-frontend;
+      }
+
+      server {
+      listen 8080 default_server;
+
+      server_name _;
+
+      server_tokens off;
+
+      gzip on;
+      gzip_proxied any;
+      gzip_comp_level 4;
+      gzip_types text/css application/javascript image/svg+xml;
+
+      proxy_http_version 1.1;
+      proxy_set_header Upgrade $http_upgrade;
+      proxy_set_header Connection 'upgrade';
+      proxy_set_header Host $host;
+      proxy_cache_bypass $http_upgrade;
+
+      location /_next/static {
+      proxy_cache STATIC;
+      proxy_pass http://frontend;
+      }
+
+      location /static {
+      proxy_cache STATIC;
+      proxy_ignore_headers Cache-Control;
+      proxy_cache_valid 60m;
+      proxy_pass http://frontend;
+      }
+
+      # DYNAMIC ASSETS - NO CACHE
+      location / {
+      proxy_pass http://frontend;
+      }
+      }
