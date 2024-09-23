@@ -1,6 +1,6 @@
 # webapp
 
-![Version: 0.0.8](https://img.shields.io/badge/Version-0.0.8-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 1.0.0](https://img.shields.io/badge/AppVersion-1.0.0-informational?style=flat-square)
+![Version: 0.0.9](https://img.shields.io/badge/Version-0.0.9-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 1.0.0](https://img.shields.io/badge/AppVersion-1.0.0-informational?style=flat-square)
 
 Helm Charts for default Web Application
 
@@ -184,16 +184,17 @@ Helm Charts for default Web Application
 | resources.requests.cpu | string | `"50m"` | The amount of CPU requested for the container |
 | resources.requests.memory | string | `"64Mi"` | The amount of memory requested for the container |
 | securityContext | object | `{}` | fsGroup: 2000 |
-| service | object | `{"annotations":{},"enabled":true,"externalDns":{"enabled":false},"labels":{},"nodePort":{},"port":{"name":"tcp-node","port":80},"type":"ClusterIP"}` | service |
+| service | object | `{"annotations":{},"enabled":true,"externalDns":{"enabled":false},"labels":{},"nodePort":{},"port":{"name":"tcp-node","port":80,"targetPort":8080},"type":"ClusterIP"}` | service |
 | service.annotations | object | `{}` | Annotations to add to the service |
 | service.enabled | bool | `true` | service.enabled to enable and disable the creation of service |
 | service.externalDns | object | `{"enabled":false}` | service.externalDns to enable and disable the creation of external DNS |
 | service.externalDns.enabled | bool | `false` | Enable or disable external DNS for the service |
 | service.labels | object | `{}` | Labels to add to the service |
 | service.nodePort | object | `{}` | The port to expose on each node in a cluster, only used if type is NodePort or LoadBalancer |
-| service.port | object | `{"name":"tcp-node","port":80}` | service.port Define the Service Port |
+| service.port | object | `{"name":"tcp-node","port":80,"targetPort":8080}` | service.port Define the Service Port |
 | service.port.name | string | `"tcp-node"` | Name of the port, used for service discovery |
 | service.port.port | int | `80` | Port is the port your application runs under |
+| service.port.targetPort | int | `8080` | targetPort is the port your application runs under |
 | service.type | string | `"ClusterIP"` | Service An abstract way to expose an application running on a set of Pods as a network service. |
 | serviceAccount | object | `{"annotations":{},"automountServiceAccountToken":true,"enabled":true,"name":{}}` | ServiceAccount A service account provides an identity for processes that run in a Pod, about more: https://kubernetes.io/docs/tasks/configure-pod-container/configure-service-account/ |
 | serviceAccount.annotations | object | `{}` | Annotations to add to the service account |
