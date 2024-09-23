@@ -142,6 +142,8 @@ service:
     name: tcp-node
     # --Port is the port your application runs under
     port: 80
+    # --targetPort is the port your application runs under
+    targetPort: 8080
   # --Annotations to add to the service
   annotations: {}
   # --Labels to add to the service
