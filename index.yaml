@@ -55,6 +55,21 @@ entries:
   webapp:
   - apiVersion: v2
     appVersion: 1.0.0
+    created: "2024-09-27T07:43:27.951032283Z"
+    description: Helm Charts for default Web Application
+    digest: 13a660e4d2bba4330548358ed0eafe577678acc44c21e9a65524f330c7a93bc6
+    icon: https://github.com/devxp-tech/helm-charts/blob/main/charts/tooling/helm-icon.png
+    maintainers:
+    - email: contato@diegoluisi.eti.br
+      name: diegoluisi
+      url: www.diegoluisi.eti.br
+    name: webapp
+    type: application
+    urls:
+    - https://github.com/Swiss-Digital-Assets-Institute/helm-charts/releases/download/webapp-0.0.10/webapp-0.0.10.tgz
+    version: 0.0.10
+  - apiVersion: v2
+    appVersion: 1.0.0
     created: "2024-09-23T16:28:40.639057779Z"
     description: Helm Charts for default Web Application
     digest: be2cd818cbc2c664f895112e7af22dbddd1821d09bbd77f2459f4d04fd5d0480
@@ -173,4 +188,4 @@ entries:
     urls:
     - https://raw.githubusercontent.com/Swiss-Digital-Assets-Institute/helm-charts/artifacts/webapp-0.0.2.tgz
     version: 0.0.2
-generated: "2024-09-23T16:28:40.62209011Z"
+generated: "2024-09-27T07:43:27.95107863Z"
