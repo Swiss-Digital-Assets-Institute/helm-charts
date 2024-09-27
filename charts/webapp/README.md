@@ -1,6 +1,6 @@
 # webapp
 
-![Version: 0.0.10](https://img.shields.io/badge/Version-0.0.10-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 1.0.0](https://img.shields.io/badge/AppVersion-1.0.0-informational?style=flat-square)
+![Version: 0.0.11](https://img.shields.io/badge/Version-0.0.11-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 1.0.0](https://img.shields.io/badge/AppVersion-1.0.0-informational?style=flat-square)
 
 Helm Charts for default Web Application
 
@@ -150,11 +150,11 @@ Helm Charts for default Web Application
 | monitoring.serviceMonitor.scrapeTimeout | string | `"15s"` | ServiceMonitor scrape timeout in Go duration format (e.g. 15s) |
 | name | string | `""` | name is the GitHub repository name of this application deployment |
 | nameOverride | object | `{}` | nameOverride allows partial override of the name |
-| namespace | object | `{"annotations":{},"enabled":true,"labels":{}}` | namespace configuration |
-| namespace | string | `""` |  |
+| namespace | object | `{"annotations":{},"enabled":true,"labels":{},"name":{}}` | namespace configuration |
 | namespace.annotations | object | `{}` | Annotations to be added to the namespace |
 | namespace.enabled | bool | `true` | Specifies whether the namespace is enabled |
 | namespace.labels | object | `{}` | Labels to be added to the namespace |
+| namespace.name | object | `{}` | Example annotation to enable Jaeger tracing sidecar injection sidecar.jaegertracing.io/inject: "true" |
 | nginx | object | `{"enabled":false,"image":{"imagePullPolicy":"IfNotPresent","repository":"nginx","tag":"alpine"},"livenessProbe":{"enabled":true,"exec":{},"failureThreshold":3,"initialDelaySeconds":5,"path":"/health-check/liveness","periodSeconds":10,"scheme":"HTTP","successThreshold":1,"timeoutSeconds":3},"resources":{"limits":{"cpu":"50m","memory":"50Mi"},"requests":{"cpu":"10m","memory":"10Mi"}},"shared":{"enabled":false,"path":"/var/www/html/"}}` | nginx configuration for php-fpm the nginx sidecar |
 | nodeSelector | object | `{}` | nodeSelector allows you to constrain a Pod to only be able to run on particular node(s) |
 | podAnnotations | object | `{}` | podAnnotations adds custom annotations to the pod |
