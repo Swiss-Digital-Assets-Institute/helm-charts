@@ -5,6 +5,9 @@
 # --name is the GitHub repository name of this application deployment
 name: ""
 
+# kubernetes namespace for the app
+namespace: ""
+
 # --nameOverride allows partial override of the name
 nameOverride: {}
 
