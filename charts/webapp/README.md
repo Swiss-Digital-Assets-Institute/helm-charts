@@ -1,6 +1,6 @@
 # webapp
 
-![Version: 0.0.13](https://img.shields.io/badge/Version-0.0.13-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 1.0.0](https://img.shields.io/badge/AppVersion-1.0.0-informational?style=flat-square)
+![Version: 0.0.14](https://img.shields.io/badge/Version-0.0.14-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 1.0.0](https://img.shields.io/badge/AppVersion-1.0.0-informational?style=flat-square)
 
 Helm Charts for default Web Application
 
@@ -114,16 +114,8 @@ Helm Charts for default Web Application
 | istio.peerAuthentication.mode | string | `"PERMISSIVE"` | set peerAuthentication mode, values (UNSET, DISABLE, PERMISSIVE, STRICT) |
 | istio.virtualServices | object | `{"custom":{"hosts":[]},"enabled":true,"public":false}` | istio.virtualServices Set Istio virtualServices parameters |
 | istio.virtualServices.enabled | bool | `true` | istio.virtualServices.enable Set Istio virtualServices enabled |
-| livenessProbe | object | `{"enabled":true,"exec":{},"failureThreshold":3,"httpHeaders":[],"initialDelaySeconds":10,"path":"/health-check/liveness","periodSeconds":10,"scheme":"HTTP","successThreshold":1,"timeoutSeconds":3}` | livenessProbe indicates whether the application is running and alive |
-| livenessProbe.enabled | bool | `true` | Specifies whether the liveness probe is enabled |
-| livenessProbe.exec | object | `{}` | Specifies a command to run inside the container to determine liveness |
-| livenessProbe.failureThreshold | int | `3` | Minimum consecutive failures for the probe to be considered failed after having succeeded |
-| livenessProbe.initialDelaySeconds | int | `10` | Number of seconds after the container has started before liveness probes are initiated |
-| livenessProbe.path | string | `"/health-check/liveness"` | The HTTP path to check for liveness |
-| livenessProbe.periodSeconds | int | `10` | How often (in seconds) to perform the probe |
-| livenessProbe.scheme | string | `"HTTP"` | The scheme to use for the liveness probe (e.g., HTTP or HTTPS) |
-| livenessProbe.successThreshold | int | `1` | Minimum consecutive successes for the probe to be considered successful after having failed |
-| livenessProbe.timeoutSeconds | int | `3` | Number of seconds after which the probe times out |
+| livenessProbe | object | `{"enabled":false}` | livenessProbe indicates whether the application is running and alive |
+| livenessProbe.enabled | bool | `false` | Specifies whether the liveness probe is enabled |
 | migration | object | `{"enabled":false}` | migration Set liquibase migration |
 | migration.enabled | bool | `false` | migration.enable liquibase migration |
 | monitoring | object | `{"alerts":{"annotations":{},"enabled":false,"labels":{},"namespace":null},"rules":{"additionalGroups":[],"alerting":true,"annotations":{},"enabled":false,"labels":{},"namespace":null},"serviceMonitor":{"annotations":{},"enabled":false,"extraPort":{"enabled":false,"name":"tcp-metrics","number":9090,"protocol":"TCP","targetPort":9090},"interval":"60s","labels":{},"namespace":null,"namespaceSelector":{},"path":"/metrics","relabelings":[],"scheme":"http","scrapeTimeout":"15s"}}` | monitoring Enable Monitoring Features |
@@ -166,16 +158,8 @@ Helm Charts for default Web Application
 | quota.resources.hard."limits.memory" | string | `"2Gi"` | limits.memory Specifies the total memory limits allowed for all pods in the namespace |
 | quota.resources.hard."requests.cpu" | string | `"1"` | requests.cpu Specifies the total CPU requests allowed for all pods in the namespace |
 | quota.resources.hard."requests.memory" | string | `"1Gi"` | requests.memory Specifies the total memory requests allowed for all pods in the namespace |
-| readinessProbe | object | `{"enabled":true,"exec":{},"failureThreshold":3,"httpHeaders":[],"initialDelaySeconds":10,"path":"/health-check/readiness","periodSeconds":10,"scheme":"HTTP","successThreshold":1,"timeoutSeconds":3}` | readinessProbe indicates whether the application is ready to serve requests |
-| readinessProbe.enabled | bool | `true` | Specifies whether the readiness probe is enabled |
-| readinessProbe.exec | object | `{}` | Specifies a command to run inside the container to determine readiness |
-| readinessProbe.failureThreshold | int | `3` | Minimum consecutive failures for the probe to be considered failed after having succeeded |
-| readinessProbe.initialDelaySeconds | int | `10` | Number of seconds after the container has started before readiness probes are initiated |
-| readinessProbe.path | string | `"/health-check/readiness"` | The HTTP path to check for readiness |
-| readinessProbe.periodSeconds | int | `10` | How often (in seconds) to perform the readiness probe |
-| readinessProbe.scheme | string | `"HTTP"` | The scheme to use for the readiness probe (e.g., HTTP or HTTPS) |
-| readinessProbe.successThreshold | int | `1` | Minimum consecutive successes for the probe to be considered successful after having failed |
-| readinessProbe.timeoutSeconds | int | `3` | Number of seconds after which the readiness probe times out |
+| readinessProbe | object | `{"enabled":false}` | readinessProbe indicates whether the application is ready to serve requests |
+| readinessProbe.enabled | bool | `false` | Specifies whether the readiness probe is enabled |
 | replicaCount | int | `1` | replicaCount is used when autoscaling.enabled is false to set a manually number of pods |
 | resources | object | `{"limits":{"cpu":"100m","memory":"128Mi"},"requests":{"cpu":"50m","memory":"64Mi"}}` | resources set deployment resources |
 | resources.limits | object | `{"cpu":"100m","memory":"128Mi"}` | Resource limits are the maximum amount of CPU and memory that the container is allowed to use |
