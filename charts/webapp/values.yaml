@@ -4,6 +4,7 @@
 
 # --name is the GitHub repository name of this application deployment
 name: ""
+namespaceName: ""
 
 # --nameOverride allows partial override of the name
 nameOverride: {}
@@ -42,7 +43,6 @@ namespace:
   annotations: {}
   # --Example annotation to enable Jaeger tracing sidecar injection
   # sidecar.jaegertracing.io/inject: "true"
-  name: {}
 
 # --configMaps is the object to configure an array of configMaps
 configMaps: 
