@@ -20,3 +20,4 @@ spec:
             cpu: 10m
             memory: 64Mi
   restartPolicy: Never
+
