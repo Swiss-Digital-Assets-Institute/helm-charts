@@ -17,6 +17,10 @@ monitoring:
     extraPort:
       enabled: true
 
+instrumentation:
+  enabled: true
+  language: nodejs
+
 externalSecrets:
   enabled: true
   secrets:
