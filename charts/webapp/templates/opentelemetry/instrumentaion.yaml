@@ -1,4 +1,4 @@
-{{- if .Values.instrumentation }}
+{{- if .Values.instrumentation.enabled }}
 apiVersion: opentelemetry.io/v1alpha1
 kind: Instrumentation
 metadata:
@@ -37,6 +37,8 @@ spec:
         value: {{ .Values.name }}
       - name: OTEL_LOGS_EXPORTER
         value: otlp
+      - name: OTEL_NODE_ENABLED_INSTRUMENTATIONS
+        value: http,nestjs-core        
   python:
     env:
       - name: OTEL_SERVICE_NAME
