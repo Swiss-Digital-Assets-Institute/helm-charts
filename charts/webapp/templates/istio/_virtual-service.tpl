@@ -1,7 +1,7 @@
 {{- define "vs-hosts" }}
 {{- $hosts := list }}
 {{- $name := .Values.name }}
-{{- $namespace := .Values.namespaceName }}
+{{- $namespace := .Release.Namespace }}
 {{- $env := .Values.global.env }}  # The environment: dev, mng, prd
 {{- $domain := .Values.global.network.domain }}  # The domain
 {{- $access := "" }}  # Initialize the $access variable

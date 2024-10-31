@@ -30,12 +30,12 @@ spec:
     route:
     - destination:
         subset: stable  # referenced in canary.trafficRouting.istio.destinationRule.stableSubsetName
-        host: {{ .Values.name }}.{{ .Values.namespaceName }}.svc.{{ .Values.global.cluster }}
+        host: {{ .Values.name }}.{{ include "namespace" . }}.svc.{{ .Values.global.cluster }}
         port:
           number: {{ .Values.service.port.port }}
       weight: 100
     - destination:
-        host: {{ .Values.name }}.{{ .Values.namespaceName }}.svc.{{ .Values.global.cluster }}
+        host: {{ .Values.name }}.{{ include "namespace" . }}.svc.{{ .Values.global.cluster }}
         port:
           number: {{ .Values.service.port.port }}
         subset: canary # referenced in canary.trafficRouting.istio.destinationRule.canarySubsetName
@@ -44,7 +44,7 @@ spec:
   - name: {{ .Values.name }}
     route:
     - destination:
-        host: {{ .Values.name }}.{{ .Values.namespaceName }}.svc.{{ .Values.global.cluster }}
+        host: {{ .Values.name }}.{{ include "namespace" . }}.svc.{{ .Values.global.cluster }}
         port:
           number: {{ .Values.service.port.port }}
   {{- end }}
