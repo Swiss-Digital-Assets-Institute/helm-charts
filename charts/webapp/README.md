@@ -1,6 +1,6 @@
 # webapp
 
-![Version: 0.0.16](https://img.shields.io/badge/Version-0.0.16-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 1.0.0](https://img.shields.io/badge/AppVersion-1.0.0-informational?style=flat-square)
+![Version: 0.0.17](https://img.shields.io/badge/Version-0.0.17-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 1.0.0](https://img.shields.io/badge/AppVersion-1.0.0-informational?style=flat-square)
 
 Helm Charts for default Web Application
 
@@ -146,7 +146,6 @@ Helm Charts for default Web Application
 | namespace.annotations | object | `{}` | Annotations to be added to the namespace |
 | namespace.enabled | bool | `true` | Specifies whether the namespace is enabled |
 | namespace.labels | object | `{}` | Labels to be added to the namespace |
-| namespaceName | string | `""` |  |
 | nginx | object | `{"enabled":false,"image":{"imagePullPolicy":"IfNotPresent","repository":"nginx","tag":"alpine"},"livenessProbe":{"enabled":true,"exec":{},"failureThreshold":3,"initialDelaySeconds":5,"path":"/health-check/liveness","periodSeconds":10,"scheme":"HTTP","successThreshold":1,"timeoutSeconds":3},"resources":{"limits":{"cpu":"50m","memory":"50Mi"},"requests":{"cpu":"10m","memory":"10Mi"}},"shared":{"enabled":false,"path":"/var/www/html/"}}` | nginx configuration for php-fpm the nginx sidecar |
 | nodeSelector | object | `{}` | nodeSelector allows you to constrain a Pod to only be able to run on particular node(s) |
 | podAnnotations | object | `{}` | podAnnotations adds custom annotations to the pod |
