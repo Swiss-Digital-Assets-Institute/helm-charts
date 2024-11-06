@@ -54,6 +54,7 @@ Helm Charts for default Web Application
 | argoRollouts.strategy.steps[7] | object | `{"pause":{"duration":"10s"}}` | Pauses the rollout for a specified duration |
 | argoRollouts.strategy.steps[8] | object | `{"setWeight":80}` | Sets the percentage of traffic to send to the new version |
 | argoRollouts.strategy.steps[9] | object | `{"pause":{"duration":"10s"}}` | Pauses the rollout for a specified duration |
+| autoReloader | bool | `true` | autoReloader enable auto reloader to restart the container when the configMap is updated |
 | autoscaling | object | `{"customRules":[],"enabled":true,"maxReplicas":2,"minReplicas":1,"targetCPUUtilizationPercentage":80,"targetMemoryUtilizationPercentage":80}` | autoscaling is the main object of autoscaling |
 | autoscaling.customRules | list | `[]` | customRules is a place to customize your application autoscaler using the original API available at: https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale/ |
 | autoscaling.enabled | bool | `true` | enabled is the flag to sinalize this funcionality is enabled |
@@ -75,9 +76,9 @@ Helm Charts for default Web Application
 | envs | list | `[]` |  |
 | externalSecrets.enabled | bool | `false` | If enabled, ExternalSecret resources will be created to sync secrets from external sources (e.g., Vault). |
 | externalSecrets.refreshInterval | string | `"30s"` | The time interval at which secrets are refreshed from the external source (e.g., Vault). Default value is "30s", meaning secrets will be refreshed every 30 seconds. |
-| externalSecrets.secretStoreRef.kind | string | `"ClusterSecretStore"` | The kind of SecretStore used to fetch secrets.  By default, this is set to "ClusterSecretStore" to allow cluster-wide secret management. |
+| externalSecrets.secretStoreRef.kind | string | `"ClusterSecretStore"` | The kind of SecretStore used to fetch secrets. By default, this is set to "ClusterSecretStore" to allow cluster-wide secret management. |
 | externalSecrets.secretStoreRef.name | string | `"vault-backend"` | The name of the SecretStore backend. For Vault, this typically refers to the Vault connection (e.g., "vault-backend"). |
-| externalSecrets.secrets | list | `[]` | List of secrets to be synced from the external source (e.g., Vault).  Add secrets here, where each secretKey in Kubernetes will map to a corresponding key in the external store. |
+| externalSecrets.secrets | list | `[]` | List of secrets to be synced from the external source (e.g., Vault). Add secrets here, where each secretKey in Kubernetes will map to a corresponding key in the external store. |
 | externalSecrets.target.creationPolicy | string | `"Owner"` | The creation policy for the target Kubernetes Secret. "Owner" means ExternalSecret manages the lifecycle of the created secret, deleting it when ExternalSecret is deleted. |
 | extraContainer.enabled | bool | `false` |  |
 | extraContainer.env[0].name | string | `"ENV_VAR"` |  |
