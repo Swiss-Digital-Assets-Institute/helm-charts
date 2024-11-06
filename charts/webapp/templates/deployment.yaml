@@ -60,3 +60,4 @@ spec:
       volumes: {{ toYaml (default list .Values.volumes)  | nindent 8 }}
   minReadySeconds: 30
 {{- end }}
+
