@@ -7,14 +7,14 @@ on:
       - completed
 
 jobs:
-  env:
-    uses: Swiss-Digital-Assets-Institute/.github/.github/workflows/env.yaml@main
+  # env:
+  #   uses: Swiss-Digital-Assets-Institute/.github/.github/workflows/env.yaml@main
 
   lint-chart:
     name: Chart Lint 🔎
     runs-on: ubuntu-latest
-    needs:
-      - env
+    # needs:
+    #   - env
     steps:
       - name: Checkout Lint 🛎️
         uses: actions/checkout@v4
@@ -54,8 +54,8 @@ jobs:
   kubeval-chart:
     name: Chart Validator 🔎
     runs-on: ubuntu-latest
-    needs:
-      - env
+    # needs:
+    #   - env
     strategy:
       matrix:
         k8s:
