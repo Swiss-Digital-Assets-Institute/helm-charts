@@ -1,11 +1,11 @@
-{{- if not .Values.argoRollouts.enabled }}
+{{- if not .Values.argoRollouts.enabled }} 
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: {{ .Values.name }}
   namespace: {{ include "namespace" . }}
+  annotations: {{- include "all-deploy-annotations" . | nindent 4 }}
   labels: {{- include "webapp.labels" . | nindent 4 }}
-  annotations: {{- .Values.deployment.annotations | toYaml | nindent 4 }}
 spec:
   {{- if not .Values.autoscaling.enabled }}
   replicas: {{ default 1 .Values.replicaCount }}

@@ -5,15 +5,19 @@
 # --name is the github repository name of this application deploy
 name: "ci"
 
-global: 
+global:
   env: dev
 
 actuator:
   enabled: false
 
+deployment:
+  annotations:
+    example: "true"
+
 monitoring:
   serviceMonitor:
-    enabled: false
+    enabled: true
     extraPort:
       enabled: true
 
@@ -53,8 +57,8 @@ extraContainer:
       subPath: nginx.conf
 
 volumes:
-- name: ci
-  type: configMap
+  - name: ci
+    type: configMap
 
 configMaps:
   enabled: true
