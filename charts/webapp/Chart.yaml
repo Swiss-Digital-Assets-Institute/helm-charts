@@ -1,11 +1,11 @@
 apiVersion: v2
 name: webapp
 description: Helm Charts for default Web Application
-icon: https://github.com/devxp-tech/helm-charts/blob/main/charts/tooling/helm-icon.png
+icon: https://github.com/Swiss-Digital-Assets-Institute/helm-charts/blob/main/charts/tooling/helm-icon.png
 type: application
 version: 0.0.17
 appVersion: 1.0.0
 maintainers:
   - name: diegoluisi
-    email: contato@diegoluisi.eti.br
+    email: diego.luisi@hashgraph-group.com
     url: www.diegoluisi.eti.br
