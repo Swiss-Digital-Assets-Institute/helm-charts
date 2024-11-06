@@ -10,7 +10,6 @@
 ![GitHub all releases](https://img.shields.io/github/downloads/Swiss-Digital-Assets-Institute/helm-charts/total)
 ![GitHub issues](https://img.shields.io/github/issues-raw/Swiss-Digital-Assets-Institute/helm-charts)
 ![GitHub](https://img.shields.io/github/license/Swiss-Digital-Assets-Institute/helm-charts)
-![Twitter Follow](https://img.shields.io/twitter/follow/devxp_tech?style=social)
 
 ### 🖊️ Code of Conduct
 
