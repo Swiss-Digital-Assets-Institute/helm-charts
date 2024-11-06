@@ -4,7 +4,6 @@
 
 [![main](https://github.com/Swiss-Digital-Assets-Institute/helm-charts/actions/workflows/main.yaml/badge.svg)](https://github.com/Swiss-Digital-Assets-Institute/helm-charts/actions/workflows/main.yaml)
 [![pages-build-deployment](https://github.com/Swiss-Digital-Assets-Institute/helm-charts/actions/workflows/pages/pages-build-deployment/badge.svg)](https://github.com/Swiss-Digital-Assets-Institute/helm-charts/actions/workflows/pages/pages-build-deployment)
-[![Quality Gate Status](https://sonar.Swiss-Digital-Assets-Institute.io/api/project_badges/measure?project=helm-charts&metric=alert_status&token=sqb_908f1e448016bb76992cf30bcd32ede237289a1c)](https://sonar.Swiss-Digital-Assets-Institute.io/dashboard?id=helm-charts)
 ![GitHub release (latest SemVer)](https://img.shields.io/github/v/release/Swiss-Digital-Assets-Institute/helm-charts)
 ![GitHub last commit](https://img.shields.io/github/last-commit/Swiss-Digital-Assets-Institute/helm-charts)
 ![GitHub top language](https://img.shields.io/github/languages/top/Swiss-Digital-Assets-Institute/helm-charts)
