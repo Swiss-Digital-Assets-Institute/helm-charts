@@ -1,6 +1,6 @@
 # webapp
 
-![Version: 0.0.19](https://img.shields.io/badge/Version-0.0.19-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 1.0.0](https://img.shields.io/badge/AppVersion-1.0.0-informational?style=flat-square)
+![Version: 0.0.20](https://img.shields.io/badge/Version-0.0.20-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 1.0.0](https://img.shields.io/badge/AppVersion-1.0.0-informational?style=flat-square)
 
 Helm Charts for default Web Application
 
@@ -70,7 +70,7 @@ Helm Charts for default Web Application
 | container.readOnlyRootFilesystem | bool | `true` |  |
 | cronjobs.list | list | `[]` | list is an array of spec for create multiples cronjobs |
 | cronjobs.suspend | bool | `false` | suspend used to disable all cronjobs in the list |
-| deployment | object | `{"annotations":{}}` | deployment Disabled Deployment |
+| deployment | object | `{"annotations":{},"strategyType":"Recreate"}` | deployment Disabled Deployment |
 | deployment.annotations | object | `{}` | Annotations to be added to the deployment |
 | envFrom | list | `[]` |  |
 | envs | list | `[]` |  |
