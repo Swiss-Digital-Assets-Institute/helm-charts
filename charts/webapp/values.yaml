@@ -52,6 +52,7 @@ autoReloader: true
 
 # --deployment Disabled Deployment
 deployment:
+  strategyType: Recreate
   # --Specifies whether the standard deployment is enabled
   # --default is false
 
