@@ -1,6 +1,6 @@
 # webapp
 
-![Version: 0.0.21](https://img.shields.io/badge/Version-0.0.21-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 1.0.0](https://img.shields.io/badge/AppVersion-1.0.0-informational?style=flat-square)
+![Version: 0.0.22](https://img.shields.io/badge/Version-0.0.22-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 1.0.0](https://img.shields.io/badge/AppVersion-1.0.0-informational?style=flat-square)
 
 Helm Charts for default Web Application
 
@@ -63,7 +63,7 @@ Helm Charts for default Web Application
 | autoscaling.targetCPUUtilizationPercentage | int | `80` | targetCPUUtilizationPercentage is the percentage of cpu when reached to scale new pods |
 | autoscaling.targetMemoryUtilizationPercentage | int | `80` | targetMemoryUtilizationPercentage is the percentage of memoty when reached to scale new pods |
 | configMaps | object | `{"data":{},"enabled":false}` | configMaps is the object to configure an array of configMaps |
-| consumers | object | `{"list":[],"terminationGracePeriodSeconds":30}` | consumers is the object to configure an array of consumers |
+| consumers | object | `{"annotations":{},"list":[],"terminationGracePeriodSeconds":30}` | consumers is the object to configure an array of consumers |
 | consumers.list | list | `[]` | list is the array of consumer definition |
 | consumers.terminationGracePeriodSeconds | int | `30` | terminationGracePeriodSeconds configures terminationGracePeriodSeconds |
 | container.port | int | `8080` | port is the port your application runs under |
