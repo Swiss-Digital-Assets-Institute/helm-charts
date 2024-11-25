@@ -8,7 +8,7 @@ metadata:
   labels: {{- include "webapp.labels" . | nindent 4 }}
 spec:
   {{- if not .Values.autoscaling.enabled }}
-  replicas: {{ .Values.replicaCount }}
+  replicas: {{ default 1 .Values.replicaCount }}
   {{- end }}
   strategy:
     type: {{ .Values.deployment.strategyType }} 
@@ -60,4 +60,3 @@ spec:
       volumes: {{ toYaml (default list .Values.volumes)  | nindent 8 }}
   minReadySeconds: 30
 {{- end }}
-
