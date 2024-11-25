@@ -106,7 +106,3 @@ configMaps:
       proxy_pass http://frontend;
       }
       }
-
-consumers:
-  list:
-    - name: consumer
