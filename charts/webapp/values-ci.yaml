@@ -110,4 +110,3 @@ configMaps:
 consumers:
   list:
     - name: consumer
-      autoReloader: true
