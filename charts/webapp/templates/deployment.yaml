@@ -1,3 +1,4 @@
+{{- if .Values.deployment.enabled }}
 {{- if not .Values.argoRollouts.enabled }} 
 apiVersion: apps/v1
 kind: Deployment
@@ -59,4 +60,6 @@ spec:
       tolerations: {{ toYaml (default list .Values.tolerations)  | nindent 8 }}
       volumes: {{ toYaml (default list .Values.volumes)  | nindent 8 }}
   minReadySeconds: 30
+  
+{{- end }}
 {{- end }}
