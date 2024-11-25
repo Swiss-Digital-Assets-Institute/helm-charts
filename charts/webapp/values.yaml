@@ -50,6 +50,30 @@ configMaps:
 # --autoReloader enable auto reloader to restart the container when the configMap is updated
 autoReloader: true
 
+# --consumers is the object to configure an array of consumers
+consumers:
+  annotations: {}
+  # --terminationGracePeriodSeconds configures terminationGracePeriodSeconds
+  terminationGracePeriodSeconds: 30
+  # --list is the array of consumer definition
+  list:
+    []
+    # - name: required
+    #   command:
+    #     - required
+
+# cronjobs list of cronjobs to be included in the application
+cronjobs:
+  # --suspend used to disable all cronjobs in the list
+  suspend: false
+  # --list is an array of spec for create multiples cronjobs
+  list:
+    []
+    # - name: cron1
+    #   schecule: "* * * * *"
+    #   command:
+    #     - echo "ok"
+
 # --deployment Disabled Deployment
 deployment:
   strategyType: Recreate
@@ -107,29 +131,6 @@ argoRollouts:
       # --Pauses the rollout for a specified duration
       - pause:
           duration: 10s
-
-# cronjobs list of cronjobs to be included in the application
-cronjobs:
-  # --suspend used to disable all cronjobs in the list
-  suspend: false
-  # --list is an array of spec for create multiples cronjobs
-  list:
-    []
-    # - name: cron1
-    #   schecule: "* * * * *"
-    #   command:
-    #     - echo "ok"
-
-# --consumers is the object to configure an array of consumers
-consumers:
-  # --terminationGracePeriodSeconds configures terminationGracePeriodSeconds
-  terminationGracePeriodSeconds: 30
-  # --list is the array of consumer definition
-  list:
-    []
-    # - name: required
-    #   command:
-    #     - required
 
 # --service
 service:

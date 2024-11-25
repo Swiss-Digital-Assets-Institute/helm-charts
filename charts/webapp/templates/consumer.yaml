@@ -8,7 +8,7 @@ kind: Deployment
 metadata:
   name: {{ ($consumername := printf "%s-%s" $name .name | replace "+" "_" | trunc 63 | trimSuffix "-" | lower) }}
   namespace: {{ include "namespace" $root }}
-  annotations: {{- include "merge.annotations" . | nindent 4 }}
+  annotations: {{ toYaml $root.Values.consumers.annotations | nindent 4 }}
   labels: {{- ($labels := (include "all-labels-removed-istio-sidecar" (dict "root" $root "name" $consumername))) | nindent 4 }}
 spec:
   selector:
