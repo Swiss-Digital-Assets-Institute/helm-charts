@@ -1,6 +1,6 @@
 # webapp
 
-![Version: 0.0.24](https://img.shields.io/badge/Version-0.0.24-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 1.0.0](https://img.shields.io/badge/AppVersion-1.0.0-informational?style=flat-square)
+![Version: 0.0.25](https://img.shields.io/badge/Version-0.0.25-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 1.0.0](https://img.shields.io/badge/AppVersion-1.0.0-informational?style=flat-square)
 
 Helm Charts for default Web Application
 
@@ -71,11 +71,11 @@ Helm Charts for default Web Application
 | container.readOnlyRootFilesystem | bool | `true` |  |
 | cronjobs.list | list | `[]` | list is an array of spec for create multiples cronjobs |
 | cronjobs.suspend | bool | `false` | suspend used to disable all cronjobs in the list |
-| deployment | object | `{"annotations":{},"enabled":true,"labels":{},"strategyType":"Recreate"}` | deployment Disabled Deployment |
+| deployment | object | `{"annotations":{},"enabled":true,"labels":{},"strategyType":"RollingUpdate"}` | deployment Disabled Deployment |
 | deployment.annotations | object | `{}` | annotations to be added to the deployment |
 | deployment.enabled | bool | `true` | enabled is the flag to sinalize this funcionality is enabled |
 | deployment.labels | object | `{}` | labels to be added to the deployment |
-| deployment.strategyType | string | `"Recreate"` | strategyType is the type of deployment strategy to use |
+| deployment.strategyType | string | `"RollingUpdate"` | strategyType is the type of deployment strategy to use |
 | envFrom | list | `[]` |  |
 | envs | list | `[]` |  |
 | externalSecrets.enabled | bool | `false` | If enabled, ExternalSecret resources will be created to sync secrets from external sources (e.g., Vault). |
@@ -108,7 +108,7 @@ Helm Charts for default Web Application
 | global.prometheus.server | string | `"http://mimir-nginx.monitoring.svc:80/prometheus"` | server sets prometheus endpoint |
 | image.pullPolicy | string | `"IfNotPresent"` | pullPolicy is the prop to setup the behavior of pull police. options is: IfNotPresent \| allways |
 | image.repository | string | `""` | repository: is the registry of your application ex:556684128444.dkr.ecr.us-east-1.amazonaws.com/YOU-APP-ECR-REPO-NAME if empty this helm will auto generate the image using aws.registry/values.name:values.image.tag |
-| image.tag | string | `"abc123"` | especify the tag of your image to deploy |
+| image.tag | string | `"latest"` | especify the tag of your image to deploy |
 | imagePullSecrets | list | `[]` | imagePullSecrets secret used to download image on private container registry |
 | instrumentation | object | `{"enabled":false,"language":""}` | instrumentation set default auto-instrumentation, allowed values dotnet, go, java, nodejs and python |
 | istio | object | `{"enabled":true,"gateways":"istio-ingress/istio-ingressgateway","peerAuthentication":{"enabled":true,"mode":"PERMISSIVE"},"virtualServices":{"custom":{"hosts":[]},"enabled":true,"public":false}}` | istio Set default Istio |
@@ -171,6 +171,7 @@ Helm Charts for default Web Application
 | resources.requests | object | `{"cpu":"50m","memory":"64Mi"}` | Resource requests are the minimum amount of CPU and memory that Kubernetes guarantees for the container |
 | resources.requests.cpu | string | `"50m"` | The amount of CPU requested for the container |
 | resources.requests.memory | string | `"64Mi"` | The amount of memory requested for the container |
+| restartPolicy | string | `"Always"` | restartPolicy is the object to specify the restart policy for the container |
 | securityContext | object | `{}` | fsGroup: 2000 |
 | service | object | `{"annotations":{},"enabled":true,"externalDns":{"enabled":false},"labels":{},"nodePort":{},"port":{"name":"tcp-node","port":80,"targetPort":8080},"type":"ClusterIP"}` | service |
 | service.annotations | object | `{}` | Annotations to add to the service |
@@ -188,6 +189,7 @@ Helm Charts for default Web Application
 | serviceAccount.annotations | object | `{}` | Annotations to add to the service account |
 | serviceAccount.automountServiceAccountToken | bool | `true` | serviceAccount.annotations Automont Service Account Token |
 | serviceAccount.enabled | bool | `true` | Specifies whether a service account should be created |
+| terminationGracePeriodSeconds | int | `30` | terminationGracePeriodSeconds is the number of seconds to wait before terminating a pod |
 | tolerations | list | `[]` | tolerations allows the pods to schedule onto nodes with taints |
 | volumeMounts | list | `[]` | volumeMounts specifies where Kubernetes will mount Pod volumes |
 | volumes | list | `[]` | volumes specifies pod volumes |
