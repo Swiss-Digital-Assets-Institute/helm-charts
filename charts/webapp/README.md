@@ -1,6 +1,6 @@
 # webapp
 
-![Version: 0.0.23](https://img.shields.io/badge/Version-0.0.23-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 1.0.0](https://img.shields.io/badge/AppVersion-1.0.0-informational?style=flat-square)
+![Version: 0.0.24](https://img.shields.io/badge/Version-0.0.24-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 1.0.0](https://img.shields.io/badge/AppVersion-1.0.0-informational?style=flat-square)
 
 Helm Charts for default Web Application
 
@@ -62,6 +62,7 @@ Helm Charts for default Web Application
 | autoscaling.minReplicas | int | `1` | minReplicas is the number of mim pods to be running |
 | autoscaling.targetCPUUtilizationPercentage | int | `80` | targetCPUUtilizationPercentage is the percentage of cpu when reached to scale new pods |
 | autoscaling.targetMemoryUtilizationPercentage | int | `80` | targetMemoryUtilizationPercentage is the percentage of memoty when reached to scale new pods |
+| commonLabels | object | `{}` | commonLabels sets common labels for all resources |
 | configMaps | object | `{"data":{},"enabled":false}` | configMaps is the object to configure an array of configMaps |
 | consumers | object | `{"annotations":{},"list":[],"terminationGracePeriodSeconds":30}` | consumers is the object to configure an array of consumers |
 | consumers.list | list | `[]` | list is the array of consumer definition |
@@ -70,9 +71,10 @@ Helm Charts for default Web Application
 | container.readOnlyRootFilesystem | bool | `true` |  |
 | cronjobs.list | list | `[]` | list is an array of spec for create multiples cronjobs |
 | cronjobs.suspend | bool | `false` | suspend used to disable all cronjobs in the list |
-| deployment | object | `{"annotations":{},"enabled":true,"strategyType":"Recreate"}` | deployment Disabled Deployment |
-| deployment.annotations | object | `{}` | Annotations to be added to the deployment |
+| deployment | object | `{"annotations":{},"enabled":true,"labels":{},"strategyType":"Recreate"}` | deployment Disabled Deployment |
+| deployment.annotations | object | `{}` | annotations to be added to the deployment |
 | deployment.enabled | bool | `true` | enabled is the flag to sinalize this funcionality is enabled |
+| deployment.labels | object | `{}` | labels to be added to the deployment |
 | deployment.strategyType | string | `"Recreate"` | strategyType is the type of deployment strategy to use |
 | envFrom | list | `[]` |  |
 | envs | list | `[]` |  |
@@ -98,7 +100,6 @@ Helm Charts for default Web Application
 | extraContainer.volumeMounts[0].name | string | `"config-volume"` |  |
 | fullnameOverride | object | `{}` | fullnameOverride allows full override of the name |
 | global.cluster | string | `"cluster.local"` | cluster sets the Cluster Name |
-| global.commonLabels | object | `{}` | commonLabels sets common labels for all resources |
 | global.env | string | `"dev2"` | env sets the Environment Name (dev, mng, prd) |
 | global.network | object | `{"domain":"hashgraph-group.com"}` | Network configuration |
 | global.network.domain | string | `"hashgraph-group.com"` | domain sets the Default Domain |
@@ -107,7 +108,7 @@ Helm Charts for default Web Application
 | global.prometheus.server | string | `"http://mimir-nginx.monitoring.svc:80/prometheus"` | server sets prometheus endpoint |
 | image.pullPolicy | string | `"IfNotPresent"` | pullPolicy is the prop to setup the behavior of pull police. options is: IfNotPresent \| allways |
 | image.repository | string | `""` | repository: is the registry of your application ex:556684128444.dkr.ecr.us-east-1.amazonaws.com/YOU-APP-ECR-REPO-NAME if empty this helm will auto generate the image using aws.registry/values.name:values.image.tag |
-| image.tag | string | `"latest"` | especify the tag of your image to deploy |
+| image.tag | string | `"abc123"` | especify the tag of your image to deploy |
 | imagePullSecrets | list | `[]` | imagePullSecrets secret used to download image on private container registry |
 | instrumentation | object | `{"enabled":false,"language":""}` | instrumentation set default auto-instrumentation, allowed values dotnet, go, java, nodejs and python |
 | istio | object | `{"enabled":true,"gateways":"istio-ingress/istio-ingressgateway","peerAuthentication":{"enabled":true,"mode":"PERMISSIVE"},"virtualServices":{"custom":{"hosts":[]},"enabled":true,"public":false}}` | istio Set default Istio |
