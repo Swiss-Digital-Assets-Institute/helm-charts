@@ -16,9 +16,6 @@ global:
   cluster: cluster.local
   # --env sets the Environment Name (dev, mng, prd)
   env: dev2
-  # --commonLabels sets common labels for all resources
-  commonLabels: {}
-  # team_name: dev
   # --prometheus sets the Prometheus server URL
   prometheus:
     # --server sets prometheus endpoint
@@ -30,6 +27,10 @@ global:
   # --otel sets the endpoint for OpenTelemetry collector
   otel:
     endpoint: http://otel-collector.observability.svc.cluster.local:4317 #4318
+
+# --commonLabels sets common labels for all resources
+commonLabels: {}
+# team_name: dev
 
 # --namespace configuration
 namespace:
@@ -80,11 +81,10 @@ deployment:
   enabled: true
   # --strategyType is the type of deployment strategy to use
   strategyType: Recreate
-  # --default is false
-
-  # --Annotations to be added to the deployment
+  # --annotations to be added to the deployment
   annotations: {}
-
+  # --labels to be added to the deployment
+  labels: {}
 # --argoRollouts enable Argo Rollouts Deployment
 argoRollouts:
   # --Specifies whether Argo Rollouts is enabled
@@ -226,7 +226,7 @@ image:
   # --pullPolicy is the prop to setup the behavior of pull police. options is: IfNotPresent \| allways
   pullPolicy: IfNotPresent
   # --especify the tag of your image to deploy
-  tag: "latest"
+  tag: "abc123"
 
 # --imagePullSecrets secret used to download image on private container registry
 imagePullSecrets:

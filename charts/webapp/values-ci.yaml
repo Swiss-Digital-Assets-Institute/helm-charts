@@ -12,8 +12,8 @@ actuator:
   enabled: false
 
 deployment:
-  annotations:
-    example: "true"
+  labels:
+    test: ci
 
 monitoring:
   serviceMonitor:

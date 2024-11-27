@@ -16,5 +16,5 @@ Merge deployment annotations with autoReloader functionality.
 {{- if $autoReloader -}}
   {{- $deploymentAnnotations = merge $deploymentAnnotations $defaultAnnotations -}}
 {{- end -}}
-{{- toYaml $deploymentAnnotations | indent 4 -}}
+{{- toYaml $deploymentAnnotations -}}
 {{- end -}}
