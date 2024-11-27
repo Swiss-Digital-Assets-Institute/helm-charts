@@ -32,6 +32,12 @@ global:
 commonLabels: {}
 # team_name: dev
 
+# --restartPolicy is the object to specify the restart policy for the container
+restartPolicy: Always
+
+# --terminationGracePeriodSeconds is the number of seconds to wait before terminating a pod
+terminationGracePeriodSeconds: 30
+
 # --namespace configuration
 namespace:
   # --Specifies whether the namespace is enabled
@@ -80,7 +86,7 @@ deployment:
   # --enabled is the flag to sinalize this funcionality is enabled
   enabled: true
   # --strategyType is the type of deployment strategy to use
-  strategyType: Recreate
+  strategyType: RollingUpdate
   # --annotations to be added to the deployment
   annotations: {}
   # --labels to be added to the deployment
@@ -226,7 +232,7 @@ image:
   # --pullPolicy is the prop to setup the behavior of pull police. options is: IfNotPresent \| allways
   pullPolicy: IfNotPresent
   # --especify the tag of your image to deploy
-  tag: "abc123"
+  tag: "latest"
 
 # --imagePullSecrets secret used to download image on private container registry
 imagePullSecrets:

@@ -19,8 +19,10 @@ spec:
   template:
     metadata:
       annotations: {{- include "all-pod-annotations" . | nindent 8 }}
-      labels: {{- include "webapp.labels" . | nindent 8 }}
+      labels: {{- include "all-deploy-labels" . | nindent 8 }}
     spec:
+      terminationGracePeriodSeconds: {{ default "30" .Values.terminationGracePeriodSeconds }}
+      restartPolicy: {{ default "Always" .Values.restartPolicy }}    
       imagePullSecrets: {{- toYaml (default list .Values.imagePullSecrets) | nindent 8 }}
       serviceAccountName: {{ .Values.name }}
       containers:
@@ -32,6 +34,12 @@ spec:
         ports:
         - name: http
           containerPort: {{ .Values.container.port }}
+
+        {{- if and .Values.monitoring.serviceMonitor.enabled .Values.monitoring.serviceMonitor.extraPort.enabled }}
+        - name: {{ .Values.monitoring.serviceMonitor.extraPort.name }}
+          containerPort:  {{ .Values.monitoring.serviceMonitor.extraPort.targetPort }}
+        {{- end }}          
+
         {{- if .Values.actuator.enabled }}
         - name: {{ .Values.actuator.port.name }}
           containerPort:  {{ .Values.actuator.port.targetPort }}
