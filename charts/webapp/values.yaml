@@ -15,18 +15,18 @@ global:
   # --cluster sets the Cluster Name
   cluster: cluster.local
   # --env sets the Environment Name (dev, mng, prd)
-  env: dev2
+  env: ""
   # --prometheus sets the Prometheus server URL
   prometheus:
     # --server sets prometheus endpoint
-    server: http://mimir-nginx.monitoring.svc:80/prometheus
+    server: ""
   # -- Network configuration
   network:
     # --domain sets the Default Domain
-    domain: hashgraph-group.com
+    domain: ""
   # --otel sets the endpoint for OpenTelemetry collector
   otel:
-    endpoint: http://otel-collector.observability.svc.cluster.local:4317 #4318
+    endpoint: ""
 
 # --commonLabels sets common labels for all resources
 commonLabels: {}
@@ -49,13 +49,13 @@ namespace:
   # --Example annotation to enable Jaeger tracing sidecar injection
   # sidecar.jaegertracing.io/inject: "true"
 
+# --autoReloader enable auto reloader to restart the container when the configMap is updated
+autoReloader: true
+
 # --configMaps is the object to configure an array of configMaps
 configMaps:
   enabled: false
   data: {}
-
-# --autoReloader enable auto reloader to restart the container when the configMap is updated
-autoReloader: true
 
 # --consumers is the object to configure an array of consumers
 consumers:
@@ -261,45 +261,47 @@ resources:
 livenessProbe:
   # --Specifies whether the liveness probe is enabled
   enabled: false
-  # # --The HTTP path to check for liveness
-  # path: /health-check/liveness
-  # # --The scheme to use for the liveness probe (e.g., HTTP or HTTPS)
-  # scheme: HTTP
-  # # --Specifies a command to run inside the container to determine liveness
-  # exec: {}
-  # # --Number of seconds after the container has started before liveness probes are initiated
-  # initialDelaySeconds: 10
-  # # --Number of seconds after which the liveness probe times out
-  # timeoutSeconds: 3
-  # # --How often (in seconds) to perform the liveness probe
-  # periodSeconds: 10
-  # # --Minimum consecutive failures for the probe to be considered failed after having succeeded
-  # failureThreshold: 3
-  # # --Minimum consecutive successes for the probe to be considered successful after having failed
-  # successThreshold: 1
-  # httpHeaders: []
+  # --The HTTP path to check for liveness
+  path: /health-check/liveness
+  # --The scheme to use for the liveness probe (e.g., HTTP or HTTPS)
+  scheme: HTTP
+  # --Specifies a command to run inside the container to determine liveness
+  exec: {}
+  # --Number of seconds after the container has started before liveness probes are initiated
+  initialDelaySeconds: 10
+  # --Number of seconds after which the liveness probe times out
+  timeoutSeconds: 3
+  # --How often (in seconds) to perform the liveness probe
+  periodSeconds: 10
+  # --Minimum consecutive failures for the probe to be considered failed after having succeeded
+  failureThreshold: 3
+  # --Minimum consecutive successes for the probe to be considered successful after having failed
+  successThreshold: 1
+  # --httpHeaders specifies custom headers to set in the request
+  httpHeaders: []
 
 # --readinessProbe indicates whether the application is ready to serve requests
 readinessProbe:
   # --Specifies whether the readiness probe is enabled
   enabled: false
-  # # --The HTTP path to check for readiness
-  # path: /health-check/readiness
-  # # --The scheme to use for the readiness probe (e.g., HTTP or HTTPS)
-  # scheme: HTTP
-  # # --Specifies a command to run inside the container to determine readiness
-  # exec: {}
-  # # --Number of seconds after the container has started before readiness probes are initiated
-  # initialDelaySeconds: 10
-  # # --Number of seconds after which the readiness probe times out
-  # timeoutSeconds: 3
-  # # --How often (in seconds) to perform the readiness probe
-  # periodSeconds: 10
-  # # --Minimum consecutive failures for the probe to be considered failed after having succeeded
-  # failureThreshold: 3
-  # # --Minimum consecutive successes for the probe to be considered successful after having failed
-  # successThreshold: 1
-  # httpHeaders: []
+  # --The HTTP path to check for readiness
+  path: /health-check/readiness
+  # --The scheme to use for the readiness probe (e.g., HTTP or HTTPS)
+  scheme: HTTP
+  # --Specifies a command to run inside the container to determine readiness
+  exec: {}
+  # --Number of seconds after the container has started before readiness probes are initiated
+  initialDelaySeconds: 10
+  # --Number of seconds after which the readiness probe times out
+  timeoutSeconds: 3
+  # --How often (in seconds) to perform the readiness probe
+  periodSeconds: 10
+  # --Minimum consecutive failures for the probe to be considered failed after having succeeded
+  failureThreshold: 3
+  # --Minimum consecutive successes for the probe to be considered successful after having failed
+  successThreshold: 1
+  # --httpHeaders specifies custom headers to set in the request
+  httpHeaders: []
 
 # Actuator settings for exposing application metrics and health checks
 actuator:
@@ -332,6 +334,7 @@ actuator:
     failureThreshold: 3
     # --Minimum consecutive successes for the probe to be considered successful after having failed
     successThreshold: 1
+    # --httpHeaders specifies custom headers to set in the request
     httpHeaders: []
   readiness:
     # -- The path to check readiness of the application
@@ -348,6 +351,7 @@ actuator:
     failureThreshold: 3
     # --Minimum consecutive successes for the probe to be considered successful after having failed
     successThreshold: 1
+    # --httpHeaders specifies custom headers to set in the request
     httpHeaders: []
 
 # --instrumentation set default auto-instrumentation, allowed values dotnet, go, java, nodejs and python
@@ -491,10 +495,15 @@ monitoring:
     scheme: http
     # -- ServiceMonitor will use these tlsConfig settings to make the health check requests
     extraPort:
+      # -- If enabled, an additional port will be added to the ServiceMonitor
       enabled: false
+      # -- The name of the additional port
       name: tcp-metrics
+      # -- The port number for the additional port
       number: 9090
+      # -- The target port in the container for the additional port
       targetPort: 9090
+      # -- The protocol used for the additional port
       protocol: TCP
 
 # ExternalSecrets configuration
@@ -520,6 +529,7 @@ externalSecrets:
 
 # --nginx configuration for php-fpm the nginx sidecar
 nginx:
+  # -- If enabled, create a sidecar container with nginx
   enabled: false
   shared:
     enabled: false
@@ -551,7 +561,9 @@ nginx:
     # livenessProbe.successThreshold -- Minimum consecutive successes for the probe to be considered successful after having failed
     successThreshold: 1
 
+# --extraContainer configuration for an extra container in the pod
 extraContainer:
+  # -- If enabled, create an extra container in the pod
   enabled: false
   name: extra-container
   image: extra-container-image:latest
