@@ -1,6 +1,6 @@
 # webapp
 
-![Version: 0.0.25](https://img.shields.io/badge/Version-0.0.25-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 1.0.0](https://img.shields.io/badge/AppVersion-1.0.0-informational?style=flat-square)
+![Version: 0.0.26](https://img.shields.io/badge/Version-0.0.26-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 1.0.0](https://img.shields.io/badge/AppVersion-1.0.0-informational?style=flat-square)
 
 Helm Charts for default Web Application
 
@@ -16,7 +16,7 @@ Helm Charts for default Web Application
 |-----|------|---------|-------------|
 | actuator.enabled | bool | `false` | If enabled, create default actuator path and metrics |
 | actuator.liveness.failureThreshold | int | `3` | Minimum consecutive failures for the probe to be considered failed after having succeeded |
-| actuator.liveness.httpHeaders | list | `[]` |  |
+| actuator.liveness.httpHeaders | list | `[]` | httpHeaders specifies custom headers to set in the request |
 | actuator.liveness.initialDelaySeconds | int | `120` | Number of seconds after the container has started before readiness probes are initiated |
 | actuator.liveness.path | string | `"/actuator/health/liveness"` | The path to check liveness of the application |
 | actuator.liveness.periodSeconds | int | `10` | How often (in seconds) to perform the readiness probe |
@@ -29,7 +29,7 @@ Helm Charts for default Web Application
 | actuator.port.protocol | string | `"TCP"` | The protocol used to service |
 | actuator.port.targetPort | int | `9090` | The target port in the container for actuator metrics |
 | actuator.readiness.failureThreshold | int | `3` | Minimum consecutive failures for the probe to be considered failed after having succeeded |
-| actuator.readiness.httpHeaders | list | `[]` |  |
+| actuator.readiness.httpHeaders | list | `[]` | httpHeaders specifies custom headers to set in the request |
 | actuator.readiness.initialDelaySeconds | int | `120` | Number of seconds after the container has started before readiness probes are initiated |
 | actuator.readiness.path | string | `"/actuator/health/readiness"` | The path to check readiness of the application |
 | actuator.readiness.periodSeconds | int | `10` | How often (in seconds) to perform the readiness probe |
@@ -84,28 +84,16 @@ Helm Charts for default Web Application
 | externalSecrets.secretStoreRef.name | string | `"vault-backend"` | The name of the SecretStore backend. For Vault, this typically refers to the Vault connection (e.g., "vault-backend"). |
 | externalSecrets.secrets | list | `[]` | List of secrets to be synced from the external source (e.g., Vault). Add secrets here, where each secretKey in Kubernetes will map to a corresponding key in the external store. |
 | externalSecrets.target.creationPolicy | string | `"Owner"` | The creation policy for the target Kubernetes Secret. "Owner" means ExternalSecret manages the lifecycle of the created secret, deleting it when ExternalSecret is deleted. |
-| extraContainer.enabled | bool | `false` |  |
-| extraContainer.env[0].name | string | `"ENV_VAR"` |  |
-| extraContainer.env[0].value | string | `"value"` |  |
-| extraContainer.image | string | `"extra-container-image:latest"` |  |
-| extraContainer.imagePullPolicy | string | `"Always"` |  |
-| extraContainer.name | string | `"extra-container"` |  |
-| extraContainer.port.containerPort | int | `8081` |  |
-| extraContainer.port.name | string | `"http"` |  |
-| extraContainer.resources.limits.cpu | string | `"200m"` |  |
-| extraContainer.resources.limits.memory | string | `"128Mi"` |  |
-| extraContainer.resources.requests.cpu | string | `"100m"` |  |
-| extraContainer.resources.requests.memory | string | `"64Mi"` |  |
-| extraContainer.volumeMounts[0].mountPath | string | `"/etc/config"` |  |
-| extraContainer.volumeMounts[0].name | string | `"config-volume"` |  |
+| extraContainer | object | `{"enabled":false,"env":[{"name":"ENV_VAR","value":"value"}],"image":"extra-container-image:latest","imagePullPolicy":"Always","name":"extra-container","port":{"containerPort":8081,"name":"http"},"resources":{"limits":{"cpu":"200m","memory":"128Mi"},"requests":{"cpu":"100m","memory":"64Mi"}},"volumeMounts":[{"mountPath":"/etc/config","name":"config-volume"}]}` | extraContainer configuration for an extra container in the pod |
+| extraContainer.enabled | bool | `false` | If enabled, create an extra container in the pod |
 | fullnameOverride | object | `{}` | fullnameOverride allows full override of the name |
 | global.cluster | string | `"cluster.local"` | cluster sets the Cluster Name |
-| global.env | string | `"dev2"` | env sets the Environment Name (dev, mng, prd) |
-| global.network | object | `{"domain":"hashgraph-group.com"}` | Network configuration |
-| global.network.domain | string | `"hashgraph-group.com"` | domain sets the Default Domain |
-| global.otel | object | `{"endpoint":"http://otel-collector.observability.svc.cluster.local:4317"}` | otel sets the endpoint for OpenTelemetry collector |
-| global.prometheus | object | `{"server":"http://mimir-nginx.monitoring.svc:80/prometheus"}` | prometheus sets the Prometheus server URL |
-| global.prometheus.server | string | `"http://mimir-nginx.monitoring.svc:80/prometheus"` | server sets prometheus endpoint |
+| global.env | string | `""` | env sets the Environment Name (dev, mng, prd) |
+| global.network | object | `{"domain":""}` | Network configuration |
+| global.network.domain | string | `""` | domain sets the Default Domain |
+| global.otel | object | `{"endpoint":""}` | otel sets the endpoint for OpenTelemetry collector |
+| global.prometheus | object | `{"server":""}` | prometheus sets the Prometheus server URL |
+| global.prometheus.server | string | `""` | server sets prometheus endpoint |
 | image.pullPolicy | string | `"IfNotPresent"` | pullPolicy is the prop to setup the behavior of pull police. options is: IfNotPresent \| allways |
 | image.repository | string | `""` | repository: is the registry of your application ex:556684128444.dkr.ecr.us-east-1.amazonaws.com/YOU-APP-ECR-REPO-NAME if empty this helm will auto generate the image using aws.registry/values.name:values.image.tag |
 | image.tag | string | `"latest"` | especify the tag of your image to deploy |
@@ -118,8 +106,17 @@ Helm Charts for default Web Application
 | istio.peerAuthentication.mode | string | `"PERMISSIVE"` | set peerAuthentication mode, values (UNSET, DISABLE, PERMISSIVE, STRICT) |
 | istio.virtualServices | object | `{"custom":{"hosts":[]},"enabled":true,"public":false}` | istio.virtualServices Set Istio virtualServices parameters |
 | istio.virtualServices.enabled | bool | `true` | istio.virtualServices.enable Set Istio virtualServices enabled |
-| livenessProbe | object | `{"enabled":false}` | livenessProbe indicates whether the application is running and alive |
+| livenessProbe | object | `{"enabled":false,"exec":{},"failureThreshold":3,"httpHeaders":[],"initialDelaySeconds":10,"path":"/health-check/liveness","periodSeconds":10,"scheme":"HTTP","successThreshold":1,"timeoutSeconds":3}` | livenessProbe indicates whether the application is running and alive |
 | livenessProbe.enabled | bool | `false` | Specifies whether the liveness probe is enabled |
+| livenessProbe.exec | object | `{}` | Specifies a command to run inside the container to determine liveness |
+| livenessProbe.failureThreshold | int | `3` | Minimum consecutive failures for the probe to be considered failed after having succeeded |
+| livenessProbe.httpHeaders | list | `[]` | httpHeaders specifies custom headers to set in the request |
+| livenessProbe.initialDelaySeconds | int | `10` | Number of seconds after the container has started before liveness probes are initiated |
+| livenessProbe.path | string | `"/health-check/liveness"` | The HTTP path to check for liveness |
+| livenessProbe.periodSeconds | int | `10` | How often (in seconds) to perform the probe |
+| livenessProbe.scheme | string | `"HTTP"` | The scheme to use for the liveness probe (e.g., HTTP or HTTPS) |
+| livenessProbe.successThreshold | int | `1` | Minimum consecutive successes for the probe to be considered successful after having failed |
+| livenessProbe.timeoutSeconds | int | `3` | Number of seconds after which the probe times out |
 | migration | object | `{"enabled":false}` | migration Set liquibase migration |
 | migration.enabled | bool | `false` | migration.enable liquibase migration |
 | monitoring | object | `{"alerts":{"annotations":{},"enabled":false,"labels":{},"namespace":null},"rules":{"additionalGroups":[],"alerting":true,"annotations":{},"enabled":false,"labels":{},"namespace":null},"serviceMonitor":{"annotations":{},"enabled":false,"extraPort":{"enabled":false,"name":"tcp-metrics","number":9090,"protocol":"TCP","targetPort":9090},"interval":"60s","labels":{},"namespace":null,"namespaceSelector":{},"path":"/metrics","relabelings":[],"scheme":"http","scrapeTimeout":"15s"}}` | monitoring Enable Monitoring Features |
@@ -136,6 +133,11 @@ Helm Charts for default Web Application
 | monitoring.serviceMonitor.annotations | object | `{}` | ServiceMonitor annotations |
 | monitoring.serviceMonitor.enabled | bool | `false` | If enabled, ServiceMonitor resources for Prometheus Operator are created |
 | monitoring.serviceMonitor.extraPort | object | `{"enabled":false,"name":"tcp-metrics","number":9090,"protocol":"TCP","targetPort":9090}` | ServiceMonitor will use these tlsConfig settings to make the health check requests |
+| monitoring.serviceMonitor.extraPort.enabled | bool | `false` | If enabled, an additional port will be added to the ServiceMonitor |
+| monitoring.serviceMonitor.extraPort.name | string | `"tcp-metrics"` | The name of the additional port |
+| monitoring.serviceMonitor.extraPort.number | int | `9090` | The port number for the additional port |
+| monitoring.serviceMonitor.extraPort.protocol | string | `"TCP"` | The protocol used for the additional port |
+| monitoring.serviceMonitor.extraPort.targetPort | int | `9090` | The target port in the container for the additional port |
 | monitoring.serviceMonitor.interval | string | `"60s"` | ServiceMonitor scrape interval |
 | monitoring.serviceMonitor.labels | object | `{}` | Additional ServiceMonitor labels |
 | monitoring.serviceMonitor.namespace | string | `nil` | Alternative namespace for ServiceMonitor resources |
@@ -151,6 +153,7 @@ Helm Charts for default Web Application
 | namespace.enabled | bool | `true` | Specifies whether the namespace is enabled |
 | namespace.labels | object | `{}` | Labels to be added to the namespace |
 | nginx | object | `{"enabled":false,"image":{"imagePullPolicy":"IfNotPresent","repository":"nginx","tag":"alpine"},"livenessProbe":{"enabled":true,"exec":{},"failureThreshold":3,"initialDelaySeconds":5,"path":"/health-check/liveness","periodSeconds":10,"scheme":"HTTP","successThreshold":1,"timeoutSeconds":3},"resources":{"limits":{"cpu":"50m","memory":"50Mi"},"requests":{"cpu":"10m","memory":"10Mi"}},"shared":{"enabled":false,"path":"/var/www/html/"}}` | nginx configuration for php-fpm the nginx sidecar |
+| nginx.enabled | bool | `false` | If enabled, create a sidecar container with nginx |
 | nodeSelector | object | `{}` | nodeSelector allows you to constrain a Pod to only be able to run on particular node(s) |
 | podAnnotations | object | `{}` | podAnnotations adds custom annotations to the pod |
 | podSecurityContext | object | `{}` | A security context defines privilege and access control settings for a Pod or Container. About more: https://kubernetes.io/docs/tasks/configure-pod-container/security-context/ |
@@ -161,8 +164,17 @@ Helm Charts for default Web Application
 | quota.resources.hard."limits.memory" | string | `"2Gi"` | limits.memory Specifies the total memory limits allowed for all pods in the namespace |
 | quota.resources.hard."requests.cpu" | string | `"1"` | requests.cpu Specifies the total CPU requests allowed for all pods in the namespace |
 | quota.resources.hard."requests.memory" | string | `"1Gi"` | requests.memory Specifies the total memory requests allowed for all pods in the namespace |
-| readinessProbe | object | `{"enabled":false}` | readinessProbe indicates whether the application is ready to serve requests |
+| readinessProbe | object | `{"enabled":false,"exec":{},"failureThreshold":3,"httpHeaders":[],"initialDelaySeconds":10,"path":"/health-check/readiness","periodSeconds":10,"scheme":"HTTP","successThreshold":1,"timeoutSeconds":3}` | readinessProbe indicates whether the application is ready to serve requests |
 | readinessProbe.enabled | bool | `false` | Specifies whether the readiness probe is enabled |
+| readinessProbe.exec | object | `{}` | Specifies a command to run inside the container to determine readiness |
+| readinessProbe.failureThreshold | int | `3` | Minimum consecutive failures for the probe to be considered failed after having succeeded |
+| readinessProbe.httpHeaders | list | `[]` | httpHeaders specifies custom headers to set in the request |
+| readinessProbe.initialDelaySeconds | int | `10` | Number of seconds after the container has started before readiness probes are initiated |
+| readinessProbe.path | string | `"/health-check/readiness"` | The HTTP path to check for readiness |
+| readinessProbe.periodSeconds | int | `10` | How often (in seconds) to perform the readiness probe |
+| readinessProbe.scheme | string | `"HTTP"` | The scheme to use for the readiness probe (e.g., HTTP or HTTPS) |
+| readinessProbe.successThreshold | int | `1` | Minimum consecutive successes for the probe to be considered successful after having failed |
+| readinessProbe.timeoutSeconds | int | `3` | Number of seconds after which the readiness probe times out |
 | replicaCount | int | `1` | replicaCount is used when autoscaling.enabled is false to set a manually number of pods |
 | resources | object | `{"limits":{"cpu":"100m","memory":"128Mi"},"requests":{"cpu":"50m","memory":"64Mi"}}` | resources set deployment resources |
 | resources.limits | object | `{"cpu":"100m","memory":"128Mi"}` | Resource limits are the maximum amount of CPU and memory that the container is allowed to use |
