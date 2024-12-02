@@ -31,12 +31,14 @@ global:
 # --commonLabels sets common labels for all resources
 commonLabels: {}
 # team_name: dev
-
 # --restartPolicy is the object to specify the restart policy for the container
 restartPolicy: Always
-
 # --terminationGracePeriodSeconds is the number of seconds to wait before terminating a pod
 terminationGracePeriodSeconds: 30
+# --command is the object to specify the command to run in the container
+command: []
+# --args is the object to specify the arguments to run in the container
+args: []
 
 # --namespace configuration
 namespace:
@@ -54,11 +56,14 @@ autoReloader: true
 
 # --configMaps is the object to configure an array of configMaps
 configMaps:
+  # --enabled is the flag to sinalize this funcionality is enabled
   enabled: false
+  # --data is the object to configure the data of the configMap
   data: {}
 
 # --consumers is the object to configure an array of consumers
 consumers:
+  # --annotations to be added to the consumers
   annotations: {}
   # --terminationGracePeriodSeconds configures terminationGracePeriodSeconds
   terminationGracePeriodSeconds: 30
@@ -97,8 +102,9 @@ argoRollouts:
   enabled: false
   # --Specifies the number of old ReplicaSets to retain for rollback purposes
   revisionHistoryLimit: 3
+  # --Specifies whether analysis runs should be created during the rollout
   analyses:
-    # --Specifies whether analysis runs should be created during the rollout
+    # --enabled specifies whether analysis runs should be created during the rollout
     enabled: true
     # --Specifies the success condition for the analysis, as a percentage
     successCondition: "len(result) == 0 || isNaN(result[0]) || isInf(result[0]) || result[0] >= 0.95"
@@ -112,6 +118,7 @@ argoRollouts:
     interval: "20s"
   # --Specifies whether the stable ReplicaSet should be dynamically scaled during rollout
   dynamicStableScale: true
+  # --strategy is the object to configure the rollout strategy
   strategy:
     steps:
       # --Sets the percentage of traffic to send to the new version

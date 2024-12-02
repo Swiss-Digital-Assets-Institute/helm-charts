@@ -29,17 +29,17 @@ spec:
       - name: {{ .Values.name }}
         image: {{ include "image" . | quote }}
         imagePullPolicy: {{ .Values.image.pullPolicy }}
+        command: {{- toYaml .Values.command | nindent 12 }}
+        args: {{- toYaml .Values.args | nindent 12 }}
         env: {{- include "all-envs" . | nindent 12 }}
         envFrom: {{- include "all-EnvFrom" . | nindent 12 }}
         ports:
         - name: http
           containerPort: {{ .Values.container.port }}
-
         {{- if and .Values.monitoring.serviceMonitor.enabled .Values.monitoring.serviceMonitor.extraPort.enabled }}
         - name: {{ .Values.monitoring.serviceMonitor.extraPort.name }}
           containerPort:  {{ .Values.monitoring.serviceMonitor.extraPort.targetPort }}
         {{- end }}          
-
         {{- if .Values.actuator.enabled }}
         - name: {{ .Values.actuator.port.name }}
           containerPort:  {{ .Values.actuator.port.targetPort }}
