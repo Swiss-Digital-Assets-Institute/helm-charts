@@ -1,6 +1,6 @@
 # webapp
 
-![Version: 0.0.26](https://img.shields.io/badge/Version-0.0.26-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 1.0.0](https://img.shields.io/badge/AppVersion-1.0.0-informational?style=flat-square)
+![Version: 0.0.27](https://img.shields.io/badge/Version-0.0.27-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 1.0.0](https://img.shields.io/badge/AppVersion-1.0.0-informational?style=flat-square)
 
 Helm Charts for default Web Application
 
@@ -38,12 +38,14 @@ Helm Charts for default Web Application
 | actuator.readiness.timeoutSeconds | int | `3` | Number of seconds after which the readiness probe times out |
 | affinity | object | `{}` | affinity allows you to define rules for pod scheduling based on node labels |
 | argoRollouts | object | `{"analyses":{"enabled":true,"failureLimit":3,"initialDelay":"30s","interval":"20s","metricName":"success-rate","successCondition":"len(result) == 0 || isNaN(result[0]) || isInf(result[0]) || result[0] >= 0.95"},"dynamicStableScale":true,"enabled":false,"revisionHistoryLimit":3,"strategy":{"steps":[{"setWeight":5},{"pause":{"duration":"10s"}},{"setWeight":20},{"pause":{"duration":"10s"}},{"setWeight":40},{"pause":{"duration":"10s"}},{"setWeight":60},{"pause":{"duration":"10s"}},{"setWeight":80},{"pause":{"duration":"10s"}}]}}` | argoRollouts enable Argo Rollouts Deployment |
-| argoRollouts.analyses.enabled | bool | `true` | Specifies whether analysis runs should be created during the rollout |
+| argoRollouts.analyses | object | `{"enabled":true,"failureLimit":3,"initialDelay":"30s","interval":"20s","metricName":"success-rate","successCondition":"len(result) == 0 || isNaN(result[0]) || isInf(result[0]) || result[0] >= 0.95"}` | Specifies whether analysis runs should be created during the rollout |
+| argoRollouts.analyses.enabled | bool | `true` | enabled specifies whether analysis runs should be created during the rollout |
 | argoRollouts.analyses.failureLimit | int | `3` | Specifies the maximum number of failed analysis runs allowed before the rollout fails |
 | argoRollouts.analyses.successCondition | string | `"len(result) == 0 || isNaN(result[0]) || isInf(result[0]) || result[0] >= 0.95"` | Specifies the success condition for the analysis, as a percentage |
 | argoRollouts.dynamicStableScale | bool | `true` | Specifies whether the stable ReplicaSet should be dynamically scaled during rollout |
 | argoRollouts.enabled | bool | `false` | Specifies whether Argo Rollouts is enabled |
 | argoRollouts.revisionHistoryLimit | int | `3` | Specifies the number of old ReplicaSets to retain for rollback purposes |
+| argoRollouts.strategy | object | `{"steps":[{"setWeight":5},{"pause":{"duration":"10s"}},{"setWeight":20},{"pause":{"duration":"10s"}},{"setWeight":40},{"pause":{"duration":"10s"}},{"setWeight":60},{"pause":{"duration":"10s"}},{"setWeight":80},{"pause":{"duration":"10s"}}]}` | strategy is the object to configure the rollout strategy |
 | argoRollouts.strategy.steps[0] | object | `{"setWeight":5}` | Sets the percentage of traffic to send to the new version |
 | argoRollouts.strategy.steps[1] | object | `{"pause":{"duration":"10s"}}` | Pauses the rollout for a specified duration |
 | argoRollouts.strategy.steps[2] | object | `{"setWeight":20}` | Sets the percentage of traffic to send to the new version |
@@ -54,6 +56,7 @@ Helm Charts for default Web Application
 | argoRollouts.strategy.steps[7] | object | `{"pause":{"duration":"10s"}}` | Pauses the rollout for a specified duration |
 | argoRollouts.strategy.steps[8] | object | `{"setWeight":80}` | Sets the percentage of traffic to send to the new version |
 | argoRollouts.strategy.steps[9] | object | `{"pause":{"duration":"10s"}}` | Pauses the rollout for a specified duration |
+| args | list | `[]` | args is the object to specify the arguments to run in the container |
 | autoReloader | bool | `true` | autoReloader enable auto reloader to restart the container when the configMap is updated |
 | autoscaling | object | `{"customRules":[],"enabled":true,"maxReplicas":2,"minReplicas":1,"targetCPUUtilizationPercentage":80,"targetMemoryUtilizationPercentage":80}` | autoscaling is the main object of autoscaling |
 | autoscaling.customRules | list | `[]` | customRules is a place to customize your application autoscaler using the original API available at: https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale/ |
@@ -62,9 +65,13 @@ Helm Charts for default Web Application
 | autoscaling.minReplicas | int | `1` | minReplicas is the number of mim pods to be running |
 | autoscaling.targetCPUUtilizationPercentage | int | `80` | targetCPUUtilizationPercentage is the percentage of cpu when reached to scale new pods |
 | autoscaling.targetMemoryUtilizationPercentage | int | `80` | targetMemoryUtilizationPercentage is the percentage of memoty when reached to scale new pods |
+| command | list | `[]` | command is the object to specify the command to run in the container |
 | commonLabels | object | `{}` | commonLabels sets common labels for all resources |
 | configMaps | object | `{"data":{},"enabled":false}` | configMaps is the object to configure an array of configMaps |
+| configMaps.data | object | `{}` | data is the object to configure the data of the configMap |
+| configMaps.enabled | bool | `false` | enabled is the flag to sinalize this funcionality is enabled |
 | consumers | object | `{"annotations":{},"list":[],"terminationGracePeriodSeconds":30}` | consumers is the object to configure an array of consumers |
+| consumers.annotations | object | `{}` | annotations to be added to the consumers |
 | consumers.list | list | `[]` | list is the array of consumer definition |
 | consumers.terminationGracePeriodSeconds | int | `30` | terminationGracePeriodSeconds configures terminationGracePeriodSeconds |
 | container.port | int | `8080` | port is the port your application runs under |
