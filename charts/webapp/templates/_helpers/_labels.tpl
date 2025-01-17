@@ -3,12 +3,12 @@ Common labels
 */}}
 {{- define "webapp.labels" -}}
 app: {{ .Values.name }}
-version: {{ printf "%s" .Values.image.tag | quote }}
+version: {{ ($version := .Values.image.tag  | toString | quote) }}
 backstage.io/kubernetes-id: {{ .Values.name }}
 helm.sh/chart: {{ include "webapp.chart" . }}
 {{ include "webapp.selectorLabels" . }}
 {{- if .Chart.AppVersion }}
-app.kubernetes.io/version: {{ printf "%s" .Values.image.tag | quote }}
+app.kubernetes.io/version: {{ $version }}
 {{- end }}
 app.kubernetes.io/managed-by: argocd
 {{- end }}
