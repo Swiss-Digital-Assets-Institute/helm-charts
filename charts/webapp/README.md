@@ -1,6 +1,6 @@
 # webapp
 
-![Version: 0.0.28](https://img.shields.io/badge/Version-0.0.28-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 1.0.0](https://img.shields.io/badge/AppVersion-1.0.0-informational?style=flat-square)
+![Version: 0.0.29](https://img.shields.io/badge/Version-0.0.29-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 1.0.0](https://img.shields.io/badge/AppVersion-1.0.0-informational?style=flat-square)
 
 Helm Charts for default Web Application
 
@@ -210,6 +210,11 @@ Helm Charts for default Web Application
 | serviceAccount.enabled | bool | `true` | Specifies whether a service account should be created |
 | terminationGracePeriodSeconds | int | `30` | terminationGracePeriodSeconds is the number of seconds to wait before terminating a pod |
 | tolerations | list | `[]` | tolerations allows the pods to schedule onto nodes with taints |
+| topologySpreadConstraints | object | `{"enabled":true,"maxSkew":1,"topologyKey":"topology.kubernetes.io/zone","whenUnsatisfiable":"ScheduleAnyway"}` | topologySpreadConstraints allows you to constrain the pods to run on nodes with a certain topology |
+| topologySpreadConstraints.enabled | bool | `true` | topologySpreadConstraints.enabled specifies whether topology spread constraints should be applied |
+| topologySpreadConstraints.maxSkew | int | `1` | topologySpreadConstraints.maxSkew specifies the maximum skew allowed among the topologies |
+| topologySpreadConstraints.topologyKey | string | `"topology.kubernetes.io/zone"` | topologySpreadConstraints.topologyKey specifies the key of the topology |
+| topologySpreadConstraints.whenUnsatisfiable | string | `"ScheduleAnyway"` | topologySpreadConstraints.whenUnsatisfiable specifies the action to take when a constraint is not satisfied |
 | volumeMounts | list | `[]` | volumeMounts specifies where Kubernetes will mount Pod volumes |
 | volumes | list | `[]` | volumes specifies pod volumes |
 
