@@ -369,11 +369,22 @@ instrumentation:
 # --nodeSelector allows you to constrain a Pod to only be able to run on particular node(s)
 nodeSelector: {}
 
+# --affinity allows you to define rules for pod scheduling based on node labels
+affinity: {}
+
 # --tolerations allows the pods to schedule onto nodes with taints
 tolerations: []
 
-# --affinity allows you to define rules for pod scheduling based on node labels
-affinity: {}
+# --topologySpreadConstraints allows you to constrain the pods to run on nodes with a certain topology
+topologySpreadConstraints:
+  # --topologySpreadConstraints.enabled specifies whether topology spread constraints should be applied
+  enabled: true
+  # --topologySpreadConstraints.maxSkew specifies the maximum skew allowed among the topologies
+  maxSkew: 1
+  # --topologySpreadConstraints.topologyKey specifies the key of the topology
+  topologyKey: "topology.kubernetes.io/zone"
+  # --topologySpreadConstraints.whenUnsatisfiable specifies the action to take when a constraint is not satisfied
+  whenUnsatisfiable: "ScheduleAnyway"
 
 # --podAnnotations adds custom annotations to the pod
 podAnnotations: {}

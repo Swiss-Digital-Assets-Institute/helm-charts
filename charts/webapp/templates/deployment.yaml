@@ -63,11 +63,19 @@ spec:
         resources: {{ toYaml .Values.extraContainer.resources | nindent 12 }}
         volumeMounts: {{ toYaml .Values.extraContainer.volumeMounts | nindent 12 }}
       {{- end }}        
+      volumes: {{ toYaml (default list .Values.volumes)  | nindent 8 }}
       nodeSelector: {{ toYaml (default dict .Values.nodeSelector) | nindent 8 }}
       affinity: {{ toYaml (default dict .Values.affinity) | nindent 8 }}
       tolerations: {{ toYaml (default list .Values.tolerations)  | nindent 8 }}
-      volumes: {{ toYaml (default list .Values.volumes)  | nindent 8 }}
+      {{- if .Values.topologySpreadConstraints.enabled }}
+      topologySpreadConstraints:
+      - maxSkew: {{ .Values.topologySpreadConstraints.maxSkew }}
+        topologyKey: {{ .Values.topologySpreadConstraints.topologyKey | quote }}
+        whenUnsatisfiable: {{ .Values.topologySpreadConstraints.whenUnsatisfiable | quote }}
+        labelSelector:
+          matchLabels:
+            {{- include "webapp.selectorLabels" . | nindent 12 }}
+      {{- end }}      
   minReadySeconds: 30
-  
 {{- end }}
 {{- end }}
