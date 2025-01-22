@@ -12,7 +12,7 @@ global:
   network:
     domain: my-company.com
   otel:
-    endpoint: http://otel-collector.observability.svc.cluster.local:4317 #4318
+    endpoint: http://otel-collector.observability.svc.cluster.local
 
 actuator:
   enabled: false

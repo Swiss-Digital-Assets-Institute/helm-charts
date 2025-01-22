@@ -5,7 +5,7 @@ metadata:
   name: {{ .Values.name }}
 spec:
   exporter:
-    endpoint: {{ .Values.global.otel.endpoint }}
+    endpoint: {{ .Values.global.otel.endpoint }}:4318
   propagators:
     - tracecontext
     - baggage
@@ -17,32 +17,30 @@ spec:
     env:
       - name: OTEL_SERVICE_NAME
         value: {{ .Values.name }}
-      - name: OTEL_LOGS_EXPORTER
-        value: otlp
+      - name: OTEL_EXPORTER_OTLP_ENDPOINT
+        value: {{ .Values.global.otel.endpoint }}:4318
   go:
     env:
       - name: OTEL_SERVICE_NAME
         value: {{ .Values.name }}
-      - name: OTEL_LOGS_EXPORTER
-        value: otlp
+      - name: OTEL_EXPORTER_OTLP_ENDPOINT
+        value: {{ .Values.global.otel.endpoint }}:4317    
   java:
     env:
       - name: OTEL_SERVICE_NAME
         value: {{ .Values.name }}
-      - name: OTEL_LOGS_EXPORTER
-        value: otlp
+      - name: OTEL_EXPORTER_OTLP_ENDPOINT
+        value: {{ .Values.global.otel.endpoint }}:4317 
   nodejs:
     env:
       - name: OTEL_SERVICE_NAME
         value: {{ .Values.name }}
-      - name: OTEL_LOGS_EXPORTER
-        value: otlp
-      - name: OTEL_NODE_ENABLED_INSTRUMENTATIONS
-        value: http,nestjs-core        
+      - name: OTEL_EXPORTER_OTLP_ENDPOINT
+        value: {{ .Values.global.otel.endpoint }}:4317
   python:
     env:
       - name: OTEL_SERVICE_NAME
         value: {{ .Values.name }}
-      - name: OTEL_LOGS_EXPORTER
-        value: otlp
+      - name: OTEL_EXPORTER_OTLP_ENDPOINT
+        value: {{ .Values.global.otel.endpoint }}:4318
 {{- end }}
