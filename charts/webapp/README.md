@@ -1,6 +1,6 @@
 # webapp
 
-![Version: 0.0.31](https://img.shields.io/badge/Version-0.0.31-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 1.0.0](https://img.shields.io/badge/AppVersion-1.0.0-informational?style=flat-square)
+![Version: 0.0.32](https://img.shields.io/badge/Version-0.0.32-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 1.0.0](https://img.shields.io/badge/AppVersion-1.0.0-informational?style=flat-square)
 
 Helm Charts for default Web Application
 
@@ -98,7 +98,7 @@ Helm Charts for default Web Application
 | global.env | string | `""` | env sets the Environment Name (dev, mng, prd) |
 | global.network | object | `{"domain":""}` | Network configuration |
 | global.network.domain | string | `""` | domain sets the Default Domain |
-| global.otel | object | `{"endpoint":""}` | otel sets the endpoint for OpenTelemetry collector |
+| global.otel | object | `{"endpoint":"","port":""}` | otel sets the endpoint for OpenTelemetry collector |
 | global.prometheus | object | `{"server":""}` | prometheus sets the Prometheus server URL |
 | global.prometheus.server | string | `""` | server sets prometheus endpoint |
 | image.pullPolicy | string | `"IfNotPresent"` | pullPolicy is the prop to setup the behavior of pull police. options is: IfNotPresent \| allways |
