@@ -12,7 +12,8 @@ global:
   network:
     domain: my-company.com
   otel:
-    endpoint: http://otel-collector.observability.svc.cluster.local
+    endpoint: http://alloy.observability.svc.cluster.local
+    port: 4317
 
 actuator:
   enabled: false

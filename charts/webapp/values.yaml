@@ -27,6 +27,7 @@ global:
   # --otel sets the endpoint for OpenTelemetry collector
   otel:
     endpoint: ""
+    port: ""
 
 # --commonLabels sets common labels for all resources
 commonLabels: {}
