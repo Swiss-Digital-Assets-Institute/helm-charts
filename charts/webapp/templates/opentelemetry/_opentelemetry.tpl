@@ -10,7 +10,7 @@ Return the appropriate annotations for instrumentation based on the language
   {{- $serviceVersion := .Values.image.tag }}
   {{- $serviceEnv := .Values.global.env }}
   {{- $annotations = merge $annotations (dict 
-    (printf "instrumentation.opentelemetry.io/inject-%s" $language) "true"
+    (printf "instrumentation.opentelemetry.io/inject-%s" $language) $serviceName
     "resource.opentelemetry.io/service.name" $serviceName
     "resource.opentelemetry.io/service.namespace" $serviceNamespace
     "resource.opentelemetry.io/service.version" $serviceVersion

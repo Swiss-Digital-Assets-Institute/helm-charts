@@ -39,6 +39,12 @@ readinessProbe:
   successThreshold: 1
   failureThreshold: 3
 
+logging:
+  podlogs:
+    enabled: true
+    pipelineStages:
+      - cri: {}
+
 monitoring:
   serviceMonitor:
     enabled: true

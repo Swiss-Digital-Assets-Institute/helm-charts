@@ -1,0 +1,21 @@
+{{- if .Values.logging.podlogs.enabled }}
+---
+apiVersion: monitoring.grafana.com/v1alpha2
+kind: PodLogs
+metadata:
+  name: {{ include "webapp.fullname" $ }}
+  namespace: {{ .namespace | default $.Release.Namespace }}
+  labels: {{ include "webapp.labels" . | nindent 4 }}
+spec:
+  namespaceSelector:
+    matchNames:
+    - {{ .namespace | default $.Release.Namespace }}
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: {{ .Values.name }}
+  pipelineStages:
+    {{- .Values.logging.podLogs.pipelineStages | toYaml | nindent 4 }}
+  relabelings:
+    {{- .Values.logging.podLogs.relabelings | toYaml | nindent 4 }}
+
+{{- end }}

@@ -525,6 +525,38 @@ monitoring:
       # -- The protocol used for the additional port
       protocol: TCP
 
+# --logging configuration
+logging:
+  # -- If enabled, create a PodLogs resource for logging
+  podLogs:
+    enabled: false
+    pipelineStages:
+      - cri: {}
+    relabelings:
+      - sourceLabels:
+          - __meta_kubernetes_pod_node_name
+        targetLabel: __host__
+      - action: labelmap
+        regex: __meta_kubernetes_pod_label_(.+)
+      - action: replace
+        sourceLabels:
+          - __meta_kubernetes_namespace
+        targetLabel: namespace
+      - action: replace
+        sourceLabels:
+          - __meta_kubernetes_pod_name
+        targetLabel: pod
+      - action: replace
+        sourceLabels:
+          - __meta_kubernetes_container_name
+        targetLabel: container
+      - replacement: /var/log/pods/*$1/*.log
+        separator: /
+        sourceLabels:
+          - __meta_kubernetes_pod_uid
+          - __meta_kubernetes_pod_container_name
+        targetLabel: __path__
+
 # ExternalSecrets configuration
 externalSecrets:
   # -- If enabled, ExternalSecret resources will be created to sync secrets from external sources (e.g., Vault).

@@ -3,6 +3,7 @@ apiVersion: opentelemetry.io/v1alpha1
 kind: Instrumentation
 metadata:
   name: {{ .Values.name }}
+  labels: {{ include "webapp.labels" . | nindent 4 }}
 spec:
   exporter:
     endpoint: "{{ .Values.global.otel.endpoint }}:{{ .Values.global.otel.port }}"
@@ -24,13 +25,13 @@ spec:
       - name: OTEL_SERVICE_NAME
         value: {{ .Values.name }}
       - name: OTEL_EXPORTER_OTLP_ENDPOINT
-        value: {{ .Values.global.otel.endpoint }}:4317    
+        value: {{ .Values.global.otel.endpoint }}:4317
   java:
     env:
       - name: OTEL_SERVICE_NAME
         value: {{ .Values.name }}
       - name: OTEL_EXPORTER_OTLP_ENDPOINT
-        value: {{ .Values.global.otel.endpoint }}:4317 
+        value: {{ .Values.global.otel.endpoint }}:4317
   nodejs:
     env:
       - name: OTEL_SERVICE_NAME
