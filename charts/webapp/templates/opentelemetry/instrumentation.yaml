@@ -38,6 +38,12 @@ spec:
         value: {{ .Values.name }}
       - name: OTEL_EXPORTER_OTLP_ENDPOINT
         value: {{ .Values.global.otel.endpoint }}:4317
+      - name: OTEL_LOG_LEVEL
+        value: "info"
+      - name: OTEL_LOGS_EXPORTER
+        value: "otlp"
+      - name: OTEL_TRACES_EXPORTER
+        value: "otlp"
   python:
     env:
       - name: OTEL_SERVICE_NAME

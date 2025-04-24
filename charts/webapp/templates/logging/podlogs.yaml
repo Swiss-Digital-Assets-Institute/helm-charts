@@ -1,4 +1,4 @@
-{{- if .Values.logging.podlogs.enabled }}
+{{- if .Values.logging.podLogs.enabled }}
 ---
 apiVersion: monitoring.grafana.com/v1alpha2
 kind: PodLogs
