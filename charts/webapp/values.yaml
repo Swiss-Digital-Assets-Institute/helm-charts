@@ -28,6 +28,7 @@ global:
   otel:
     endpoint: ""
     port: ""
+    argument: "0.25"
 
 # --commonLabels sets common labels for all resources
 commonLabels: {}
