@@ -5,6 +5,11 @@ metadata:
   name: {{ .Values.name }}
   labels: {{ include "webapp.labels" . | nindent 4 }}
 spec:
+  env:
+    - name: OTEL_METRICS_EXPORTER
+      value: none
+    - name: OTEL_LOGS_EXPORTER
+      value: none
   exporter:
     endpoint: "{{ .Values.global.otel.endpoint }}:{{ .Values.global.otel.port }}"
   propagators:
@@ -13,41 +18,35 @@ spec:
     - b3
   sampler:
     type: parentbased_traceidratio
-    argument: "1"
+    argument: "{{ .Values.global.otel.argument }}"
   dotnet:
     env:
       - name: OTEL_SERVICE_NAME
         value: {{ .Values.name }}
-      - name: OTEL_EXPORTER_OTLP_ENDPOINT
-        value: {{ .Values.global.otel.endpoint }}:4318
+      - name: OTEL_LOGS_EXPORTER
+        value: otlp
   go:
     env:
       - name: OTEL_SERVICE_NAME
         value: {{ .Values.name }}
-      - name: OTEL_EXPORTER_OTLP_ENDPOINT
-        value: {{ .Values.global.otel.endpoint }}:4317
+      - name: OTEL_LOGS_EXPORTER
+        value: otlp
   java:
     env:
       - name: OTEL_SERVICE_NAME
         value: {{ .Values.name }}
-      - name: OTEL_EXPORTER_OTLP_ENDPOINT
-        value: {{ .Values.global.otel.endpoint }}:4317
+      - name: OTEL_LOGS_EXPORTER
+        value: otlp
   nodejs:
     env:
       - name: OTEL_SERVICE_NAME
         value: {{ .Values.name }}
-      - name: OTEL_EXPORTER_OTLP_ENDPOINT
-        value: {{ .Values.global.otel.endpoint }}:4317
-      - name: OTEL_LOG_LEVEL
-        value: "info"
       - name: OTEL_LOGS_EXPORTER
-        value: "otlp"
-      - name: OTEL_TRACES_EXPORTER
-        value: "otlp"
+        value: otlp
   python:
     env:
       - name: OTEL_SERVICE_NAME
         value: {{ .Values.name }}
-      - name: OTEL_EXPORTER_OTLP_ENDPOINT
-        value: {{ .Values.global.otel.endpoint }}:4318
+      - name: OTEL_LOGS_EXPORTER
+        value: otlp
 {{- end }}
