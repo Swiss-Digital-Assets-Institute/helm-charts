@@ -45,7 +45,7 @@ args: []
 # --namespace configuration
 namespace:
   # --Specifies whether the namespace is enabled
-  enabled: true
+  enabled: false
   # --Labels to be added to the namespace
   labels: {}
   # --Annotations to be added to the namespace
@@ -98,6 +98,7 @@ deployment:
   annotations: {}
   # --labels to be added to the deployment
   labels: {}
+
 # --argoRollouts enable Argo Rollouts Deployment
 argoRollouts:
   # --Specifies whether Argo Rollouts is enabled
@@ -193,6 +194,17 @@ istio:
     mode: PERMISSIVE
   # --gateways set default gateway for virtual-service
   gateways: istio-ingress/istio-ingressgateway
+  # --authorizationPolicy set default authorization policy
+  authorizationPolicy:
+    # --enable authorizationPolicy
+    enabled: true
+    # Optional, since default is ALLOW
+    action: ALLOW
+    # No rules means "ALLOW ALL" in Istio when action is ALLOW
+    rules:
+      - from:
+          - source:
+              namespaces: ["*"]
 
 # --ServiceAccount A service account provides an identity for processes that run in a Pod, about more: https://kubernetes.io/docs/tasks/configure-pod-container/configure-service-account/
 serviceAccount:
@@ -231,6 +243,7 @@ autoscaling:
 container:
   # --port is the port your application runs under
   port: 8080
+  # --readOnlyRootFilesystem is the prop to setup the container root filesystem as read-only
   readOnlyRootFilesystem: true
 
   # --image is the object to specify the image to run in the deployment
@@ -365,7 +378,10 @@ actuator:
 
 # --instrumentation set default auto-instrumentation, allowed values dotnet, go, java, nodejs and python
 instrumentation:
+  # --enabled specifies whether instrumentation is enabled
   enabled: false
+  # --language specifies the programming language of the application for instrumentation
+  # --allowed values: dotnet, go, java, nodejs and python
   language: ""
 
 # --nodeSelector allows you to constrain a Pod to only be able to run on particular node(s)
