@@ -1,6 +1,6 @@
 # webapp
 
-![Version: 0.0.35](https://img.shields.io/badge/Version-0.0.35-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 1.0.0](https://img.shields.io/badge/AppVersion-1.0.0-informational?style=flat-square)
+![Version: 0.0.36](https://img.shields.io/badge/Version-0.0.36-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 1.0.0](https://img.shields.io/badge/AppVersion-1.0.0-informational?style=flat-square)
 
 Helm Charts for default Web Application
 
@@ -75,7 +75,7 @@ Helm Charts for default Web Application
 | consumers.list | list | `[]` | list is the array of consumer definition |
 | consumers.terminationGracePeriodSeconds | int | `30` | terminationGracePeriodSeconds configures terminationGracePeriodSeconds |
 | container.port | int | `8080` | port is the port your application runs under |
-| container.readOnlyRootFilesystem | bool | `true` |  |
+| container.readOnlyRootFilesystem | bool | `true` | readOnlyRootFilesystem is the prop to setup the container root filesystem as read-only |
 | cronjobs.list | list | `[]` | list is an array of spec for create multiples cronjobs |
 | cronjobs.suspend | bool | `false` | suspend used to disable all cronjobs in the list |
 | deployment | object | `{"annotations":{},"enabled":true,"labels":{},"strategyType":"RollingUpdate"}` | deployment Disabled Deployment |
@@ -106,7 +106,11 @@ Helm Charts for default Web Application
 | image.tag | string | `"latest"` | especify the tag of your image to deploy |
 | imagePullSecrets | list | `[]` | imagePullSecrets secret used to download image on private container registry |
 | instrumentation | object | `{"enabled":false,"language":""}` | instrumentation set default auto-instrumentation, allowed values dotnet, go, java, nodejs and python |
-| istio | object | `{"enabled":true,"gateways":"istio-ingress/istio-ingressgateway","peerAuthentication":{"enabled":true,"mode":"PERMISSIVE"},"virtualServices":{"custom":{"hosts":[]},"enabled":true,"public":false}}` | istio Set default Istio |
+| instrumentation.enabled | bool | `false` | enabled specifies whether instrumentation is enabled |
+| instrumentation.language | string | `""` | allowed values: dotnet, go, java, nodejs and python |
+| istio | object | `{"authorizationPolicy":{"action":"ALLOW","enabled":true,"rules":[{"from":[{"source":{"namespaces":["*"]}}]}]},"enabled":true,"gateways":"istio-ingress/istio-ingressgateway","peerAuthentication":{"enabled":true,"mode":"PERMISSIVE"},"virtualServices":{"custom":{"hosts":[]},"enabled":true,"public":false}}` | istio Set default Istio |
+| istio.authorizationPolicy | object | `{"action":"ALLOW","enabled":true,"rules":[{"from":[{"source":{"namespaces":["*"]}}]}]}` | authorizationPolicy set default authorization policy |
+| istio.authorizationPolicy.enabled | bool | `true` | enable authorizationPolicy |
 | istio.gateways | string | `"istio-ingress/istio-ingressgateway"` | gateways set default gateway for virtual-service |
 | istio.peerAuthentication | object | `{"enabled":true,"mode":"PERMISSIVE"}` | PeerAuthentication defines how traffic will be tunneled (or not) to the sidecar. |
 | istio.peerAuthentication.enabled | bool | `true` | enable peerAuthentication |
@@ -157,9 +161,9 @@ Helm Charts for default Web Application
 | monitoring.serviceMonitor.scrapeTimeout | string | `"15s"` | ServiceMonitor scrape timeout in Go duration format (e.g. 15s) |
 | name | string | `""` | name is the GitHub repository name of this application deployment |
 | nameOverride | object | `{}` | nameOverride allows partial override of the name |
-| namespace | object | `{"annotations":{},"enabled":true,"labels":{}}` | namespace configuration |
+| namespace | object | `{"annotations":{},"enabled":false,"labels":{}}` | namespace configuration |
 | namespace.annotations | object | `{}` | Annotations to be added to the namespace |
-| namespace.enabled | bool | `true` | Specifies whether the namespace is enabled |
+| namespace.enabled | bool | `false` | Specifies whether the namespace is enabled |
 | namespace.labels | object | `{}` | Labels to be added to the namespace |
 | nginx | object | `{"enabled":false,"image":{"imagePullPolicy":"IfNotPresent","repository":"nginx","tag":"alpine"},"livenessProbe":{"enabled":true,"exec":{},"failureThreshold":3,"initialDelaySeconds":5,"path":"/health-check/liveness","periodSeconds":10,"scheme":"HTTP","successThreshold":1,"timeoutSeconds":3},"resources":{"limits":{"cpu":"50m","memory":"50Mi"},"requests":{"cpu":"10m","memory":"10Mi"}},"shared":{"enabled":false,"path":"/var/www/html/"}}` | nginx configuration for php-fpm the nginx sidecar |
 | nginx.enabled | bool | `false` | If enabled, create a sidecar container with nginx |
