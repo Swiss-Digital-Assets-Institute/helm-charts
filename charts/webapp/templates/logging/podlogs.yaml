@@ -3,16 +3,14 @@
 apiVersion: monitoring.grafana.com/v1alpha2
 kind: PodLogs
 metadata:
-  name: {{ include "webapp.fullname" $ }}
-  namespace: {{ .namespace | default $.Release.Namespace }}
-  labels: {{ include "webapp.labels" . | nindent 4 }}
+  name: {{ .Values.name }}
+  namespace: {{ include "namespace" . }}
+  labels: {{- include "webapp.labels" . | nindent 4 }}
 spec:
-  namespaceSelector:
-    matchNames:
-    - {{ .namespace | default $.Release.Namespace }}
+  namespaceSelector: {}
   selector:
     matchLabels:
-      app.kubernetes.io/name: {{ .Values.name }}
+      {{- include "webapp.selectorLabels" $ | nindent 6 }}
   pipelineStages:
     {{- .Values.logging.podLogs.pipelineStages | toYaml | nindent 4 }}
   relabelings:
