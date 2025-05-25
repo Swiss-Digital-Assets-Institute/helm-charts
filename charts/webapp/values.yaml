@@ -546,7 +546,7 @@ monitoring:
 logging:
   # -- If enabled, create a PodLogs resource for logging
   podLogs:
-    enabled: false
+    enabled: true
     pipelineStages:
       - cri: {}
     relabelings:
