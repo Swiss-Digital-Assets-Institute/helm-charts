@@ -1,6 +1,6 @@
 {{- if .Values.logging.podLogs.enabled }}
 ---
-apiVersion: monitoring.grafana.com/v1alpha2
+apiVersion: monitoring.grafana.com/v1alpha1
 kind: PodLogs
 metadata:
   name: {{ .Values.name }}
