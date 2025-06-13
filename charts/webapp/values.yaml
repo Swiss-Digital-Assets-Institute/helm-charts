@@ -547,8 +547,6 @@ logging:
   # -- If enabled, create a PodLogs resource for logging
   podLogs:
     enabled: true
-    pipelineStages:
-      - cri: {}
     relabelings:
       - sourceLabels:
           - __meta_kubernetes_pod_node_name
