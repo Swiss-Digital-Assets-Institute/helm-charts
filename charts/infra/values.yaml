@@ -1,0 +1,38 @@
+appName: "guardian"
+
+tags: 
+  name: "guardian" 
+  team: "guardian"
+  cost_center: "guardian"
+  env: "stg" 
+
+infra:
+  aws:
+    environment: staging 
+    region: "us-east-1" 
+
+    s3:
+      enabled: true 
+      versioningEnabled: false 
+      acl: private
+      lifeCycleConfiguration:
+        enabled: true 
+        rule:
+        - id: rule-1
+          status: Enabled
+
+    kms:
+      enabled: false
+      keyNameOverride: "some_key" 
+      deletionWindowInDays: 7 
+      rotateKey: true 
+      tags:
+        name: "some string" 
+        team: "some string"
+        cost_center: "some string"
+        env: "stage"
+
+    ecr:
+      enabled: true  
+      scanOnPush: true
+      imageTagMutability: "MUTABLE"

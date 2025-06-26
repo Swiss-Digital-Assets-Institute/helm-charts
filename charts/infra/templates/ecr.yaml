@@ -1,0 +1,19 @@
+{{- if .Values.infra.aws.ecr.enabled }}
+---
+apiVersion: {{ include "infra.ecrApiVersion" . }}
+kind: Repository
+metadata:
+  name: {{ include "infra.fullname" . }}
+spec:
+  forProvider:
+    region: {{ .Values.infra.aws.region | default "eu-central-2" }}
+    imageTagMutability: {{ .Values.infra.aws.ecr.imageTagMutability | default "MUTABLE" }}
+    imageScanningConfiguration:
+      scanOnPush: {{ .Values.infra.aws.ecr.scanOnPush | default false }}
+    encryptionConfiguration:
+      encryptionType: "AES256"
+    tags:
+{{ include "infra.allTags" . | indent 6 }}
+  providerConfigRef:
+    name: {{ required "You must set .Values.infra.aws.environment for the ECR providerConfigRef" .Values.infra.aws.environment }}
+{{- end }}

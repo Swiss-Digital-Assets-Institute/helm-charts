@@ -1,0 +1,21 @@
+{{- if or .Values.infra.aws.s3.enabled .Values.infra.aws.kms.enabled }}
+---
+apiVersion: {{ include "infra.iamApiVersion" . }}
+kind: Role
+metadata:
+  name: {{ include "infra.fullname" . }}
+  labels:
+{{ include "infra.labels" . | indent 4 }}
+spec:
+  forProvider:
+    assumeRolePolicy: |
+{{ include "infra.trustRelationship" . | indent 6 }}
+    inlinePolicy:
+      - name: {{ include "infra.name" . }}-policy
+        policy: |
+{{ include "infra.customIamPolicy" . | indent 10 }}
+    tags:
+{{ include "infra.allTags" . | indent 6 }}
+  providerConfigRef:
+    name: {{ required "You must set .Values.infra.aws.environment for the IAM Role providerConfigRef" .Values.infra.aws.environment }}
+{{- end }}
