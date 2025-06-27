@@ -1,0 +1,19 @@
+{{- if .Values.infra.aws.kms.enabled }}
+---
+apiVersion: {{ include "infra.kmsApiVersion" . }}
+kind: Key
+metadata:
+  name: {{ include "infra.kmsKeyName" . }}
+  annotations:
+    crossplane.io/external-name: {{ include "infra.kmsKeyName" . }}
+spec:
+  forProvider:
+    region: {{ .Values.infra.aws.region | default "eu-central-2" }}
+    tags:
+    {{ include "infra.allTags" . | indent 4 }}
+    deletionWindowInDays: {{ .Values.infra.aws.kms.deletionWindowInDays | default 365 }}
+    description: {{ include "infra.fullname" . }}
+    enableKeyRotation: {{ .Values.infra.aws.kms.rotateKey | default false }}
+  providerConfigRef:
+    name: {{ required "You must set .Values.infra.aws.environment for the kms providerConfigRef" .Values.infra.aws.environment }}
+{{- end }}

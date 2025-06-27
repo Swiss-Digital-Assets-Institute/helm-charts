@@ -16,6 +16,10 @@ webapp:
   - changed-files:
     - any-glob-to-any-file: 'charts/webapp/**'
 
+infra:
+  - changed-files:
+    - any-glob-to-any-file: 'charts/infra/**'
+
 feature:
   - head-branch: ['^feature', 'feature']
 

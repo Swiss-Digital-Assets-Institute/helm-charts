@@ -1,0 +1,77 @@
+{{- if .Values.infra.aws.s3.enabled }}
+---
+apiVersion: {{ include "infra.s3ApiVersion" . }}
+kind: Bucket
+metadata:
+  name: {{ include "infra.s3BucketName" . }}
+  annotations:
+    crossplane.io/external-name: {{ include "infra.s3BucketName" . }}
+  labels:
+{{ include "infra.labels" . | indent 4 }}
+spec:
+  forProvider:
+    region: {{ .Values.infra.aws.region | default "eu-central-2" }}
+    tags:
+{{ include "infra.allTags" . | indent 6 }}
+  providerConfigRef:
+    name: {{ required "You must set .Values.infra.aws.environment for the s3 providerConfigRef" .Values.infra.aws.environment }}
+
+---
+apiVersion: {{ include "infra.s3ApiVersion" . }}
+kind: BucketACL
+metadata:
+  name: {{ include "infra.s3BucketName" . }}
+  annotations:
+    crossplane.io/external-name: {{ include "infra.s3BucketName" . }}
+  labels:
+{{ include "infra.labels" . | indent 4 }}
+spec:
+  forProvider:
+    acl: {{ .Values.infra.aws.s3.acl | default "private" }}
+    region: {{ .Values.infra.aws.region | default "eu-central-2" }}
+    bucketSelector:
+      matchLabels:
+{{ include "infra.labels" . | indent 8 }}
+  providerConfigRef:
+    name: {{ required "You must set .Values.infra.aws.environment for the s3 ACL providerConfigRef" .Values.infra.aws.environment }}
+
+---
+apiVersion: {{ include "infra.s3ApiVersion" . }}
+kind: BucketOwnershipControls
+metadata:
+  name: {{ include "infra.s3BucketName" . }}-ownership
+  labels:
+    crossplane.io/composite: {{ include "infra.s3BucketName" . }}
+spec:
+  forProvider: 
+    region: {{ .Values.infra.aws.region | default "eu-central-2" }}
+    bucketSelector:
+      matchLabels:
+{{ include "infra.labels" . | indent 8 }}
+    rule:
+      - objectOwnership: {{ .Values.infra.aws.s3.objectOwnership | default "BucketOwnerPreferred" | quote }}
+  providerConfigRef:
+    name: {{ required "You must set .Values.infra.aws.environment for the ownership controls providerConfigRef" .Values.infra.aws.environment }}
+
+{{- if .Values.infra.aws.s3.lifeCycleConfiguration.enabled }}
+---
+apiVersion: {{ include "infra.s3ApiVersion" . }}
+kind: BucketLifecycleConfiguration
+metadata:
+  name: {{ include "infra.s3BucketName" . }}
+  annotations:
+    crossplane.io/external-name: {{ include "infra.s3BucketName" . }}
+  labels:
+{{ include "infra.labels" . | indent 4 }}
+spec:
+  forProvider:
+    region: {{ .Values.infra.aws.region | default "eu-central-2" }}
+    bucketSelector:
+      matchLabels:
+{{ include "infra.labels" . | indent 8 }}
+    rule:
+{{ toYaml .Values.infra.aws.s3.lifeCycleConfiguration.rule | indent 6 }}
+  providerConfigRef:
+    name: {{ required "You must set .Values.infra.aws.environment for the bucket lifecycle providerConfigRef" .Values.infra.aws.environment }}
+{{- end }}
+{{- end }}
