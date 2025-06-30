@@ -1,5 +1,10 @@
 apiVersion: v2
 name: infra
+icon: https://avatars.githubusercontent.com/u/45158470?s=200&v=4
+keywords:
+  - IaC
+  - Infrastructure as Code
+  - Crossplane
 description: Managing and maintaining cloud resources using crossplane
 type: application
 version: 1.0.0

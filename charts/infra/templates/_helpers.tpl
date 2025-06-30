@@ -1,96 +1,80 @@
 {{/*
-Set org to "tha" (default)
+Extract the base release name by removing -infra suffix
 */}}
-{{- define "infra.org" -}}
-tha
+{{- define "infra.baseReleaseName" -}}
+{{- if hasSuffix "-infra" .Release.Name -}}
+  {{- .Release.Name | trimSuffix "-infra" -}}
+{{- else -}}
+  {{- .Release.Name -}}
+{{- end -}}
+{{- end -}}
+{{/*
+Get the release name with -infra suffix
+*/}}
+{{- define "infra.releaseName" -}}
+{{ printf "%s-infra" (include "infra.baseReleaseName" .) }}
 {{- end -}}
 
 {{/*
-Infer environment and environment short name from .Values.infra.aws.environment
-Returns env, envShort as map
+Compose resource name as org-env-releaseName, unless overridden via resource override
+Input:
+  override: (string, override value from values file)
 */}}
-{{- define "infra.envs" -}}
-{{- $env := required "You must set .Values.infra.aws.environment to one of: staging, production, or development" .Values.infra.aws.environment -}}
-{{- if eq $env "staging" }}
-  {{- dict "env" "stage" "envShort" "stg" -}}
-{{- else if eq $env "production" }}
-  {{- dict "env" "prod" "envShort" "prd" -}}
-{{- else if eq $env "development" }}
-  {{- dict "env" "prod" "envShort" "prd" -}}
+{{- define "infra.resourceName" -}}
+{{- $override := .override -}}
+{{- if $override -}}
+  {{- $override -}}
+{{- else -}}
+  {{- $org := required "You must set .global.org" .global.org -}}
+  {{- $env := required "You must set .global.env" .global.env -}}
+  {{- $base := include "infra.baseReleaseName" . -}}
+  {{- printf "%s-%s-%s" $org $env $base | trunc 63 | trimSuffix "-" -}}
+{{- end -}}
+{{- end -}}
+
+{{/*
+Default tags, as required in all resources.
+If section.additional_tags exists, merge with these.
+*/}}
+{{- define "infra.allTags" -}}
+{{- $global := .Values.global -}}
+{{- $section := .section | default dict -}}
+{{- $defaults := dict "org" (required "You must set .Values.global.org" $global.org) "env" (required "You must set .Values.global.env" $global.env) "team" (required "You must set .Values.global.team" $global.team) "costCenter" (required "You must set .Values.global.costCenter" $global.costCenter) -}}
+{{- if $section.additional_tags }}
+  {{- $allTags := merge (deepCopy $defaults) $section.additional_tags }}
+  {{- toYaml $allTags }}
 {{- else }}
-  {{- fail (printf "Environment must be one of: staging, production, development. Got '%s'" $env) -}}
+  {{- toYaml $defaults }}
 {{- end -}}
 {{- end -}}
 
-{{- define "infra.name" -}}
-{{- required "You must set .Values.appName (application name)" .Values.appName | trunc 63 | trimSuffix "-" -}}
-{{- end -}}
-
-{{- define "infra.fullname" -}}
-{{- $org := include "infra.org" . -}}
-{{- $envmap := include "infra.envs" . | fromYaml -}}
-{{- $envShort := index $envmap "envShort" -}}
-{{- $appName := include "infra.name" . -}}
-{{- printf "%s-%s-%s" $org $envShort $appName | trunc 63 | trimSuffix "-" -}}
-{{- end -}}
-
-{{- define "infra.releaseName" -}}
-{{- include "infra.name" . -}}
-{{- end -}}
-
-{{- define "infra.version" -}}
-{{- .Chart.AppVersion -}}
-{{- end -}}
-
+{{/* Helm labels with the new convention */}}
 {{- define "infra.labels" -}}
-app.kubernetes.io/name: {{ include "infra.name" . }}
-app.kubernetes.io/instance: {{ include "infra.fullname" . }}
-app.kubernetes.io/version: {{ include "infra.version" . }}
+app.kubernetes.io/name: {{ include "infra.releaseName" . }}
+app.kubernetes.io/instance: {{ include "infra.releaseName" . }}
+app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
 app.kubernetes.io/managed-by: {{ .Release.Service | quote }}
 helm.sh/chart: {{ printf "%s-%s" .Chart.Name (.Chart.Version | replace "+" "_") }}
 {{- end -}}
 
 {{- define "infra.s3BucketName" -}}
-{{- .Values.bucketNameOverride | default (include "infra.fullname" .) -}}
+{{- include "infra.resourceName" (dict "override" .Values.aws.s3.bucketNameOverride "global" .Values.global "Release" .Release) -}}
 {{- end -}}
+
 {{- define "infra.kmsKeyName" -}}
-{{- .Values.infra.aws.kms.keyNameOverride | default (include "infra.fullname" .) -}}
+{{- include "infra.resourceName" (dict "override" .Values.aws.kms.keyNameOverride "global" .Values.global "Release" .Release) -}}
 {{- end -}}
 
-{{/*
-Combine default tags and additional user-defined tags in .Values.tags
-Produces a YAML map for use in resources. Output should be referenced as $allTags.
-Default tags example: org, environment, managed-by=helm, etc.
-*/}}
-{{- define "infra.allTags" -}}
-{{- $defaultTags := dict "org" (include "infra.org" .) "environment" .Values.infra.aws.environment "managed-by" "helm" -}}
-{{- if .Values.tags }}
-{{- $allTags := merge (deepCopy $defaultTags) .Values.tags }}
-{{- toYaml $allTags }}
-{{- else }}
-{{- toYaml $defaultTags }}
-{{- end -}}
+{{- define "infra.ecrRepoName" -}}
+{{- include "infra.resourceName" (dict "override" .Values.aws.ecr.repoNameOverride "global" .Values.global "Release" .Release) -}}
 {{- end -}}
 
-{{/* Helper functions for account and EKS OIDC ID */}}
-{{- define "infra.account" -}}
-  {{- $env := required "You must set .Values.infra.aws.environment to one of: staging, production, or development" .Values.infra.aws.environment -}}
-  {{- if eq $env "staging" -}}
-    107282186755
-  {{- else if or (eq $env "prod") (eq $env "production") (eq $env "development") -}}
-    009160051835
-  {{- else -}}
-    {{- fail (printf "Unknown environment '%s' for account" $env) -}}
-  {{- end -}}
+{{/* Required AWS-level keys */}}
+{{- define "infra.checkAwsMandates" -}}
+{{- if not .Values.aws.account -}}
+  {{- fail "You must set .Values.aws.account (AWS account)" -}}
 {{- end -}}
-
-{{- define "infra.eksOidcId" -}}
-  {{- $env := required "You must set .Values.infra.aws.environment to one of: staging, production, or development" .Values.infra.aws.environment -}}
-  {{- if eq $env "staging" -}}
-    107916C22F83AAC08CFF8E8C93E433C1
-  {{- else if or (eq $env "prod") (eq $env "production") (eq $env "development") -}}
-    C14B75483334CD720225B731A2F3DF25
-  {{- else -}}
-    {{- fail (printf "Unknown environment '%s' for eksOidcId" $env) -}}
-  {{- end -}}
+{{- if not .Values.aws.eksOidcId -}}
+  {{- fail "You must set .Values.aws.eksOidcId (AWS EKS OIDC ID)" -}}
+{{- end -}}
 {{- end -}}

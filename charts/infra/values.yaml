@@ -1,38 +1,40 @@
-appName: "guardian"
-
-tags: 
-  name: "guardian" 
+global:
+  # MANDATORY
+  costCenter: "guardian"
   team: "guardian"
-  cost_center: "guardian"
-  env: "stg" 
+  env: "dev"
+  org: "tha"
 
-infra:
-  aws:
-    environment: staging 
-    region: "us-east-1" 
+aws:
+  enabled: true # true by default. Not a mandatory field
+  account: "009160051778" # MANDATORY
+  region: "eu-central-2" # Not Mandatory. eu-central-2 is default.
+  # The OIDC ID of your AWS EKS cluster. MANDATORY if aws.enabled is true.
+  eksOidcId: "8344E6F6E69788A5E0633B9338AC9591"
 
-    s3:
-      enabled: true 
-      versioningEnabled: false 
-      acl: private
-      lifeCycleConfiguration:
-        enabled: true 
-        rule:
-        - id: rule-1
-          status: Enabled
+  s3:
+    enabled: true # false by default
+    additional_tags: {} # Not mandatory
+    versioning:
+      enabled: false # By default false. Not mandatory
+    # BucketName override, if specified bucket name will be this.
+    # bucketNameOverride: "some-value" 
 
-    kms:
+    acl: private # by default private. Not mandatory
+    lifeCycleConfiguration:
       enabled: false
-      keyNameOverride: "some_key" 
-      deletionWindowInDays: 7 
-      rotateKey: true 
-      tags:
-        name: "some string" 
-        team: "some string"
-        cost_center: "some string"
-        env: "stage"
+      rule: []
 
-    ecr:
-      enabled: true  
-      scanOnPush: true
-      imageTagMutability: "MUTABLE"
+  kms:
+    enabled: true
+    additional_tags: {}
+    keyNameOverride: ""
+    deletionWindowInDays: 7
+    rotateKey: false
+
+  ecr:
+    enabled: true
+    additional_tags: {}
+    repoNameOverride: ""
+    scanOnPush: false
+    imageTagMutability: "MUTABLE"
