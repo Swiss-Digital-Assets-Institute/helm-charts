@@ -1,0 +1,21 @@
+{{- if and (.Values.aws.enabled | default true) .Values.aws.kms.enabled }}
+{{ include "infra.checkAwsMandates" . }}
+---
+apiVersion: {{ include "infra.kmsApiVersion" . }}
+kind: Key
+metadata:
+  name: {{ include "infra.kmsKeyName" . }}
+  namespace: {{ .Release.Namespace }}
+  annotations:
+    crossplane.io/external-name: {{ include "infra.kmsKeyName" . }}
+spec:
+  forProvider:
+    region: {{ .Values.aws.region | quote }}
+    tags:
+{{ include "infra.allTags" (dict "Values" .Values "section" .Values.aws.kms) | indent 6 }}
+    deletionWindowInDays: {{ .Values.aws.kms.deletionWindowInDays | default 365 }}
+    description: {{ include "infra.kmsKeyName" . }}
+    enableKeyRotation: {{ .Values.aws.kms.rotateKey | default false }}
+  providerConfigRef:
+    name: {{ .Values.global.env }}
+{{- end }}

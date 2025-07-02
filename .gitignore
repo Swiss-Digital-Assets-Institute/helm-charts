@@ -1,1 +1,4 @@
 results.yaml
+vscode/
+!.vscode/launch.json
+.vscode
