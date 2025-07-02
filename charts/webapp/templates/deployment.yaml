@@ -25,6 +25,11 @@ spec:
       restartPolicy: {{ default "Always" .Values.restartPolicy }}    
       imagePullSecrets: {{- toYaml (default list .Values.imagePullSecrets) | nindent 8 }}
       serviceAccountName: {{ .Values.name }}
+      {{- if .Values.securityContext.enabled }}
+      securityContext: 
+        fsGroup: {{ .Values.securityContext.fsGroup }}
+        containerPort:  {{ .Values.securityContext.runAsUser }}
+      {{- end }}
       containers:
       - name: {{ .Values.name }}
         image: {{ include "image" . | quote }}
