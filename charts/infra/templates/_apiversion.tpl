@@ -16,3 +16,7 @@ kms.aws.upbound.io/v1beta1
 {{- define "infra.iamApiVersion" -}}
 iam.aws.upbound.io/v1beta1
 {{- end -}}
+
+{{- define "infra.rdsApiVersion" -}}
+database.hashgraphgroup.com/v1alpha2
+{{- end -}}
