@@ -8,6 +8,7 @@ Extract the base release name by removing -infra suffix
   {{- .Release.Name -}}
 {{- end -}}
 {{- end -}}
+
 {{/*
 Get the release name with -infra suffix
 */}}
@@ -57,18 +58,6 @@ app.kubernetes.io/managed-by: {{ .Release.Service | quote }}
 helm.sh/chart: {{ printf "%s-%s" .Chart.Name (.Chart.Version | replace "+" "_") }}
 {{- end -}}
 
-{{- define "infra.s3BucketName" -}}
-{{- include "infra.resourceName" (dict "override" .Values.aws.s3.bucketNameOverride "global" .Values.global "Release" .Release) -}}
-{{- end -}}
-
-{{- define "infra.kmsKeyName" -}}
-{{- include "infra.resourceName" (dict "override" .Values.aws.kms.keyNameOverride "global" .Values.global "Release" .Release) -}}
-{{- end -}}
-
-{{- define "infra.ecrRepoName" -}}
-{{- include "infra.resourceName" (dict "override" .Values.aws.ecr.repoNameOverride "global" .Values.global "Release" .Release) -}}
-{{- end -}}
-
 {{/* Required AWS-level keys */}}
 {{- define "infra.checkAwsMandates" -}}
 {{- if not .Values.aws.account -}}
@@ -87,7 +76,7 @@ Generate a random password for use in secrets.
 {{- $len := 15 -}}
 {{- $password := "" -}}
 {{- range $i, $e := until $len }}
-  {{- $password = printf "%s%s" $password (index $letters (randAlphaNum (len $letters))) -}}
+  {{- $password = printf "%s%s" $password (index $letters (randInt 0 (len $letters))) -}}
 {{- end }}
 {{- $password -}}
 {{- end -}}

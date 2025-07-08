@@ -4,7 +4,7 @@
 apiVersion: v1
 kind: Secret
 metadata:
-  name: {{ include "infra.resourceName" . }}-input-secret
+  name: {{ include "infra.rdsInstanceName" . }}-input-secret
   namespace: {{ .Release.Namespace }}
   annotations:
     "helm.sh/hook": pre-install,pre-upgrade
@@ -17,7 +17,7 @@ stringData:
 apiVersion: {{ include "infra.rdsApiVersion" . }}
 kind: PgSQL
 metadata:
-  name: {{ include "infra.resourceName" . }}
+  name: {{ include "infra.rdsInstanceName" . }}
   namespace: {{ .Values.aws.rds.namespace | default .Release.Namespace }}
 spec:
   region: {{ .Values.aws.rds.region | quote }}
@@ -66,7 +66,7 @@ spec:
 
   masterUserName: {{ .Values.aws.rds.masterUserName | default "postgres" | quote }}
   passwordSecretRef:
-    name: {{ .Values.aws.rds.passwordSecretRef.name | default (printf "%s-input-secret" (include "infra.resourceName" .)) | quote }}
+    name: {{ .Values.aws.rds.passwordSecretRef.name | default (printf "%s-input-secret" (include "infra.rdsInstanceName" .)) | quote }}
     key: {{ .Values.aws.rds.passwordSecretRef.key | default "password" | quote }}
     namespace: {{ .Values.aws.rds.passwordSecretRef.namespace | default .Release.Namespace | quote }}
   preferredBackupWindow: {{ .Values.aws.rds.preferredBackupWindow | default "03:00-05:00" | quote }}
