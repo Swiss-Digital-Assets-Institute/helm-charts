@@ -1,0 +1,12 @@
+{{- if and (.Values.aws.rds.enabled | default false) (.Values.aws.enabled | default true) }}
+apiVersion: v1
+kind: Secret
+metadata:
+  name: {{ include "infra.resourceName" . }}-input-secret
+  namespace: {{ .Release.Namespace }}
+  annotations:
+    "helm.sh/hook": pre-install,pre-upgrade
+type: Opaque
+stringData:
+  password: "{{ include "infra.randomPassword" . }}"
+{{- end }}
