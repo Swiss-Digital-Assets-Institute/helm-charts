@@ -1,0 +1,27 @@
+{{- if or (and (.Values.aws.enabled | default true) .Values.aws.s3.enabled) (and (.Values.aws.enabled | default true) .Values.aws.kms.enabled) }}
+{{ include "infra.checkAwsMandates" . }}
+---
+apiVersion: {{ include "infra.iamApiVersion" . }}
+kind: Role
+metadata:
+  name: {{ include "infra.resourceName" (dict "global" .Values.global "Release" .Release) }}
+  namespace: {{ .Release.Namespace }}
+  labels:
+    app.kubernetes.io/name: {{ include "infra.resourceName" (dict "global" .Values.global "Release" .Release) }}
+    app.kubernetes.io/instance: {{ include "infra.resourceName" (dict "global" .Values.global "Release" .Release) }}
+    app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
+    app.kubernetes.io/managed-by: {{ .Release.Service | quote }}
+    helm.sh/chart: {{ printf "%s-%s" .Chart.Name (.Chart.Version | replace "+" "_") }}
+spec:
+  forProvider:
+    assumeRolePolicy: |
+{{ include "infra.trustRelationship" . | indent 6 }}
+    tags:
+{{ include "infra.allTags" (dict "Values" .Values "section" (dict)) | indent 6 }}
+    inlinePolicy:
+      - name: {{ include "infra.resourceName" (dict "global" .Values.global "Release" .Release) }}
+        policy: |
+{{ include "infra.customIamPolicy" . | indent 10 }}
+  providerConfigRef:
+    name: {{ .Values.global.env }}
+{{- end }}

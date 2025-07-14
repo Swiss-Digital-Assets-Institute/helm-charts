@@ -1,0 +1,119 @@
+{{- if and .Values.aws.s3.enabled (default true .Values.aws.enabled) }}
+{{ include "infra.checkAwsMandates" . }}
+---
+apiVersion: {{ include "infra.s3ApiVersion" . }}
+kind: Bucket
+metadata:
+  name: {{ include "infra.s3BucketName" . }}
+  namespace: {{ .Release.Namespace }}
+  annotations:
+    crossplane.io/external-name: {{ include "infra.s3BucketName" . }}
+  labels:
+    app.kubernetes.io/name: {{ include "infra.resourceName" (dict "global" .Values.global "Release" .Release) }}
+    app.kubernetes.io/instance: {{ include "infra.resourceName" (dict "global" .Values.global "Release" .Release) }}
+    app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
+    app.kubernetes.io/managed-by: {{ .Release.Service | quote }}
+    helm.sh/chart: {{ printf "%s-%s" .Chart.Name (.Chart.Version | replace "+" "_") }}
+spec:
+  forProvider:
+    region: {{ .Values.aws.region | quote }}
+    tags:
+{{ include "infra.allTags" (dict "Values" .Values "section" .Values.aws.s3) | indent 6 }}
+  providerConfigRef:
+    name: {{ .Values.global.env }}
+
+---
+apiVersion: {{ include "infra.s3ApiVersion" . }}
+kind: BucketACL
+metadata:
+  name: {{ include "infra.s3BucketName" . }}
+  namespace: {{ .Release.Namespace }}
+  annotations:
+    crossplane.io/external-name: {{ include "infra.s3BucketName" . }}
+  labels:
+{{ include "infra.labels" . | indent 4 }}
+spec:
+  forProvider:
+    acl: {{ .Values.aws.s3.acl | default "private" | quote }}
+    region: {{ .Values.aws.region | quote }}
+    bucketSelector:
+      matchLabels:
+        app.kubernetes.io/name: {{ include "infra.resourceName" (dict "global" .Values.global "Release" .Release) }}
+        app.kubernetes.io/instance: {{ include "infra.resourceName" (dict "global" .Values.global "Release" .Release) }}
+        app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
+        app.kubernetes.io/managed-by: {{ .Release.Service | quote }}
+        helm.sh/chart: {{ printf "%s-%s" .Chart.Name (.Chart.Version | replace "+" "_") }}
+  providerConfigRef:
+    name: {{ .Values.global.env }}
+
+---
+apiVersion: {{ include "infra.s3ApiVersion" . }}
+kind: BucketOwnershipControls
+metadata:
+  name: {{ include "infra.s3BucketName" . }}-ownership
+  namespace: {{ .Release.Namespace }}
+  labels:
+    crossplane.io/composite: {{ include "infra.s3BucketName" . }}
+spec:
+  forProvider:
+    region: {{ .Values.aws.region | quote }}
+    bucketSelector:
+      matchLabels:
+        app.kubernetes.io/name: {{ include "infra.resourceName" (dict "global" .Values.global "Release" .Release) }}
+        app.kubernetes.io/instance: {{ include "infra.resourceName" (dict "global" .Values.global "Release" .Release) }}
+        app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
+        app.kubernetes.io/managed-by: {{ .Release.Service | quote }}
+        helm.sh/chart: {{ printf "%s-%s" .Chart.Name (.Chart.Version | replace "+" "_") }}
+    rule:
+      - objectOwnership: {{ .Values.aws.s3.objectOwnership | default "BucketOwnerPreferred" | quote }}
+  providerConfigRef:
+    name: {{ .Values.global.env }}
+
+{{- if and .Values.aws.s3.enabled .Values.aws.s3.lifeCycleConfiguration.enabled }}
+---
+apiVersion: {{ include "infra.s3ApiVersion" . }}
+kind: BucketLifecycleConfiguration
+metadata:
+  name: {{ include "infra.s3BucketName" . }}
+  namespace: {{ .Release.Namespace }}
+  annotations:
+    crossplane.io/external-name: {{ include "infra.s3BucketName" . }}
+  labels:
+{{ include "infra.labels" . | indent 4 }}
+spec:
+  forProvider:
+    region: {{ .Values.aws.region | quote }}
+    bucketSelector:
+      matchLabels:
+        app.kubernetes.io/name: {{ include "infra.resourceName" (dict "global" .Values.global "Release" .Release) }}
+        app.kubernetes.io/instance: {{ include "infra.resourceName" (dict "global" .Values.global "Release" .Release) }}
+        app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
+        app.kubernetes.io/managed-by: {{ .Release.Service | quote }}
+        helm.sh/chart: {{ printf "%s-%s" .Chart.Name (.Chart.Version | replace "+" "_") }}
+    rule:
+{{ toYaml .Values.aws.s3.lifeCycleConfiguration.rule | indent 6 }}
+  providerConfigRef:
+    name: {{ .Values.global.env }}
+{{- end }}
+
+{{- if and .Values.aws.s3.enabled .Values.aws.s3.versioning.enabled }}
+---
+apiVersion: s3.aws.upbound.io/v1beta2
+kind: BucketVersioning
+metadata:
+  name: {{ include "infra.s3BucketName" . }}
+  namespace: {{ .Release.Namespace }}
+  annotations:
+    crossplane.io/external-name: {{ include "infra.s3BucketName" . }}
+  labels:
+{{ include "infra.labels" . | indent 4 }}
+spec:
+  forProvider:
+    bucketSelector:
+      matchLabels:
+{{ include "infra.labels" . | indent 8 }}
+    region: {{ .Values.aws.region | quote }}
+    versioningConfiguration:
+    - status: Enabled
+{{- end }}
+{{- end }}
