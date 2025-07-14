@@ -1,6 +1,6 @@
 # helm-charts
 
-## @dSwiss-Digital-Assets-Institute - Helm Charts Repository
+## @Swiss-Digital-Assets-Institute - Helm Charts Repository
 
 [![main](https://github.com/Swiss-Digital-Assets-Institute/helm-charts/actions/workflows/main.yaml/badge.svg)](https://github.com/Swiss-Digital-Assets-Institute/helm-charts/actions/workflows/main.yaml)
 [![pages-build-deployment](https://github.com/Swiss-Digital-Assets-Institute/helm-charts/actions/workflows/pages/pages-build-deployment/badge.svg)](https://github.com/Swiss-Digital-Assets-Institute/helm-charts/actions/workflows/pages/pages-build-deployment)
