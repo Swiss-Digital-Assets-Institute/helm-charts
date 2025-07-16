@@ -1,0 +1,51 @@
+{{- if and (.Values.aws.enabled | default true) (.Values.aws.cdn.enabled | default false) }}
+{{ include "infra.checkAwsMandates" . }}
+---
+apiVersion: {{ include "infra.cdnApiVersion" . }}
+kind: CDN
+metadata:
+  name: {{ include "infra.resourceName" (dict "global" .Values.global "Release" .Release) }}
+  namespace: {{ .Release.Namespace }}
+  annotations:
+    crossplane.io/external-name: {{ include "infra.resourceName" (dict "global" .Values.global "Release" .Release) }}
+  labels:
+{{ include "infra.labels" . | indent 4 }}
+spec:
+  {{- $cdn := default dict .Values.aws.cdn }}
+  {{- $s3 := default dict (index $cdn "s3") }}
+  {{- $cors := default dict (index $s3 "corsPolicy") }}
+  {{- $cf := default dict (index $cdn "cloudfront") }}
+  {{- $cfDefCB := default dict (index $cf "defaultCacheBehavior") }}
+  domainName: {{ .Values.aws.cdn.domainName | quote }}
+  bucketName: {{ .Values.aws.cdn.bucketName | quote }}
+  region: {{ default "eu-central-2" .Values.aws.cdn.region | quote }}
+  tags:
+{{ include "infra.allTags" (dict "Values" .Values "section" .Values.aws.cdn) | indent 4 }}
+  s3:
+    corsPolicy:
+      allowedHeaders:
+{{ $cors.allowedHeaders | default (list "*") | toYaml | indent 8 }}
+      allowedMethods:
+{{ $cors.allowedMethods | default (list "GET" "HEAD") | toYaml | indent 8 }}
+      allowedOrigins:
+{{ $cors.allowedOrigins | default (list "*") | toYaml | indent 8 }}
+      maxAgeSeconds: {{ $cors.maxAgeSeconds | default 3600 }}
+  cloudfront:
+    enabled: {{ $cf.enabled | default true }}
+    comment: {{ $cf.comment | default (printf "%s created using crossplane" (include "infra.resourceName" (dict "global" .Values.global "Release" .Release))) | quote }}
+    defaultRootObject: {{ $cf.defaultRootObject | default "index.html" | quote }}
+    priceClass: {{ $cf.priceClass | default "PriceClass_100" | quote }}
+    httpVersion: {{ $cf.httpVersion | default "http2" | quote }}
+    isIPV6Enabled: {{ $cf.isIPV6Enabled | default true }}
+    defaultCacheBehavior:
+      allowedMethods:
+{{ $cfDefCB.allowedMethods | default (list "GET" "HEAD") | toYaml | indent 8 }}
+      cachedMethods:
+{{ $cfDefCB.cachedMethods | default (list "GET" "HEAD") | toYaml | indent 8 }}
+      targetOriginId: {{ $cfDefCB.targetOriginId | default "S3Origin" | quote }}
+      viewerProtocolPolicy: {{ $cfDefCB.viewerProtocolPolicy | default "redirect-to-https" | quote }}
+      compress: {{ $cfDefCB.compress | default true }}
+      minTtl: {{ $cfDefCB.minTtl | default 0 }}
+      defaultTtl: {{ $cfDefCB.defaultTtl | default 86400 }}
+      maxTtl: {{ $cfDefCB.maxTtl | default 31536000 }}
+{{- end }}
