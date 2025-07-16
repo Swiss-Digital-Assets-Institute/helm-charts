@@ -1,4 +1,4 @@
-{{- if and .Values.aws.cdn.enabled (default true .Values.aws.enabled) }}
+{{- if and (.Values.aws.enabled | default true) (.Values.aws.cdn.enabled | default false) }}
 {{ include "infra.checkAwsMandates" . }}
 ---
 apiVersion: {{ include "infra.cdnApiVersion" . }}
