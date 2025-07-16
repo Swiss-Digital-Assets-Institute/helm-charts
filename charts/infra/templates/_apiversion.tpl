@@ -20,3 +20,7 @@ iam.aws.upbound.io/v1beta1
 {{- define "infra.rdsApiVersion" -}}
 database.hashgraphgroup.com/v1alpha2
 {{- end -}}
+
+{{- define "infra.cdnApiVersion" -}}
+edge.hashgraphgroup.com/v1alpha1
+{{- end -}}
