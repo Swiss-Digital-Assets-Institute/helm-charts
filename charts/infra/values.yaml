@@ -12,19 +12,45 @@ aws:
 
   s3:
     enabled: false
+    bucketNameOverride: ""
+    acl: "private"
+    objectOwnership: "BucketOwnerPreferred"
     lifeCycleConfiguration:
       enabled: false
-      versioning:
-        enabled: false    
+      rule: []
+    versioning:
+      enabled: false
+    corsPolicy:
+      allowedHeaders:
+        - "*"
+      allowedMethods:
+        - GET
+        - HEAD
+      allowedOrigins:
+        - "*"
+      maxAgeSeconds: 3600
+    additional_tags: {}
 
   kms:
     enabled: false
+    keyNameOverride: ""
+    deletionWindowInDays: 365
+    rotateKey: false
+    additional_tags: {}
 
   ecr:
     enabled: false
+    repoNameOverride: ""
+    imageTagMutability: "MUTABLE"
+    scanOnPush: false
+    additional_tags: {}
 
   rds:
     enabled: false
+    instanceNameOverride: ""
+    namespace: ""
+    region: ""
+    dbName: ""
     instanceClass: db.t3.micro
     engine: postgres
     engineVersion: "15.4"
@@ -34,24 +60,73 @@ aws:
     dbSubnetGroupName: ""
     storage:
       type: gp3
+      provisionedIops: 3000
+      enableAutoscaling: false
+      maxAllocatedStorage: 500
+      enableDedicatedLogVolume: false
     backup:
       enabled: false
+      backupRetentionPeriod: 30
+      copyTagsToSnapshot: true
+      replication:
+        enabled: false
+        destinationRegion: ""
+        kmsKeyId: ""
     ha:
       enabled: false
     monitoring:
       enableInsights: false
+      insightsMode: "standard"
+      enablePerformanceInsights: false
+      performanceInsightsRetentionPeriod: 30
+      performanceInsightsKmsKeyId: ""
     security:
       enableDeletionProtection: false
+    masterUserName: "postgres"
+    passwordSecretRef:
+      name: ""
+      key: "password"
+      namespace: ""
+    preferredBackupWindow: "03:00-05:00"
+    additional_tags: {}
 
   cdn:
     enabled: false
+    additional_tags: {}
     domainName: ""
     bucketName: ""
+    region: ""
     bucketPolicy:
       version: "2012-10-17"
+    s3:
+      corsPolicy:
+        allowedHeaders:
+          - "*"
+        allowedMethods:
+          - GET
+          - HEAD
+        allowedOrigins:
+          - "*"
+        maxAgeSeconds: 3600
     cloudFront:
       enabled: false
       originAccessIdentity: false
       defaultRootObject: ""
       viewerProtocolPolicy: "redirect-to-https"
       priceClass: "PriceClass_All"
+      comment: ""
+      httpVersion: "http2"
+      isIPV6Enabled: true
+      defaultCacheBehavior:
+        allowedMethods:
+          - GET
+          - HEAD
+        cachedMethods:
+          - GET
+          - HEAD
+        targetOriginId: "S3Origin"
+        viewerProtocolPolicy: "redirect-to-https"
+        compress: true
+        minTtl: 0
+        defaultTtl: 86400
+        maxTtl: 31536000

@@ -72,5 +72,5 @@ spec:
   preferredBackupWindow: {{ .Values.aws.rds.preferredBackupWindow | default "03:00-05:00" | quote }}
 
   tags:
-{{ toYaml .Values.aws.rds.tags | indent 4 }}
+{{ include "infra.allTags" (dict "Values" .Values "section" .Values.aws.rds) | indent 4 }}
 {{- end }}
