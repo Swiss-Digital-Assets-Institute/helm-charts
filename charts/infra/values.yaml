@@ -1,0 +1,27 @@
+global:
+  env: ""
+  org: ""
+  team: ""
+  costCenter: ""
+
+aws: 
+  enabled: true
+  account: ""  
+  region: ""
+  eksOidcId: ""
+
+  s3:
+    enabled: false
+  
+  kms:
+    enabled: false
+  
+  ecr:
+    enabled: false
+
+  rds:
+    enabled: false
+
+  cdn:
+    enabled: false  
+  

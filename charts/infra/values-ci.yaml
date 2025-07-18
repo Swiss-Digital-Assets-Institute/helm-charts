@@ -1,0 +1,31 @@
+global:
+  env: "boo"
+  org: "meow"
+  team: "blah"
+  costCenter: "shared"
+
+aws: 
+  enabled: true
+  account: "107111186755"  
+  region: "eu-central-2"
+  eksOidcId: "107F83AAC08CFF8E8C93E433C1"
+
+  s3:
+    enabled: true
+    lifeCycleConfiguration:
+      enabled: false
+    versioning:
+      enabled: false
+  
+  kms:
+    enabled: false
+  
+  ecr:
+    enabled: false
+
+  rds:
+    enabled: false
+
+  cdn:
+    enabled: false  
+  
