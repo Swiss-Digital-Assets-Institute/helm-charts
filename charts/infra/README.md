@@ -17,6 +17,8 @@ Managing and maintaining cloud resources using crossplane
 | aws.rds.enabled | bool | `false` |  |
 | aws.region | string | `""` |  |
 | aws.s3.enabled | bool | `false` |  |
+| aws.s3.lifeCycleConfiguration.enabled | bool | `false` |  |
+| aws.s3.lifeCycleConfiguration.versioning.enabled | bool | `false` |  |
 | global.costCenter | string | `""` |  |
 | global.env | string | `""` |  |
 | global.org | string | `""` |  |
