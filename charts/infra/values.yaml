@@ -25,6 +25,33 @@ aws:
 
   rds:
     enabled: false
+    instanceClass: db.t3.micro
+    engine: postgres
+    engineVersion: "15.4"
+    multiAz: false
+    allocatedStorage: 20
+    storageEncrypted: true
+    dbSubnetGroupName: ""
+    storage:
+      type: gp3
+    backup:
+      enabled: false
+    ha:
+      enabled: false
+    monitoring:
+      enableInsights: false
+    security:
+      enableDeletionProtection: false
 
   cdn:
     enabled: false
+    domainName: ""
+    bucketName: ""
+    bucketPolicy:
+      version: "2012-10-17"
+    cloudFront:
+      enabled: false
+      originAccessIdentity: false
+      defaultRootObject: ""
+      viewerProtocolPolicy: "redirect-to-https"
+      priceClass: "PriceClass_All"
