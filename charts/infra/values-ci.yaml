@@ -4,11 +4,11 @@ global:
   team: "devops"
   costCenter: "shared"
 
-aws: 
+aws:
   enabled: true
-  account: "107111186755"  
+  account: "00000000000"
   region: "eu-central-2"
-  eksOidcId: "107F83AAC08CFF8E8C93E433C1"
+  eksOidcId: "0000000000000000000000"
 
   s3:
     enabled: true
@@ -16,10 +16,10 @@ aws:
       enabled: false
     versioning:
       enabled: false
-  
+
   kms:
     enabled: false
-  
+
   ecr:
     enabled: false
 
@@ -27,5 +27,4 @@ aws:
     enabled: false
 
   cdn:
-    enabled: false  
-  
+    enabled: false
