@@ -9,12 +9,32 @@ Managing and maintaining cloud resources using crossplane
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
 | aws.account | string | `""` |  |
+| aws.cdn.bucketName | string | `""` |  |
+| aws.cdn.bucketPolicy.version | string | `"2012-10-17"` |  |
+| aws.cdn.cloudFront.defaultRootObject | string | `""` |  |
+| aws.cdn.cloudFront.enabled | bool | `false` |  |
+| aws.cdn.cloudFront.originAccessIdentity | bool | `false` |  |
+| aws.cdn.cloudFront.priceClass | string | `"PriceClass_All"` |  |
+| aws.cdn.cloudFront.viewerProtocolPolicy | string | `"redirect-to-https"` |  |
+| aws.cdn.domainName | string | `""` |  |
 | aws.cdn.enabled | bool | `false` |  |
 | aws.ecr.enabled | bool | `false` |  |
 | aws.eksOidcId | string | `""` |  |
 | aws.enabled | bool | `true` |  |
 | aws.kms.enabled | bool | `false` |  |
+| aws.rds.allocatedStorage | int | `20` |  |
+| aws.rds.backup.enabled | bool | `false` |  |
+| aws.rds.dbSubnetGroupName | string | `""` |  |
 | aws.rds.enabled | bool | `false` |  |
+| aws.rds.engine | string | `"postgres"` |  |
+| aws.rds.engineVersion | string | `"15.4"` |  |
+| aws.rds.ha.enabled | bool | `false` |  |
+| aws.rds.instanceClass | string | `"db.t3.micro"` |  |
+| aws.rds.monitoring.enableInsights | bool | `false` |  |
+| aws.rds.multiAz | bool | `false` |  |
+| aws.rds.security.enableDeletionProtection | bool | `false` |  |
+| aws.rds.storage.type | string | `"gp3"` |  |
+| aws.rds.storageEncrypted | bool | `true` |  |
 | aws.region | string | `""` |  |
 | aws.s3.enabled | bool | `false` |  |
 | aws.s3.lifeCycleConfiguration.enabled | bool | `false` |  |
