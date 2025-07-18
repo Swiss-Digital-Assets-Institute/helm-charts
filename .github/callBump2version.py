@@ -1,6 +1,6 @@
-import sys
 import subprocess
-from enum import EnumMeta, Enum
+import sys
+from enum import Enum, EnumMeta
 
 
 class MyEnumMeta(EnumMeta):
@@ -25,7 +25,10 @@ class ProductType(Enum, metaclass=MyEnumMeta):
     NONE = 'none'
     THA_APP = 'tha-app'
     WEBAPP = 'webapp'
+    INFRA = 'infra'
     UNIVERSAL_CHART = 'universal_chart'
+
+
 
 
 def handle_subprocess_error(subprocess_result, error_message):
