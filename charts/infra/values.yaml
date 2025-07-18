@@ -12,6 +12,10 @@ aws:
 
   s3:
     enabled: false
+    lifeCycleConfiguration:
+      enabled: false
+      versioning:
+        enabled: false    
 
   kms:
     enabled: false
