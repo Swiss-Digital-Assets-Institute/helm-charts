@@ -254,29 +254,31 @@ jobs:
 
       - name: Bump Version ✨
         run: python .github/version_bump.py ${{steps.pr-labels.outputs.labels}} rc=${{ env.RC_NUMBER }}
+
       - name: Generate Helm Docs �
         uses: docker://jnorwood/helm-docs:latest
         with:
           entrypoint: /usr/bin/helm-docs
           args: --chart-search-root /github/workspace
 
-      - name: Package Charts Manually 📦
-        run: |
-          mkdir -p .cr-release-packages
-          for dir in charts/*/; do
-            if [[ -f "$dir/Chart.yaml" ]]; then
-              chart_name=$(basename "$dir")
-              echo "Packaging $chart_name..."
-              helm package "$dir" -d .cr-release-packages/
-            fi
-          done
-
-      - name: Create RC Artifacts �
-        uses: actions/upload-artifact@v4
+      - name: Generate Helm Docs 📝
+        uses: docker://jnorwood/helm-docs:latest
         with:
-          name: helm-charts-rc-${{ github.event.pull_request.number }}
-          path: .cr-release-packages/
-          retention-days: 30
+          entrypoint: /usr/bin/helm-docs
+          args: --chart-search-root /github/workspace
+
+      - name: Run chart-releaser 📈
+        uses: helm/chart-releaser-action@main
+        env:
+          CR_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
+          CR_SKIP_EXISTING: true
+
+      - name: Commit Changes
+        id: docs_updater
+        uses: stefanzweifel/git-auto-commit-action@v5.0.1
+        with:
+          commit_message: ":robot: Update Docs"
+          repository: .
 
   artifacts:
     name: Generate Artifacts 📦
