@@ -267,12 +267,12 @@ jobs:
           entrypoint: /usr/bin/helm-docs
           args: --chart-search-root /github/workspace
 
-      - name: Run chart-releaser 📈
-        if: ${{ !contains(github.head_ref, 'rc') }}
-        uses: helm/chart-releaser-action@main
-        env:
-          CR_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
-          CR_SKIP_EXISTING: true
+      # - name: Run chart-releaser 📈
+      #   if: ${{ !contains(github.head_ref, 'rc') }}
+      #   uses: helm/chart-releaser-action@main
+      #   env:
+      #     CR_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
+      #     CR_SKIP_EXISTING: true
 
       - name: Commit Changes
         id: docs_updater
