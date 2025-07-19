@@ -237,9 +237,18 @@ jobs:
           git config user.name "$GITHUB_ACTOR"
           git config user.email "$GITHUB_ACTOR@users.noreply.github.com"
 
+      # - name: Get PR labels 🏷️
+      #   id: pr-labels
+      #   uses: joerick/pr-labels-action@v1.0.9
+
       - name: Get PR labels 🏷️
         id: pr-labels
-        uses: joerick/pr-labels-action@v1.0.9
+        run: |
+          labels=$(gh pr view ${{ github.event.pull_request.number }} --json labels --jq '.labels[].name' | tr '\n' ' ')
+          echo "Found labels: $labels"
+          echo "labels=$labels" >> $GITHUB_OUTPUT
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Install dependencies
         run: pip install bump2version pyyaml
@@ -249,7 +258,6 @@ jobs:
 
       - name: Bump Version ✨
         run: python .github/version_bump.py ${{steps.pr-labels.outputs.labels}} rc=${{ env.RC_NUMBER }}
-
       - name: Generate Helm Docs �
         uses: docker://jnorwood/helm-docs:latest
         with:
