@@ -1,4 +1,4 @@
-name: bump
+name: Release 🚀
 
 on:
   pull_request:
