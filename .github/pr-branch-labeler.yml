@@ -4,8 +4,8 @@ patch:
 
 # Apply label "feature" if head matches "feature/*"
 minor:
-  head: "^feature/*"
+  head: ["^feature/*"]
 
 # Apply label "feature" if head matches "feature/*"
 major:
-  head: "^release/*"
+  head: ["^release/*"]

@@ -29,8 +29,6 @@ class ProductType(Enum, metaclass=MyEnumMeta):
     UNIVERSAL_CHART = 'universal_chart'
 
 
-
-
 def handle_subprocess_error(subprocess_result, error_message):
     if subprocess_result.returncode != 0:
         print(error_message)
