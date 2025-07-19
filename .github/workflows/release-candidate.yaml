@@ -9,7 +9,7 @@ on:
     types: [opened, synchronize, reopened]
 
 jobs:
-  review_checklist:
+  pr_checklist:
     name: Comment PR with the Review Checklist
     if: ${{ !github.event.pull_request.draft }}
     runs-on: ubuntu-latest
@@ -123,6 +123,8 @@ jobs:
 
   lint-chart:
     name: Chart Lint 🔎
+    needs:
+      - pr_checklist
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Lint 🛎️
