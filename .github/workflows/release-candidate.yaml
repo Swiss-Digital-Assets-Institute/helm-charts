@@ -17,6 +17,41 @@ jobs:
       - name: Checkout 🛎️
         uses: actions/checkout@v4
 
+      - name: Check Branch Naming Convention 🏷️
+        id: branch-check
+        run: |
+          branch_name="${{ github.head_ref }}"
+          echo "Branch name: $branch_name"
+
+          if [[ "$branch_name" =~ ^(feature|bugfix|hotfix|fix|release|major|breaking|chore)/.+ ]]; then
+            echo "✅ Branch name follows convention: $branch_name"
+            echo "result=success" >> $GITHUB_OUTPUT
+            echo "message=✅ Branch name follows convention: \`$branch_name\`" >> $GITHUB_OUTPUT
+          else
+            echo "❌ Branch name does not follow convention!"
+            echo "Expected format: <type>/<description>"
+            echo "Valid types: feature, bugfix, hotfix, fix, release, major, breaking, chore"
+            echo "Example: feature/add-new-chart or bugfix/fix-deployment-issue"
+            echo "result=failure" >> $GITHUB_OUTPUT
+            echo "message=❌ Branch name does not follow convention!%0A%0AExpected format: \`<type>/<description>\`%0AValid types: feature, bugfix, hotfix, fix, release, major, breaking, chore%0AExample: \`feature/add-new-chart\` or \`bugfix/fix-deployment-issue\`" >> $GITHUB_OUTPUT
+            exit 1
+          fi
+
+      - name: Comment Branch Check Result 📝
+        if: always()
+        uses: thollander/actions-comment-pull-request@v2
+        with:
+          comment_tag: branch_check
+          message: |
+            ## 🏷️ Branch Naming Convention Check
+
+            ${{ steps.branch-check.outputs.message }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Add PR Checklist 📝
+        if: github.event.action == 'opened'
+        uses: thollander/actions-comment-pull-request@v2
+
       - name: Comment PR 📝
         if: github.event.action == 'opened'
         uses: thollander/actions-comment-pull-request@v2
