@@ -216,15 +216,15 @@ jobs:
       - name: Bump Version ✨
         run: python .github/version_bump.py ${{steps.pr-labels.outputs.labels}} rc=${{ env.RC_NUMBER }}
 
-      - name: Push Results 🚀
-        id: pushResults
-        run: |
-          if git merge-base --is-ancestor HEAD @{u} ; then
-            echo "No push necessary"
-          else
-            echo "Version bumps happened. Pushing now..."
-            git push
-          fi
+      # - name: Push Results 🚀
+      #   id: pushResults
+      #   run: |
+      #     if git merge-base --is-ancestor HEAD @{u} ; then
+      #       echo "No push necessary"
+      #     else
+      #       echo "Version bumps happened. Pushing now..."
+      #       git push
+      #     fi
 
       - name: Generate Helm Docs 📝
         uses: docker://jnorwood/helm-docs:latest
