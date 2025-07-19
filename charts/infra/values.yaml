@@ -6,7 +6,9 @@ global:
   env: ""
   # --global.org: Organization name
   org: ""
+  # --global.team: Team name
   team: ""
+  # --global.costCenter: Cost center name
   costCenter: ""
 
 aws:
