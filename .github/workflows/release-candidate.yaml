@@ -268,6 +268,7 @@ jobs:
           args: --chart-search-root /github/workspace
 
       - name: Run chart-releaser 📈
+        if: ${{ !contains(github.head_ref, 'rc') }}
         uses: helm/chart-releaser-action@main
         env:
           CR_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
