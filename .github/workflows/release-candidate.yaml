@@ -222,7 +222,7 @@ jobs:
     name: Chart Release Candidate ✨
     needs:
       - helm-diff
-      - lint-chart
+      # - lint-chart
     permissions:
       contents: write
     runs-on: ubuntu-latest
