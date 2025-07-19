@@ -10,7 +10,7 @@ on:
 
 jobs:
   pr_checklist:
-    name: Comment PR with the Review Checklist
+    name: Pull Request Checklist 📝
     if: ${{ !github.event.pull_request.draft }}
     runs-on: ubuntu-latest
     steps:
@@ -48,11 +48,6 @@ jobs:
             - [ ] `vtctl` command output order should be stable and `awk`-able.
 
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-  triage:
-    name: Pull Request Triage 🏷️
-    runs-on: ubuntu-latest
-    steps:
       - name: Label PRs
         uses: ffittschen/pr-branch-labeler@v1
         with:
@@ -65,8 +60,10 @@ jobs:
           sync-labels: true
 
   helm-diff:
-    name: Comment PR with Differences 📝
+    name: Check Differences 📝
     runs-on: ubuntu-latest
+    needs:
+      - pr_checklist
     permissions:
       pull-requests: write
 
@@ -164,6 +161,8 @@ jobs:
   kubeval-chart:
     name: Chart Validator 🔎
     runs-on: ubuntu-latest
+    needs:
+      - pr_checklist
     strategy:
       matrix:
         k8s:
