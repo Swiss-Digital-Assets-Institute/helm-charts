@@ -237,10 +237,6 @@ jobs:
           git config user.name "$GITHUB_ACTOR"
           git config user.email "$GITHUB_ACTOR@users.noreply.github.com"
 
-      # - name: Get PR labels 🏷️
-      #   id: pr-labels
-      #   uses: joerick/pr-labels-action@v1.0.9
-
       - name: Get PR labels 🏷️
         id: pr-labels
         run: |
@@ -281,31 +277,6 @@ jobs:
           name: helm-charts-rc-${{ github.event.pull_request.number }}
           path: .cr-release-packages/
           retention-days: 30
-
-      - name: Comment RC Download Links �
-        uses: thollander/actions-comment-pull-request@v2
-        with:
-          comment_tag: rc_artifacts
-          message: |
-            ## 🚀 Release Candidate Artifacts
-
-            Release candidate charts have been built for PR #${{ github.event.pull_request.number }}:
-
-            📦 **Download artifacts**: [helm-charts-rc-${{ github.event.pull_request.number }}](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }})
-
-            ### Charts packaged:
-            ```bash
-            # List of packaged charts
-            $(ls -la .cr-release-packages/ | grep -E '\.tgz$' | awk '{print "- " $9}')
-            ```
-
-            To test these charts locally:
-            ```bash
-            # Download and extract the artifacts, then:
-            helm install my-release ./chart-name-version.tgz
-            ```
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
   artifacts:
     name: Generate Artifacts 📦
     runs-on: ubuntu-latest
