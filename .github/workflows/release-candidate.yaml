@@ -277,6 +277,7 @@ jobs:
           name: helm-charts-rc-${{ github.event.pull_request.number }}
           path: .cr-release-packages/
           retention-days: 30
+
   artifacts:
     name: Generate Artifacts 📦
     runs-on: ubuntu-latest
@@ -326,18 +327,21 @@ jobs:
     runs-on: ubuntu-latest
     needs:
       - artifacts
+    permissions:
+      contents: write
+      pages: write
     steps:
-      - name: Chekcout 🛎️
+      - name: Checkout 🛎️
         uses: actions/checkout@v4
         with:
           ref: gh-pages
           fetch-depth: 1
+          token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Git setup 🔧
         run: |
           git config user.name "$GITHUB_ACTOR"
           git config user.email "$GITHUB_ACTOR@users.noreply.github.com"
-          echo ${{ secrets.GITHUB_TOKEN }} | gh auth login --with-token
 
       - uses: actions/download-artifact@v4
         with:
@@ -345,11 +349,12 @@ jobs:
 
       - name: Commit New index.yaml 📝
         run: |
-          if [[ $(git diff) ]];
-          then
+          if [[ $(git diff) ]]; then
             git add index.yaml
             git commit -m "[ci skip] :robot: [github actions actor] - update index.yaml"
             git push
           else
             echo "nothing to do!!!"
           fi
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
