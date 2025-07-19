@@ -4,7 +4,7 @@ on:
   pull_request:
     types: [closed]
     branches:
-      - 'main'
+      - "main"
 
 jobs:
   bump-versions:
@@ -29,7 +29,7 @@ jobs:
         run: |
           set -ex
           pip install --no-cache-dir bump2version
-          python ./.github/callBump2version.py ${{steps.pr-labels.outputs.labels}}
+          python ./.github/version_bump.py ${{steps.pr-labels.outputs.labels}}
 
       - name: Push Results 🚀
         id: pushResults

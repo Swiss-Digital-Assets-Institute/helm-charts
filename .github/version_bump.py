@@ -4,14 +4,12 @@ from enum import Enum, EnumMeta
 
 
 class MyEnumMeta(EnumMeta):
-
     def __contains__(self, other):
         try:
             self(other)
         except ValueError:
             return False
-        else:
-            return True
+        return True
 
 
 class UpgradeType(Enum, metaclass=MyEnumMeta):
@@ -29,17 +27,6 @@ class ProductType(Enum, metaclass=MyEnumMeta):
     UNIVERSAL_CHART = 'universal_chart'
 
 
-def handle_subprocess_error(subprocess_result, error_message):
-    if subprocess_result.returncode != 0:
-        print(error_message)
-        print(f"Return code {subprocess_result.returncode}")
-        print("STDERR:")
-        print(str(subprocess_result.stderr, "UTF-8"))
-        print("STDOUT:")
-        print(str(subprocess_result.stdout, "UTF-8"))
-        exit(1)
-
-
 def main(argv):
     chart = ProductType.NONE
     upgrade = UpgradeType.NONE
@@ -47,9 +34,7 @@ def main(argv):
     for label in argv:
         if label in ProductType:
             chart = ProductType(label)
-
-    for label in argv:
-        if label in UpgradeType:
+        elif label in UpgradeType:
             upgrade = UpgradeType(label)
 
     if upgrade == UpgradeType.NONE or chart == ProductType.NONE:
@@ -57,12 +42,24 @@ def main(argv):
         exit(0)
 
     print(
-        f"Bumping version of \'{chart.value}\' to next \'{upgrade.value}\' value.")
-    bumpver_process = subprocess.run(f"bump2version {upgrade.value}",
-                                     shell=True,
-                                     cwd=f"./charts/{chart.value}",
-                                     capture_output=True)
-    handle_subprocess_error(bumpver_process, "Could not execute version bump.")
+        f"Bumping version of '{chart.value}' to next '{upgrade.value}' value.")
+
+    try:
+        subprocess.run(
+            f"bump2version {upgrade.value}",
+            shell=True,
+            cwd=f"./charts/{chart.value}",
+            capture_output=True,
+            check=True
+        )
+    except subprocess.CalledProcessError as e:
+        print("❌ Could not execute version bump.")
+        print(f"Return code: {e.returncode}")
+        print("STDERR:")
+        print(e.stderr.decode())
+        print("STDOUT:")
+        print(e.stdout.decode())
+        exit(1)
 
 
 if __name__ == "__main__":
