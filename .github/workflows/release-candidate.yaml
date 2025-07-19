@@ -185,6 +185,7 @@ jobs:
     needs:
       - lint-chart
       - kubeval-chart
+      - helm-diff
     permissions:
       contents: write
     runs-on: ubuntu-latest
