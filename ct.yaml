@@ -1,0 +1,10 @@
+remote: origin
+target-branch: main
+chart-dirs:
+  - charts/infra
+  - charts/tha-app
+  - charts/webapp
+  - charts/universal-chart
+chart-repos:
+  - tha=https://swiss-digital-assets-institute.github.io/helm-charts
+check-version-increment: false
