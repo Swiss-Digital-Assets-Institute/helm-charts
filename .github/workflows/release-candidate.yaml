@@ -122,6 +122,7 @@ jobs:
     name: Chart Lint 🔎
     needs:
       - pr_checklist
+      - helm-diff
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Lint 🛎️
