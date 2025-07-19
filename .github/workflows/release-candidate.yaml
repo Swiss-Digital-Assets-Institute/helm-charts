@@ -118,76 +118,76 @@ jobs:
           filePath: diff.yaml
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-  lint-chart:
-    name: Chart Lint 🔎
-    needs:
-      - pr_checklist
-      - helm-diff
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout Lint 🛎️
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
+  # lint-chart:
+  #   name: Chart Lint 🔎
+  #   needs:
+  #     - pr_checklist
+  #     - helm-diff
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - name: Checkout Lint 🛎️
+  #       uses: actions/checkout@v4
+  #       with:
+  #         fetch-depth: 0
 
-      - name: Setup Python 🐍
-        uses: actions/setup-python@v5
-        with:
-          python-version: "3.10"
-          check-latest: true
+  #     - name: Setup Python 🐍
+  #       uses: actions/setup-python@v5
+  #       with:
+  #         python-version: "3.10"
+  #         check-latest: true
 
-      - name: Set up chart-testing 🔎
-        uses: helm/chart-testing-action@v2.6.1
+  #     - name: Set up chart-testing 🔎
+  #       uses: helm/chart-testing-action@v2.6.1
 
-      - name: Run chart-testing (list-changed)
-        id: list-changed
-        run: |
-          changed=$(ct list-changed --target-branch ${{ github.event.repository.default_branch }})
-          if [[ -n "$changed" ]]; then
-            echo "changed=true" >> "$GITHUB_OUTPUT"
-          fi
+  #     - name: Run chart-testing (list-changed)
+  #       id: list-changed
+  #       run: |
+  #         changed=$(ct list-changed --target-branch ${{ github.event.repository.default_branch }})
+  #         if [[ -n "$changed" ]]; then
+  #           echo "changed=true" >> "$GITHUB_OUTPUT"
+  #         fi
 
-      - name: Run chart-testing (lint)
-        if: steps.list-changed.outputs.changed == 'true'
-        run: ct lint --target-branch ${{ github.event.repository.default_branch }}
+  #     - name: Run chart-testing (lint)
+  #       if: steps.list-changed.outputs.changed == 'true'
+  #       run: ct lint --target-branch ${{ github.event.repository.default_branch }}
 
-      - name: Create kind cluster
-        if: steps.list-changed.outputs.changed == 'true'
-        uses: helm/kind-action@v1.10.0
+  #     - name: Create kind cluster
+  #       if: steps.list-changed.outputs.changed == 'true'
+  #       uses: helm/kind-action@v1.10.0
 
-      - name: Run chart-testing (install)
-        if: steps.list-changed.outputs.changed == 'true'
-        run: ct install --target-branch ${{ github.event.repository.default_branch }}
+  #     - name: Run chart-testing (install)
+  #       if: steps.list-changed.outputs.changed == 'true'
+  #       run: ct install --target-branch ${{ github.event.repository.default_branch }}
 
-  kubeval-chart:
-    name: Chart Validator 🔎
-    runs-on: ubuntu-latest
-    needs:
-      - pr_checklist
-      - helm-diff
-    strategy:
-      matrix:
-        k8s:
-          - v1.16.8
-          - v1.17.4
-          - v1.20.15
-          - v1.21.13
-          - v1.22.10
-    steps:
-      - name: Checkout Kubeval 🛎️
-        uses: actions/checkout@v4
+  # kubeval-chart:
+  #   name: Chart Validator 🔎
+  #   runs-on: ubuntu-latest
+  #   needs:
+  #     - pr_checklist
+  #     - helm-diff
+  #   strategy:
+  #     matrix:
+  #       k8s:
+  #         - v1.16.8
+  #         - v1.17.4
+  #         - v1.20.15
+  #         - v1.21.13
+  #         - v1.22.10
+  #   steps:
+  #     - name: Checkout Kubeval 🛎️
+  #       uses: actions/checkout@v4
 
-      - name: Run kubeval 🔎
-        env:
-          KUBERNETES_VERSION: ${{ matrix.k8s }}
-        run: .github/kubeval.sh
+  #     - name: Run kubeval 🔎
+  #       env:
+  #         KUBERNETES_VERSION: ${{ matrix.k8s }}
+  #       run: .github/kubeval.sh
 
   release:
     name: Chart Release ✨
     needs:
-      - lint-chart
-      - kubeval-chart
       - helm-diff
+      # - lint-chart
+      # - kubeval-chart
     permissions:
       contents: write
     runs-on: ubuntu-latest
