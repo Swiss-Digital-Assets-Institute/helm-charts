@@ -315,13 +315,34 @@ jobs:
         with:
           version: v3.8.1
 
-      - name: Run chart-releaser 📈
+      - name: Package Charts 📦
+        run: |
+          mkdir -p .cr-release-packages
+          for dir in charts/*/; do
+            if [[ -f "$dir/Chart.yaml" ]]; then
+              chart_name=$(basename "$dir")
+              echo "Packaging $chart_name..."
+              helm package "$dir" -d .cr-release-packages/
+            fi
+          done
+          echo "Packaged charts:"
+          ls -la .cr-release-packages/
+
+      - name: Run chart-releaser (skip RC versions) 📈
+        continue-on-error: true
         uses: helm/chart-releaser-action@v1.6.0
         with:
           skip_existing: true
-          #packages_with_index: true
         env:
           CR_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
+
+      - name: Create RC Artifacts 📦
+        uses: actions/upload-artifact@v4
+        with:
+          name: helm-charts-rc-${{ github.event.pull_request.number }}
+          path: .cr-release-packages/
+          retention-days: 30
+          if-no-files-found: warn
 
       - name: Generate updated index.yaml 📦
         run: |
