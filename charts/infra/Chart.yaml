@@ -1,11 +1,14 @@
 apiVersion: v2
 name: infra
+type: application
+description: Managing and maintaining cloud resources using crossplane
 icon: https://avatars.githubusercontent.com/u/45158470?s=200&v=4
 keywords:
   - IaC
   - Infrastructure as Code
   - Crossplane
-description: Managing and maintaining cloud resources using crossplane
-type: application
-version: 1.4.0
+version: 1.4.1
 appVersion: "1.0.0"
+maintainers:
+  - name: sudo-emjay
+    email: manoj.jadhav@hashgraph-group.com

@@ -1,0 +1,439 @@
+name: Release Candidate ✨
+
+permissions:
+  issues: write
+  pull-requests: write
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+jobs:
+  pr_checklist:
+    name: Pull Request Checklist 📝
+    if: ${{ !github.event.pull_request.draft }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout 🛎️
+        uses: actions/checkout@v4
+
+      - name: Check Branch Naming Convention 🏷️
+        id: branch-check
+        run: |
+          branch_name="${{ github.head_ref }}"
+          echo "Branch name: $branch_name"
+
+          if [[ "$branch_name" =~ ^(feature|bugfix|hotfix|fix|release|major|breaking|chore)/.+ ]]; then
+            echo "✅ Branch name follows convention: $branch_name"
+            echo "result=success" >> $GITHUB_OUTPUT
+            echo "message=✅ Branch name follows convention: \`$branch_name\`" >> $GITHUB_OUTPUT
+          else
+            echo "❌ Branch name does not follow convention!"
+            echo "Expected format: <type>/<description>"
+            echo "Valid types: feature, bugfix, hotfix, fix, release, major, breaking, chore"
+            echo "Example: feature/add-new-chart or bugfix/fix-deployment-issue"
+            echo "result=failure" >> $GITHUB_OUTPUT
+            echo "message=❌ Branch name does not follow convention!%0A%0AExpected format: \`<type>/<description>\`%0AValid types: feature, bugfix, hotfix, fix, release, major, breaking, chore%0AExample: \`feature/add-new-chart\` or \`bugfix/fix-deployment-issue\`" >> $GITHUB_OUTPUT
+            exit 1
+          fi
+
+      - name: Comment Branch Check Result 📝
+        if: always()
+        uses: thollander/actions-comment-pull-request@v2
+        with:
+          comment_tag: branch_check
+          message: |
+            ## 🏷️ Branch Naming Convention Check
+
+            ${{ steps.branch-check.outputs.message }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Add PR Checklist 📝
+        if: github.event.action == 'opened'
+        uses: thollander/actions-comment-pull-request@v2
+
+      - name: Comment PR 📝
+        if: github.event.action == 'opened'
+        uses: thollander/actions-comment-pull-request@v2
+        with:
+          message: |
+            ### Review Checklist
+
+            Hello reviewers! :wave: Please follow this checklist when reviewing this Pull Request.
+
+            #### General
+            - [ ] Ensure that the Pull Request has a descriptive title.
+            - [ ] If this is a change that users need to know about, please apply the `release notes (needs details)` label so that merging is blocked unless the summary release notes document is included.
+            - [ ] If a new flag is being introduced, review whether it is really needed. The flag names should be clear and intuitive (as far as possible), and the flag's help should be descriptive.
+            - [ ] If a workflow is added or modified, each items in `Jobs` should be named in order to mark it as `required`. If the workflow should be required, the GitHub Admin should be notified.
+
+            #### Bug fixes
+            - [ ] There should be at least one unit or end-to-end test.
+            - [ ] The Pull Request description should either include a link to an issue that describes the bug OR an actual description of the bug and how to reproduce, along with a description of the fix.
+
+            #### Non-trivial changes
+            - [ ] There should be some code comments as to why things are implemented the way they are.
+
+            #### New/Existing features
+            - [ ] Should be documented, either by modifying the existing documentation or creating new documentation.
+            - [ ] New features should have a link to a feature request issue or an RFC that documents the use cases, corner cases and test cases.
+
+            #### Backward compatibility
+            - [ ] Protobuf changes should be wire-compatible.
+            - [ ] Changes to `_vt` tables and RPCs need to be backward compatible.
+            - [ ] `vtctl` command output order should be stable and `awk`-able.
+
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Label PRs
+        uses: ffittschen/pr-branch-labeler@v1
+        with:
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Label Chart 🏷️
+        uses: actions/labeler@v5
+        with:
+          repo-token: "${{ secrets.GITHUB_TOKEN }}"
+          sync-labels: true
+
+  helm-diff:
+    name: Check Differences 📝
+    runs-on: ubuntu-latest
+    needs:
+      - pr_checklist
+    permissions:
+      pull-requests: write
+
+    steps:
+      - name: Checkout main branch 🛎️
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          path: main_branch
+
+      - name: Generate Results from Main 📄
+        run: |
+          mkdir -p results
+          for dir in main_branch/charts/*/; do
+            chart_name=$(basename "$dir")
+            helm template "$dir" -f "$dir/values-ci.yaml" > "results/result_${chart_name}.yaml"
+          done
+
+      - name: Checkout PR branch 🛎️
+        uses: actions/checkout@v4
+        with:
+          path: pr_branch
+
+      - name: Generate Results from PR branch 📄
+        run: |
+          mkdir -p results_new
+          for dir in pr_branch/charts/*/; do
+            chart_name=$(basename "$dir")
+            helm template "$dir" -f "$dir/values-ci.yaml" > "results_new/result_new_${chart_name}.yaml"
+          done
+
+      - name: Generate Helm Diff 📄
+        continue-on-error: true
+        run: |
+          echo "# Charts Differences:" > diff.yaml
+          for new_result in results_new/result_new_*.yaml; do
+            base_name=$(basename "$new_result" .yaml)
+            main_result="results/result_${base_name#result_new_}.yaml"
+            echo "## Changes in ${base_name#result_new_}:" >> diff.yaml
+            echo '```diff' >> diff.yaml
+            diff --side-by-side --suppress-common-lines --ignore-space-change "$main_result" "$new_result" >> diff.yaml || echo "Differences found in $new_result"
+            echo '```' >> diff.yaml
+            echo -e "\n\n" >> diff.yaml
+          done
+          cat diff.yaml # Debugging: Output the diff file to confirm its creation
+
+      - name: PR comment with file 📝
+        if: always()
+        uses: thollander/actions-comment-pull-request@v2
+        with:
+          comment_tag: show_diff
+          filePath: diff.yaml
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  # lint-chart:
+  #   name: Chart Lint 🔎
+  #   needs:
+  #     - pr_checklist
+  #     - helm-diff
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - name: Checkout Lint 🛎️
+  #       uses: actions/checkout@v4
+  #       with:
+  #         fetch-depth: 0
+
+  #     - name: Setup Python 🐍
+  #       uses: actions/setup-python@v5
+  #       with:
+  #         python-version: "3.10"
+  #         check-latest: true
+
+  #     - name: Set up chart-testing 🔎
+  #       uses: helm/chart-testing-action@v2.6.1
+
+  #     - name: Run chart-testing (list-changed)
+  #       id: list-changed
+  #       run: |
+  #         changed=$(ct list-changed --target-branch ${{ github.event.repository.default_branch }})
+  #         if [[ -n "$changed" ]]; then
+  #           echo "changed=true" >> "$GITHUB_OUTPUT"
+  #         fi
+
+  #     - name: Run chart-testing (lint)
+  #       if: steps.list-changed.outputs.changed == 'true'
+  #       run: ct lint --target-branch ${{ github.event.repository.default_branch }}
+
+  #     - name: Create kind cluster
+  #       if: steps.list-changed.outputs.changed == 'true'
+  #       uses: helm/kind-action@v1.10.0
+
+  #     - name: Run chart-testing (install)
+  #       if: steps.list-changed.outputs.changed == 'true'
+  #       run: ct install --target-branch ${{ github.event.repository.default_branch }}
+
+  # kubeval-chart:
+  #   name: Chart Validator 🔎
+  #   runs-on: ubuntu-latest
+  #   needs:
+  #     - pr_checklist
+  #     - helm-diff
+  #   strategy:
+  #     matrix:
+  #       k8s:
+  #         - v1.16.8
+  #         - v1.17.4
+  #         - v1.20.15
+  #         - v1.21.13
+  #         - v1.22.10
+  #   steps:
+  #     - name: Checkout Kubeval 🛎️
+  #       uses: actions/checkout@v4
+
+  #     - name: Run kubeval 🔎
+  #       env:
+  #         KUBERNETES_VERSION: ${{ matrix.k8s }}
+  #       run: .github/kubeval.sh
+
+  release:
+    name: Chart Release Candidate ✨
+    needs:
+      - helm-diff
+      # - lint-chart
+    permissions:
+      contents: write
+      pull-requests: write
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout 🛎️
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Git setup 🔧
+        run: |
+          git config user.name "$GITHUB_ACTOR"
+          git config user.email "$GITHUB_ACTOR@users.noreply.github.com"
+
+      - name: Get PR labels 🏷️
+        id: pr-labels
+        run: |
+          labels=$(gh pr view ${{ github.event.pull_request.number }} --json labels --jq '.labels[].name' | tr '\n' ' ')
+          echo "Found labels: $labels"
+          echo "labels=$labels" >> $GITHUB_OUTPUT
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Install dependencies
+        run: pip install bump2version pyyaml
+
+      - name: Set PR number as RC version suffix
+        run: echo "RC_NUMBER=${{ github.event.pull_request.number }}" >> $GITHUB_ENV
+
+      - name: Generate RC increment 🔢
+        id: rc-increment
+        run: |
+          # Get existing RC artifacts for this PR
+          existing_rcs=$(gh api repos/${{ github.repository }}/actions/artifacts \
+            --jq '.artifacts[] | select(.name | startswith("helm-charts-rc-${{ github.event.pull_request.number }}-")) | .name' \
+            | grep -o 'rc-${{ github.event.pull_request.number }}-[0-9]*' \
+            | grep -o '[0-9]*$' \
+            | sort -n \
+            | tail -1) || echo "0"
+
+          if [[ -z "$existing_rcs" || "$existing_rcs" == "0" ]]; then
+            rc_increment=1
+          else
+            rc_increment=$((existing_rcs + 1))
+          fi
+
+          echo "RC increment: $rc_increment"
+          echo "increment=$rc_increment" >> $GITHUB_OUTPUT
+          echo "RC_INCREMENT=$rc_increment" >> $GITHUB_ENV
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Bump Version ✨
+        run: python .github/version_bump.py ${{steps.pr-labels.outputs.labels}} rc=${{ env.RC_NUMBER }}-${{ env.RC_INCREMENT }}
+
+      - name: Generate Helm Docs �
+        uses: docker://jnorwood/helm-docs:latest
+        with:
+          entrypoint: /usr/bin/helm-docs
+          args: --chart-search-root /github/workspace
+
+      - name: Generate Helm Docs 📝
+        uses: docker://jnorwood/helm-docs:latest
+        with:
+          entrypoint: /usr/bin/helm-docs
+          args: --chart-search-root /github/workspace
+
+      - name: Commit Changes
+        id: docs_updater
+        uses: stefanzweifel/git-auto-commit-action@v5.0.1
+        with:
+          commit_message: ":robot: Update Docs"
+          repository: .
+
+      - name: Create RC Artifacts 📦
+        uses: actions/upload-artifact@v4
+        with:
+          name: helm-charts-rc-${{ github.event.pull_request.number }}-${{ steps.rc-increment.outputs.increment }}
+          path: .cr-release-packages/
+          retention-days: 30
+          if-no-files-found: warn
+
+      - name: Comment RC Download Links 📝
+        uses: thollander/actions-comment-pull-request@v2
+        with:
+          comment_tag: rc_artifacts
+          message: |
+            ## 🚀 Release Candidate Artifacts
+
+            Release candidate charts have been built for PR #${{ github.event.pull_request.number }} (RC.${{ steps.rc-increment.outputs.increment }}):
+
+            📦 **Download artifacts**: [helm-charts-rc-${{ github.event.pull_request.number }}-${{ steps.rc-increment.outputs.increment }}](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }})
+
+            ### Version format:
+            - Charts will be versioned as: `chartname-version-rc.${{ env.RC_NUMBER }}-${{ env.RC_INCREMENT }}`
+            - Example: `webapp-0.0.42-rc.85-1`, `infra-1.5.0-rc.85-1`
+
+            To test these charts locally:
+            ```bash
+            # Download and extract the artifacts, then:
+            helm install my-release ./chart-name-version-rc.85-${{ steps.rc-increment.outputs.increment }}.tgz
+            ```
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  artifacts:
+    name: Generate Artifacts 📦
+    runs-on: ubuntu-latest
+    needs:
+      - release
+    steps:
+      - name: Checkout Artifacts 🛎️
+        uses: actions/checkout@v4
+        with:
+          ref: artifacts
+
+      - name: Git setup 🔧
+        run: |
+          git config user.name "$GITHUB_ACTOR"
+          git config user.email "$GITHUB_ACTOR@users.noreply.github.com"
+          echo ${{ secrets.GITHUB_TOKEN }} | gh auth login --with-token
+
+      - name: Download artifacts 📦
+        run: |
+          gh release list | awk '{print$1}' | while read line; do gh release download $line || true; done
+          if [[ $(git status -s) ]]; then
+            git add .
+            git commit -m ":robot: [github actions actor] update artifact list"
+            git push
+          else
+            echo "nothing to commit!!!"
+          fi
+
+      - name: Install Helm ☸️
+        uses: azure/setup-helm@v4
+        with:
+          version: v3.8.1
+
+      - name: Package Charts 📦
+        run: |
+          mkdir -p .cr-release-packages
+          for dir in charts/*/; do
+            if [[ -f "$dir/Chart.yaml" ]]; then
+              chart_name=$(basename "$dir")
+              echo "Packaging $chart_name..."
+              helm package "$dir" -d .cr-release-packages/
+            fi
+          done
+          echo "Packaged charts:"
+          ls -la .cr-release-packages/
+
+      - name: Run chart-releaser (skip RC versions) 📈
+        continue-on-error: true
+        uses: helm/chart-releaser-action@v1.6.0
+        with:
+          skip_existing: true
+        env:
+          CR_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
+
+      - name: Create RC Artifacts 📦
+        uses: actions/upload-artifact@v4
+        with:
+          name: helm-charts-rc-${{ github.event.pull_request.number }}
+          path: .cr-release-packages/
+          retention-days: 30
+          if-no-files-found: warn
+
+      - name: Generate updated index.yaml 📦
+        run: |
+          helm repo index . --url "https://raw.githubusercontent.com/Swiss-Digital-Assets-Institute/helm-charts/artifacts/"
+
+      - name: Persist index.yaml 📦
+        uses: actions/upload-artifact@v4
+        with:
+          name: gh-pages
+          path: ./index.yaml
+          if-no-files-found: error
+
+  index:
+    name: Index Update 📝
+    runs-on: ubuntu-latest
+    needs:
+      - artifacts
+    permissions:
+      contents: write
+      pages: write
+    steps:
+      - name: Checkout 🛎️
+        uses: actions/checkout@v4
+        with:
+          ref: gh-pages
+          fetch-depth: 1
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Git setup 🔧
+        run: |
+          git config user.name "$GITHUB_ACTOR"
+          git config user.email "$GITHUB_ACTOR@users.noreply.github.com"
+
+      - uses: actions/download-artifact@v4
+        with:
+          name: gh-pages
+
+      - name: Commit New index.yaml 📝
+        run: |
+          if [[ $(git diff) ]]; then
+            git add index.yaml
+            git commit -m "[ci skip] :robot: [github actions actor] - update index.yaml"
+            git push
+          else
+            echo "nothing to do!!!"
+          fi
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
