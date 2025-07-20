@@ -252,8 +252,31 @@ jobs:
       - name: Set PR number as RC version suffix
         run: echo "RC_NUMBER=${{ github.event.pull_request.number }}" >> $GITHUB_ENV
 
+      - name: Generate RC increment 🔢
+        id: rc-increment
+        run: |
+          # Get existing RC artifacts for this PR
+          existing_rcs=$(gh api repos/${{ github.repository }}/actions/artifacts \
+            --jq '.artifacts[] | select(.name | startswith("helm-charts-rc-${{ github.event.pull_request.number }}-")) | .name' \
+            | grep -o 'rc-${{ github.event.pull_request.number }}-[0-9]*' \
+            | grep -o '[0-9]*$' \
+            | sort -n \
+            | tail -1) || echo "0"
+
+          if [[ -z "$existing_rcs" || "$existing_rcs" == "0" ]]; then
+            rc_increment=1
+          else
+            rc_increment=$((existing_rcs + 1))
+          fi
+
+          echo "RC increment: $rc_increment"
+          echo "increment=$rc_increment" >> $GITHUB_OUTPUT
+          echo "RC_INCREMENT=$rc_increment" >> $GITHUB_ENV
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
       - name: Bump Version ✨
-        run: python .github/version_bump.py ${{steps.pr-labels.outputs.labels}} rc=${{ env.RC_NUMBER }}
+        run: python .github/version_bump.py ${{steps.pr-labels.outputs.labels}} rc=${{ env.RC_NUMBER }}-${{ env.RC_INCREMENT }}
 
       - name: Generate Helm Docs �
         uses: docker://jnorwood/helm-docs:latest
@@ -277,10 +300,32 @@ jobs:
       - name: Create RC Artifacts 📦
         uses: actions/upload-artifact@v4
         with:
-          name: helm-charts-rc-${{ github.event.pull_request.number }}
+          name: helm-charts-rc-${{ github.event.pull_request.number }}-${{ steps.rc-increment.outputs.increment }}
           path: .cr-release-packages/
           retention-days: 30
           if-no-files-found: warn
+
+      - name: Comment RC Download Links 📝
+        uses: thollander/actions-comment-pull-request@v2
+        with:
+          comment_tag: rc_artifacts
+          message: |
+            ## 🚀 Release Candidate Artifacts
+
+            Release candidate charts have been built for PR #${{ github.event.pull_request.number }} (RC.${{ steps.rc-increment.outputs.increment }}):
+
+            📦 **Download artifacts**: [helm-charts-rc-${{ github.event.pull_request.number }}-${{ steps.rc-increment.outputs.increment }}](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }})
+
+            ### Version format:
+            - Charts will be versioned as: `chartname-version-rc.${{ env.RC_NUMBER }}-${{ env.RC_INCREMENT }}`
+            - Example: `webapp-0.0.42-rc.85-1`, `infra-1.5.0-rc.85-1`
+
+            To test these charts locally:
+            ```bash
+            # Download and extract the artifacts, then:
+            helm install my-release ./chart-name-version-rc.85-${{ steps.rc-increment.outputs.increment }}.tgz
+            ```
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
   artifacts:
     name: Generate Artifacts 📦
