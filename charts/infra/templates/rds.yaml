@@ -20,7 +20,7 @@ metadata:
   name: {{ include "infra.rdsInstanceName" . }}
   namespace: {{ .Values.aws.rds.namespace | default .Release.Namespace }}
 spec:
-  region: {{ .Values.aws.rds.region | quote }}
+  region: {{ .Values.aws.region | quote }}
   allocatedStorage: {{ .Values.aws.rds.allocatedStorage | default 500 }}
   engine: {{ .Values.aws.rds.engine | default "postgres" | quote }}
   engineVersion: {{ .Values.aws.rds.engineVersion | default "15.12" | quote }}
