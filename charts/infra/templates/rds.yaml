@@ -35,10 +35,9 @@ spec:
     enableAutoscaling: {{ .Values.aws.rds.storage.enableAutoscaling | default false }}
     maxAllocatedStorage: {{ .Values.aws.rds.storage.maxAllocatedStorage | default 500 }}
     enableDedicatedLogVolume: {{ .Values.aws.rds.storage.enableDedicatedLogVolume | default false }}
-
-  {{- if .Values.aws.rds.backup.enabled }}
   backup:
-    enabled: true
+    enabled: {{ .Values.aws.rds.backup.enabled | default false }}
+    {{- if .Values.aws.rds.backup.enabled }}
     backupRetentionPeriod: {{ .Values.aws.rds.backup.backupRetentionPeriod | default 30 }}
     copyTagsToSnapshot: {{ .Values.aws.rds.backup.copyTagsToSnapshot | default true }}
     {{- if .Values.aws.rds.backup.replication.enabled }}
