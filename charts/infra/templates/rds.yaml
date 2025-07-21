@@ -21,7 +21,7 @@ metadata:
   namespace: {{ .Values.aws.rds.namespace | default .Release.Namespace }}
 spec:
   region: {{ .Values.aws.region | quote }}
-  allocatedStorage: {{ .Values.aws.rds.allocatedStorage | default 500 }}
+  allocatedStorage: {{ .Values.aws.rds.allocatedStorage | default 500 | int}}
   engine: {{ .Values.aws.rds.engine | default "postgres" | quote }}
   engineVersion: {{ .Values.aws.rds.engineVersion | default "15.12" | quote }}
   dbName: {{ .Values.aws.rds.dbName | default (include "infra.baseReleaseName" .) | quote }}
@@ -30,15 +30,15 @@ spec:
   storage:
     type: {{ .Values.aws.rds.storage.type | default "gp3" | quote }}
     {{- if and (.Values.aws.rds.storage.type) (eq .Values.aws.rds.storage.type "io2") }}
-    provisionedIops: {{ .Values.aws.rds.storage.provisionedIops | default 3000 }}
+    provisionedIops: {{ .Values.aws.rds.storage.provisionedIops | default 3000 | int }}
     {{- end }}
     enableAutoscaling: {{ .Values.aws.rds.storage.enableAutoscaling | default false }}
-    maxAllocatedStorage: {{ .Values.aws.rds.storage.maxAllocatedStorage | default 500 }}
+    maxAllocatedStorage: {{ .Values.aws.rds.storage.maxAllocatedStorage | default 500 | int }}
     enableDedicatedLogVolume: {{ .Values.aws.rds.storage.enableDedicatedLogVolume | default false }}
   backup:
     enabled: {{ .Values.aws.rds.backup.enabled | default false }}
     {{- if .Values.aws.rds.backup.enabled }}
-    backupRetentionPeriod: {{ .Values.aws.rds.backup.backupRetentionPeriod | default 30 }}
+    backupRetentionPeriod: {{ .Values.aws.rds.backup.backupRetentionPeriod | default 7 | int }}
     copyTagsToSnapshot: {{ .Values.aws.rds.backup.copyTagsToSnapshot | default true }}
     {{- if .Values.aws.rds.backup.replication.enabled }}
     replication:
