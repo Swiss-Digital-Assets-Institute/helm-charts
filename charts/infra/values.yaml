@@ -15,14 +15,13 @@ global:
 aws:
   enabled: true
   account: ""
-  region: ""
+  region: "eu-central-2"
   eksOidcId: ""
 
   s3:
     enabled: false
     bucketNameOverride: ""
-    acl: "private"
-    objectOwnership: "BucketOwnerPreferred"
+    objectOwnership: "BucketOwnerEnforced"
     lifeCycleConfiguration:
       enabled: false
       rule: []
@@ -57,7 +56,6 @@ aws:
     enabled: false
     instanceNameOverride: ""
     namespace: ""
-    region: ""
     dbName: ""
     instanceClass: db.t3.micro
     engine: postgres
@@ -103,7 +101,6 @@ aws:
     additional_tags: {}
     domainName: ""
     bucketName: ""
-    region: ""
     bucketPolicy:
       version: "2012-10-17"
     s3:

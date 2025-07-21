@@ -18,7 +18,7 @@ spec:
   {{- $cfDefCB := default dict (index $cf "defaultCacheBehavior") }}
   domainName: {{ .Values.aws.cdn.domainName | quote }}
   bucketName: {{ .Values.aws.cdn.bucketName | quote }}
-  region: {{ default "eu-central-2" .Values.aws.cdn.region | quote }}
+  region: {{ default "eu-central-2" .Values.aws.region | quote }}
   tags:
 {{ include "infra.allTags" (dict "Values" .Values "section" .Values.aws.cdn) | indent 4 }}
   s3:

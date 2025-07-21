@@ -22,29 +22,6 @@ spec:
   providerConfigRef:
     name: {{ .Values.global.env }}
 
----
-apiVersion: {{ include "infra.s3ApiVersion" . }}
-kind: BucketACL
-metadata:
-  name: {{ include "infra.s3BucketName" . }}
-  namespace: {{ .Release.Namespace }}
-  annotations:
-    crossplane.io/external-name: {{ include "infra.s3BucketName" . }}
-  labels:
-{{ include "infra.labels" . | indent 4 }}
-spec:
-  forProvider:
-    acl: {{ .Values.aws.s3.acl | default "private" | quote }}
-    region: {{ .Values.aws.region | quote }}
-    bucketSelector:
-      matchLabels:
-        app.kubernetes.io/name: {{ include "infra.resourceName" (dict "global" .Values.global "Release" .Release) }}
-        app.kubernetes.io/instance: {{ include "infra.resourceName" (dict "global" .Values.global "Release" .Release) }}
-        app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
-        app.kubernetes.io/managed-by: {{ .Release.Service | quote }}
-        helm.sh/chart: {{ printf "%s-%s" .Chart.Name (.Chart.Version | replace "+" "_") }}
-  providerConfigRef:
-    name: {{ .Values.global.env }}
 
 ---
 apiVersion: {{ include "infra.s3ApiVersion" . }}
