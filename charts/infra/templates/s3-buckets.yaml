@@ -44,7 +44,7 @@ spec:
         app.kubernetes.io/managed-by: {{ .Release.Service | quote }}
         helm.sh/chart: {{ printf "%s-%s" .Chart.Name (.Chart.Version | replace "+" "_") }}
     rule:
-    - objectOwnership: {{ .Values.aws.s3.objectOwnership | default "BucketOwnerPreferred" | quote }}
+      objectOwnership: {{ .Values.aws.s3.objectOwnership | default "BucketOwnerEnforced" | quote }}
   providerConfigRef:
     name: {{ .Values.global.env }}
 
