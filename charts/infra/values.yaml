@@ -59,7 +59,7 @@ aws:
     dbName: ""
     instanceClass: db.t3.micro
     engine: postgres
-    engineVersion: "15.4"
+    engineVersion: "15.12"
     multiAz: false
     allocatedStorage: 20
     storageEncrypted: true
