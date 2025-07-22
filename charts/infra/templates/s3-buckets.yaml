@@ -29,8 +29,10 @@ kind: BucketOwnershipControls
 metadata:
   name: {{ include "infra.s3BucketName" . }}-ownership
   namespace: {{ .Release.Namespace }}
+  annotations:
+    crossplane.io/external-name: {{ include "infra.s3BucketName" . }}
   labels:
-    crossplane.io/composite: {{ include "infra.s3BucketName" . }}
+    crossplane.io/external-name: {{ include "infra.s3BucketName" . }}
 spec:
   forProvider:
     region: {{ .Values.aws.region | quote }}
@@ -42,7 +44,7 @@ spec:
         app.kubernetes.io/managed-by: {{ .Release.Service | quote }}
         helm.sh/chart: {{ printf "%s-%s" .Chart.Name (.Chart.Version | replace "+" "_") }}
     rule:
-      - objectOwnership: {{ .Values.aws.s3.objectOwnership | default "BucketOwnerPreferred" | quote }}
+    - objectOwnership: {{ .Values.aws.s3.objectOwnership | default "BucketOwnerPreferred" | quote }}
   providerConfigRef:
     name: {{ .Values.global.env }}
 
