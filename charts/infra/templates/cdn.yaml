@@ -9,6 +9,7 @@ metadata:
   annotations:
     crossplane.io/external-name: {{ include "infra.resourceName" (dict "global" .Values.global "Release" .Release) }}
   labels:
+    name: {{ include "infra.resourceName" (dict "global" .Values.global "Release" .Release) }}
 {{ include "infra.labels" . | indent 4 }}
 spec:
   {{- $cdn := default dict .Values.aws.cdn }}

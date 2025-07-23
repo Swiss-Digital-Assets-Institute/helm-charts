@@ -8,6 +8,8 @@ metadata:
   namespace: {{ .Release.Namespace }}
   annotations:
     crossplane.io/external-name: {{ include "infra.kmsKeyName" . }}
+  labels:
+    name: {{ include "infra.kmsKeyName" . }}
 spec:
   forProvider:
     region: {{ .Values.aws.region | quote }}
