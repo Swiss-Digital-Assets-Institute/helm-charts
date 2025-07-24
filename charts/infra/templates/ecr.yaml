@@ -12,11 +12,11 @@ metadata:
 spec:
   forProvider:
     region: {{ .Values.aws.region | quote }}
-    imageTagMutability: {{ .Values.aws.ecr.imageTagMutability | default "MUTABLE" }}
+    imageTagMutability: {{ .Values.aws.ecr.imageTagMutability | default "MUTABLE" | quote }}
     imageScanningConfiguration:
       scanOnPush: {{ .Values.aws.ecr.scanOnPush | default false }}
     encryptionConfiguration:
-      encryptionType: "AES256"
+      - encryptionType: "AES256"
     tags:
 {{ include "infra.allTags" (dict "Values" .Values "section" .Values.aws.ecr) | indent 6 }}
   providerConfigRef:
@@ -27,21 +27,18 @@ spec:
 apiVersion: {{ include "infra.ecrRegistryPolicyApiVersion" . }}
 kind: RegistryPolicy
 metadata:
-  name: {{ include "infra.ecrRepoName" . }}
+  name: {{ include "infra.ecrRepoName" . }}-registry-policy
   namespace: {{ .Release.Namespace }}
   annotations:
     crossplane.io/external-name: {{ include "infra.ecrRepoName" . }}
   labels:
-    name: {{ include "infra.ecrRepoName" . }}
+    name: {{ include "infra.ecrRepoName" . }}-registry-policy
 {{ include "infra.allTags" (dict "Values" .Values "section" .Values.aws.ecr) | indent 4 }}
-  spec:
+spec:
   forProvider:
     region: {{ .Values.aws.region | quote }}
     policy: |-
 {{ include "infra.ecrRegistryPolicy" . | indent 6 }}
-    repositorySelector:
-      matchLabels:
-        name: {{ include "infra.ecrRepoName" . }}
   providerConfigRef:
     name: mgmt-ecr
 {{- end }}
@@ -51,12 +48,12 @@ metadata:
 apiVersion: {{ include "infra.ecrLifecyclePolicyApiVersion" . }}
 kind: LifecyclePolicy
 metadata:
-  name: {{ include "infra.ecrRepoName" . }}
+  name: {{ include "infra.ecrRepoName" . }}-lifecycle-policy
   namespace: {{ .Release.Namespace }}
   annotations:
     crossplane.io/external-name: {{ include "infra.ecrRepoName" . }}
   labels:
-    name: {{ include "infra.ecrRepoName" . }}
+    name: {{ include "infra.ecrRepoName" . }}-lifecycle-policy
 {{ include "infra.allTags" (dict "Values" .Values "section" .Values.aws.ecr) | indent 4 }}
 spec:
   forProvider:
@@ -67,9 +64,7 @@ spec:
         ]
       }
     region: {{ .Values.aws.region | quote }}
-    repositorySelector:
-      matchLabels:
-        name: {{ include "infra.ecrRepoName" . }}
+    repository: {{ include "infra.ecrRepoName" . }}
   providerConfigRef:
     name: mgmt-ecr
 {{- end }}

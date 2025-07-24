@@ -1,17 +1,10 @@
-# This file is used to set global values for the CI environment in the Helm chart.
-# It includes AWS configurations, S3 settings, KMS, ECR, RDS,
-# --global configuration for CI environment
 global:
-  # --global.env: Environment name, e.g., "ci"
   env: ""
-  # --global.org: Organization name
   org: ""
-  # --global.team: Team name
   team: ""
-  # --global.costCenter: Cost center name
   costCenter: ""
 
-# --aws: AWS configurations
+
 aws:
   enabled: true
   account: ""
@@ -49,8 +42,35 @@ aws:
     enabled: false
     repoNameOverride: ""
     imageTagMutability: "MUTABLE"
-    scanOnPush: false
+    scanOnPush: true
+    accountAccessList:
+      - "107282186755"
+      - "009160051835"
+      - "009160051778"
+      - "458845629758"
     additional_tags: {}
+    lifecyclePolicy:
+      rules:
+        - rulePriority: 1
+          description: "Expire images older than 14 days"
+          selection:
+            tagStatus: "untagged"
+            countType: "sinceImagePushed"
+            countUnit: "days"
+            countNumber: 14
+          action:
+            type: "expire"
+        - rulePriority: 2
+          description: "Expire dev* images older than 365 days"
+          selection:
+            tagStatus: "tagged"
+            tagPatternList:
+              - "dev*"
+            countType: "sinceImagePushed"
+            countUnit: "days"
+            countNumber: 365
+          action:
+            type: "expire"
 
   rds:
     enabled: false
