@@ -6,16 +6,66 @@ kind: Repository
 metadata:
   name: {{ include "infra.ecrRepoName" . }}
   namespace: {{ .Release.Namespace }}
+  labels:
+    name: {{ include "infra.ecrRepoName" . }}
+{{ include "infra.allTags" (dict "Values" .Values "section" .Values.aws.ecr) | indent 4 }}
 spec:
   forProvider:
     region: {{ .Values.aws.region | quote }}
-    imageTagMutability: {{ .Values.aws.ecr.imageTagMutability | default "MUTABLE" }}
+    imageTagMutability: {{ .Values.aws.ecr.imageTagMutability | default "MUTABLE" | quote }}
     imageScanningConfiguration:
       scanOnPush: {{ .Values.aws.ecr.scanOnPush | default false }}
     encryptionConfiguration:
-      encryptionType: "AES256"
+      - encryptionType: "AES256"
     tags:
 {{ include "infra.allTags" (dict "Values" .Values "section" .Values.aws.ecr) | indent 6 }}
   providerConfigRef:
-    name: {{ .Values.global.env }}
+    name: mgmt-ecr
+
+{{- if and .Values.aws.ecr.accountAccessList (gt (len .Values.aws.ecr.accountAccessList) 0) }}
+---
+apiVersion: {{ include "infra.ecrRegistryPolicyApiVersion" . }}
+kind: RegistryPolicy
+metadata:
+  name: {{ include "infra.ecrRepoName" . }}-registry-policy
+  namespace: {{ .Release.Namespace }}
+  annotations:
+    crossplane.io/external-name: {{ include "infra.ecrRepoName" . }}
+  labels:
+    name: {{ include "infra.ecrRepoName" . }}-registry-policy
+{{ include "infra.allTags" (dict "Values" .Values "section" .Values.aws.ecr) | indent 4 }}
+spec:
+  forProvider:
+    region: {{ .Values.aws.region | quote }}
+    policy: |-
+{{ include "infra.ecrRegistryPolicy" . | indent 6 }}
+  providerConfigRef:
+    name: mgmt-ecr
+{{- end }}
+
+{{- if .Values.aws.ecr.lifecyclePolicy.rules }}
+---
+apiVersion: {{ include "infra.ecrLifecyclePolicyApiVersion" . }}
+kind: LifecyclePolicy
+metadata:
+  name: {{ include "infra.ecrRepoName" . }}-lifecycle-policy
+  namespace: {{ .Release.Namespace }}
+  annotations:
+    crossplane.io/external-name: {{ include "infra.ecrRepoName" . }}
+  labels:
+    name: {{ include "infra.ecrRepoName" . }}-lifecycle-policy
+{{ include "infra.allTags" (dict "Values" .Values "section" .Values.aws.ecr) | indent 4 }}
+spec:
+  forProvider:
+    policy: |-
+      {
+        "rules": [
+{{ include "infra.ecrLifecyclePolicyRules" . | indent 10 }}
+        ]
+      }
+    region: {{ .Values.aws.region | quote }}
+    repository: {{ include "infra.ecrRepoName" . }}
+  providerConfigRef:
+    name: mgmt-ecr
+{{- end }}
 {{- end }}

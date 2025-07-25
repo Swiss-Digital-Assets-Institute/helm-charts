@@ -37,6 +37,56 @@ IAM ROLE LOGIC HERE. Trust policy and the inline policy gets dynamically generat
   }
 {{- end -}}
 
+# ECR ACCOUNT SHARING POLICY
+{{- define "infra.ecrRegistryPolicy" -}}
+  {{- $accounts := .Values.aws.ecr.accountAccessList | default list -}}
+  {
+    "Version": "2012-10-17",
+    "Statement": [
+      {
+        "Sid": "CrossAccountECRAccess",
+        "Effect": "Allow",
+        "Principal": {
+          "AWS": [
+{{- range $i, $account := $accounts }}
+            "arn:aws:iam::{{ $account }}:root"{{ if ne (add1 $i) (len $accounts) }},{{ end }}
+{{- end }}
+          ]
+        },
+        "Action": [
+          "ecr:BatchCheckLayerAvailability",
+          "ecr:BatchGetImage",
+          "ecr:CompleteLayerUpload",
+          "ecr:DescribeImages",
+          "ecr:DescribeRepositories",
+          "ecr:GetAuthorizationToken",
+          "ecr:GetDownloadUrlForLayer",
+          "ecr:GetLifecyclePolicy",
+          "ecr:GetRepositoryPolicy",
+          "ecr:InitiateLayerUpload",
+          "ecr:ListImages",
+          "ecr:ListTagsForResource",
+          "ecr:PutImage",
+          "ecr:UploadLayerPart"
+        ],
+        "Resource": "*"
+      }
+    ]
+  }
+{{- end -}}
+
+{{- define "infra.ecrLifecyclePolicyRules" -}}
+  {{- $rules := .Values.aws.ecr.lifecyclePolicy.rules | default list -}}
+  {{- range $i, $r := $rules }}
+    {
+      "rulePriority": {{ $r.rulePriority }},
+      "description": {{ $r.description | quote }},
+      "selection": {{ toJson $r.selection }},
+      "action": {{ toJson $r.action }}
+    }{{ if ne (add1 $i) (len $rules) }},{{ end }}
+  {{- end }}
+{{- end -}}
+
 {{- define "infra.customIamPolicy" -}}
   {{- $region := .Values.aws.region | default "us-east-1" -}}
   {{- $account := required "You must set .Values.aws.account (AWS Account)" .Values.aws.account -}}

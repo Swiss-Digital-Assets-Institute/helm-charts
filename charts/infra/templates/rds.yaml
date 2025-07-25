@@ -8,6 +8,8 @@ metadata:
   namespace: {{ .Release.Namespace }}
   annotations:
     "helm.sh/hook": pre-install,pre-upgrade
+  labels:
+    name: {{ include "infra.rdsInstanceName" . }}
 type: Opaque
 stringData:
   password: "{{ include "infra.randomPassword" . }}"

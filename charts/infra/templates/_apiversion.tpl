@@ -9,6 +9,14 @@ s3.aws.upbound.io/v1beta2
 ecr.aws.upbound.io/v1beta2
 {{- end -}}
 
+{{- define "infra.ecrLifecyclePolicyApiVersion" -}}
+ecr.aws.upbound.io/v1beta1
+{{- end -}}
+
+{{- define "infra.ecrRegistryPolicyApiVersion" -}}
+ecr.aws.upbound.io/v1beta1
+{{- end -}}
+
 {{- define "infra.kmsApiVersion" -}}
 kms.aws.upbound.io/v1beta1
 {{- end -}}
