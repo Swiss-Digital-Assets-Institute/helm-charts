@@ -2,8 +2,7 @@ global:
   env: ""
   org: ""
   team: ""
-  costCenter: ""
-
+  cost_center: ""
 
 aws:
   enabled: true
