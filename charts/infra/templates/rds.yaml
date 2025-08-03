@@ -7,7 +7,8 @@ metadata:
   name: {{ include "infra.rdsInstanceName" . }}-input-secret
   namespace: {{ .Release.Namespace }}
   annotations:
-    "helm.sh/hook": pre-install,pre-upgrade
+    "helm.sh/hook": "pre-install"
+    "helm.sh/hook-delete-policy": "before-hook-creation"
   labels:
     name: {{ include "infra.rdsInstanceName" . }}
 type: Opaque
