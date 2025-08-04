@@ -1,6 +1,8 @@
 # This file is used to set global values for the CI environment in the Helm chart.
 # It includes AWS configurations, S3 settings, KMS, ECR, RDS,
 # --global configuration for CI environment
+# Used by CI
+
 global:
   # --global.env: Environment name, e.g., "ci"
   env: "ci"
