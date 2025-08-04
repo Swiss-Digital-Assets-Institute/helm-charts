@@ -1,10 +1,12 @@
 {{- if and (.Values.aws.rds.enabled | default false) (.Values.aws.enabled | default true) }}
+{{- $secretName := printf "%s-input-secret" (include "infra.rdsInstanceName" .) }}
+{{- $existing := lookup "v1" "Secret" .Release.Namespace $secretName }}
+{{- if not $existing }}
 ---
-# Input password Secret - always rendered first via helm.sh/hook
 apiVersion: v1
 kind: Secret
 metadata:
-  name: {{ include "infra.rdsInstanceName" . }}-input-secret
+  name: {{ $secretName }}
   namespace: {{ .Release.Namespace }}
   annotations:
     "helm.sh/hook": "pre-install"
@@ -14,6 +16,7 @@ metadata:
 type: Opaque
 stringData:
   password: "{{ include "infra.randomPassword" . }}"
+{{- end }}
 
 ---
 # RDS PgSQL Resource
