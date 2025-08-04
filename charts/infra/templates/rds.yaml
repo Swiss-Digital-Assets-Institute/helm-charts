@@ -9,8 +9,10 @@ metadata:
   name: {{ $secretName }}
   namespace: {{ .Release.Namespace }}
   annotations:
-    "helm.sh/hook": "pre-install"
-    "helm.sh/hook-delete-policy": "before-hook-creation"
+    "argocd.argoproj.io/hook": "PreSync"
+    "argocd.argoproj.io/hook-delete-policy": "BeforeHookCreation"
+    "argocd.argoproj.io/sync-options": "Replace=true"
+    "argocd.argoproj.io/compare-options": "IgnoreExtraneous"
   labels:
     name: {{ include "infra.rdsInstanceName" . }}
 type: Opaque
