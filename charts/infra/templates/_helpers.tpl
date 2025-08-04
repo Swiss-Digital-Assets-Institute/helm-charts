@@ -72,8 +72,8 @@ helm.sh/chart: {{ printf "%s-%s" .Chart.Name (.Chart.Version | replace "+" "_") 
 Generate a random password for use in secrets.
 */}}
 {{- define "infra.randomPassword" -}}
-{{- $letters := splitList "" "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!#$*^()?[]" -}}
-{{- $len := 15 -}}
+{{- $letters := splitList "" "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789" -}}
+{{- $len := 20 -}}
 {{- $password := "" -}}
 {{- range $i, $e := until $len }}
   {{- $password = printf "%s%s" $password (index $letters (randInt 0 (len $letters))) -}}
