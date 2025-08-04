@@ -3,6 +3,21 @@ entries:
   infra:
   - apiVersion: v2
     appVersion: 1.0.0
+    created: "2025-08-04T09:12:55.092915611Z"
+    description: Managing and maintaining cloud resources using crossplane
+    digest: 83417c38646a5405d0a647114786015678f9275b766ae87bedb4c110cc9ec529
+    icon: https://avatars.githubusercontent.com/u/45158470?s=200&v=4
+    keywords:
+    - IaC
+    - Infrastructure as Code
+    - Crossplane
+    name: infra
+    type: application
+    urls:
+    - https://github.com/Swiss-Digital-Assets-Institute/helm-charts/releases/download/infra-1.7.6/infra-1.7.6.tgz
+    version: 1.7.6
+  - apiVersion: v2
+    appVersion: 1.0.0
     created: "2025-08-04T08:55:17.406005908Z"
     description: Managing and maintaining cloud resources using crossplane
     digest: 820548957c2406c521ead8435195f31e9cf79ca5459da14c7b040d56b4201dc4
@@ -819,4 +834,4 @@ entries:
     urls:
     - https://raw.githubusercontent.com/Swiss-Digital-Assets-Institute/helm-charts/artifacts/webapp-0.0.2.tgz
     version: 0.0.2
-generated: "2025-08-04T08:55:17.397785699Z"
+generated: "2025-08-04T09:12:55.093087984Z"
