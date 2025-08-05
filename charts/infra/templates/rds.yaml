@@ -1,25 +1,4 @@
 {{- if and (.Values.aws.rds.enabled | default false) (.Values.aws.enabled | default true) }}
-{{- $secretName := printf "%s-input-secret" (include "infra.rdsInstanceName" .) }}
-{{- $existing := lookup "v1" "Secret" .Release.Namespace $secretName }}
-{{- if not $existing }}
----
-apiVersion: v1
-kind: Secret
-metadata:
-  name: {{ $secretName }}
-  namespace: {{ .Release.Namespace }}
-  annotations:
-    "argocd.argoproj.io/hook": "PreSync"
-    "argocd.argoproj.io/hook-delete-policy": "BeforeHookCreation"
-    "argocd.argoproj.io/sync-options": "Replace=true"
-    "argocd.argoproj.io/compare-options": "IgnoreExtraneous"
-  labels:
-    name: {{ include "infra.rdsInstanceName" . }}
-type: Opaque
-stringData:
-  password: "{{ include "infra.randomPassword" . }}"
-{{- end }}
-
 ---
 # RDS PgSQL Resource
 apiVersion: {{ include "infra.rdsApiVersion" . }}
@@ -73,9 +52,9 @@ spec:
 
   masterUserName: {{ .Values.aws.rds.masterUserName | default "postgres" | quote }}
   passwordSecretRef:
-    name: {{ .Values.aws.rds.passwordSecretRef.name | default (printf "%s-input-secret" (include "infra.rdsInstanceName" .)) | quote }}
-    key: {{ .Values.aws.rds.passwordSecretRef.key | default "password" | quote }}
-    namespace: {{ .Values.aws.rds.passwordSecretRef.namespace | default .Release.Namespace | quote }}
+    name: {{ required "aws.rds.passwordSecretRef.name is required" .Values.aws.rds.passwordSecretRef.name | quote }}
+    key: {{ required "aws.rds.passwordSecretRef.key is required" .Values.aws.rds.passwordSecretRef.key | quote }}
+    namespace: {{ required "aws.rds.passwordSecretRef.namespace is required" .Values.aws.rds.passwordSecretRef.namespace | quote }}
   preferredBackupWindow: {{ .Values.aws.rds.preferredBackupWindow | default "03:00-05:00" | quote }}
 
   tags:
