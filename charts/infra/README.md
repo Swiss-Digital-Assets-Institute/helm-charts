@@ -1,6 +1,6 @@
 # infra
 
-![Version: 1.7.11](https://img.shields.io/badge/Version-1.7.11-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 1.0.0](https://img.shields.io/badge/AppVersion-1.0.0-informational?style=flat-square)
+![Version: 1.7.12](https://img.shields.io/badge/Version-1.7.12-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 1.0.0](https://img.shields.io/badge/AppVersion-1.0.0-informational?style=flat-square)
 
 Managing and maintaining cloud resources using crossplane
 
@@ -116,9 +116,10 @@ Managing and maintaining cloud resources using crossplane
 | aws.s3.lifeCycleConfiguration.rule | list | `[]` |  |
 | aws.s3.objectOwnership | string | `"BucketOwnerEnforced"` |  |
 | aws.s3.versioning.enabled | bool | `false` |  |
-| global.costCenter | string | `""` |  |
 | global.env | string | `""` |  |
+| global.managed_by | string | `"crossplane"` |  |
 | global.org | string | `""` |  |
+| global.project | string | `""` |  |
 | global.team | string | `""` |  |
 
 ----------------------------------------------
