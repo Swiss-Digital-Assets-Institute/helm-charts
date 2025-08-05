@@ -6,7 +6,8 @@ global:
   env: "ci"
   org: "ci"
   team: "devops"
-  costCenter: "shared"
+  project: "shared"
+  managed_by: "crossplabe"
 
 aws:
   enabled: true

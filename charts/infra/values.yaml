@@ -2,8 +2,8 @@ global:
   env: ""
   org: ""
   team: ""
-  costCenter: ""
-
+  managed_by: "crossplane"
+  project: ""
 
 aws:
   enabled: true
