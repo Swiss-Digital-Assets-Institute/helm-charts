@@ -40,7 +40,8 @@ If section.additional_tags exists, merge with these.
 {{- define "infra.allTags" -}}
 {{- $global := .Values.global -}}
 {{- $section := .section | default dict -}}
-{{- $defaults := dict "org" (required "You must set .Values.global.org" $global.org) "env" (required "You must set .Values.global.env" $global.env) "team" (required "You must set .Values.global.team" $global.team) "costCenter" (required "You must set .Values.global.costCenter" $global.costCenter) -}}
+{{- $defaults := dict "org" (required "You must set .Values.global.org" $global.org) "env" (required "You must set .Values.global.env" $global.env) "team" (required "You must set .Values.global.team" $global.team) "managed_by" (required "You must set .Values.global.managed_by" $global.managed_by) "project" (required "You must set .Values.global.project" $global.project) -}}
+
 {{- if $section.additional_tags }}
   {{- $allTags := merge (deepCopy $defaults) $section.additional_tags }}
   {{- toYaml $allTags }}
