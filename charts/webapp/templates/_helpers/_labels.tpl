@@ -3,7 +3,7 @@ Common labels
 */}}
 {{- define "webapp.labels" -}}
 
-{{- $version := .Values.image.tag | toString | quote -}}
+{{- $version := .Values.image.tag | toString -}}
 
 {{- $base := dict
     "app" .Values.name
