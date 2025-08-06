@@ -5,10 +5,6 @@
 # --name is the github repository name of this application deploy
 name: "ci"
 
-commonLabels:
-  environment: ci
-  team: devops
-
 global:
   commonLabels:
     cost-center: devops
@@ -22,12 +18,12 @@ global:
     endpoint: http://alloy.observability.svc.cluster.local
     port: 4317
 
+commonLabels:
+  environment: ci
+  team: devops
+
 actuator:
   enabled: false
-
-deployment:
-  labels:
-    example: ci
 
 livenessProbe:
   enabled: true
@@ -37,6 +33,7 @@ livenessProbe:
   timeoutSeconds: 10
   successThreshold: 1
   failureThreshold: 6
+
 readinessProbe:
   enabled: true
   path: /v1/health
