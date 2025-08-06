@@ -2,15 +2,31 @@
 Common labels
 */}}
 {{- define "webapp.labels" -}}
-app: {{ .Values.name }}
-version: {{ ($version := .Values.image.tag  | toString | quote) }}
-backstage.io/kubernetes-id: {{ .Values.name }}
-helm.sh/chart: {{ include "webapp.chart" . }}
-{{ include "webapp.selectorLabels" . }}
+
+{{- $version := .Values.image.tag | toString | quote -}}
+
+{{- $base := dict
+    "app" .Values.name
+    "version" $version
+    "backstage.io/kubernetes-id" .Values.name
+    "helm.sh/chart" (include "webapp.chart" .)
+    "app.kubernetes.io/managed-by" "argocd"
+-}}
+
 {{- if .Chart.AppVersion }}
-app.kubernetes.io/version: {{ $version }}
+  {{- $_ := set $base "app.kubernetes.io/version" (.Values.image.tag | toString) }}
 {{- end }}
-app.kubernetes.io/managed-by: argocd
+
+{{- $_ := set $base "app.kubernetes.io/name" .Values.name }}
+{{- $_ := set $base "app.kubernetes.io/instance" .Release.Name }}
+
+{{- $commonLabels := .Values.commonLabels | default dict }}
+{{- $globalLabels := .Values.global.commonLabels | default dict }}
+{{- $selectorLabels := fromYaml (include "webapp.selectorLabels" .) }}
+
+{{- $merged := merge $base $selectorLabels | merge $globalLabels | merge $commonLabels }}
+
+{{- toYaml $merged }}
 {{- end }}
 
 {{- /*
@@ -35,7 +51,6 @@ Remove istio sidecar injection label
 {{- $_ = set $labels "app" .name }}
 {{- toYaml $labels -}}
 {{- end }}
-
 
 {{/*
 Selector labels

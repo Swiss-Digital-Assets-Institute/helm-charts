@@ -6,6 +6,9 @@
 name: "ci"
 
 global:
+  commonLabels:
+    cost-center: devops
+    region: us-east-1
   env: dev
   prometheus:
     server: http://mimir-nginx.monitoring.svc:80/prometheus
@@ -15,12 +18,12 @@ global:
     endpoint: http://alloy.observability.svc.cluster.local
     port: 4317
 
+commonLabels:
+  environment: ci
+  team: devops
+
 actuator:
   enabled: false
-
-deployment:
-  labels:
-    example: ci
 
 livenessProbe:
   enabled: true
@@ -30,6 +33,7 @@ livenessProbe:
   timeoutSeconds: 10
   successThreshold: 1
   failureThreshold: 6
+
 readinessProbe:
   enabled: true
   path: /v1/health
