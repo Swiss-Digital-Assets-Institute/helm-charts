@@ -5,7 +5,14 @@
 # --name is the github repository name of this application deploy
 name: "ci"
 
+commonLabels:
+  environment: ci
+  team: devops
+
 global:
+  commonLabels:
+    cost-center: devops
+    region: us-east-1
   env: dev
   prometheus:
     server: http://mimir-nginx.monitoring.svc:80/prometheus
