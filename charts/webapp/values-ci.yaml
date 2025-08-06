@@ -5,6 +5,10 @@
 # --name is the github repository name of this application deploy
 name: "ci"
 
+image:
+  repository: 000000000.dkr.ecr.eu-central-2.amazonaws.com/myapp/frontend
+  tag: "4cdd4ec"
+
 global:
   commonLabels:
     cost-center: devops
