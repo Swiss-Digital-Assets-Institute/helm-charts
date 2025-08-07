@@ -1,3 +1,9 @@
+# --nameOverride allows partial override of the name
+nameOverride: {}
+
+# --fullnameOverride allows full override of the name
+fullnameOverride: {}
+
 global:
   env: ""
   org: ""
