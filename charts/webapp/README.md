@@ -1,6 +1,6 @@
 # webapp
 
-![Version: 0.2.1](https://img.shields.io/badge/Version-0.2.1-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 1.0.0](https://img.shields.io/badge/AppVersion-1.0.0-informational?style=flat-square)
+![Version: 0.2.2](https://img.shields.io/badge/Version-0.2.2-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 1.0.0](https://img.shields.io/badge/AppVersion-1.0.0-informational?style=flat-square)
 
 Helm Charts for default Web Application
 
@@ -171,7 +171,7 @@ Helm Charts for default Web Application
 | nginx.enabled | bool | `false` | If enabled, create a sidecar container with nginx |
 | nodeSelector | object | `{}` | nodeSelector allows you to constrain a Pod to only be able to run on particular node(s) |
 | podAnnotations | object | `{}` | podAnnotations adds custom annotations to the pod |
-| podSecurityContext | object | `{}` | A security context defines privilege and access control settings for a Pod or Container. About more: https://kubernetes.io/docs/tasks/configure-pod-container/security-context/ |
+| podSecurityContext | object | `{}` | podSecurityContext sets the security context for the pod |
 | quota | object | `{"enabled":true,"resources":{"hard":{"limits.cpu":"2","limits.memory":"2Gi","requests.cpu":"1","requests.memory":"1Gi"}}}` | ResourceQuota provides constraints that limit aggregate resource consumption per namespace |
 | quota.enabled | bool | `true` | Specifies whether a resource quota should be created |
 | quota.resources | object | `{"hard":{"limits.cpu":"2","limits.memory":"2Gi","requests.cpu":"1","requests.memory":"1Gi"}}` | resources Specifies the hard resources |
@@ -191,9 +191,9 @@ Helm Charts for default Web Application
 | readinessProbe.successThreshold | int | `1` | Minimum consecutive successes for the probe to be considered successful after having failed |
 | readinessProbe.timeoutSeconds | int | `3` | Number of seconds after which the readiness probe times out |
 | replicaCount | int | `1` | replicaCount is used when autoscaling.enabled is false to set a manually number of pods |
-| resources | list | `[]` | resources set deployment resources |
+| resources | object | `{}` | resources set deployment resources |
 | restartPolicy | string | `"Always"` | restartPolicy is the object to specify the restart policy for the container |
-| securityContext | object | `{"enabled":false}` | securityContext is the object to configure the security context of the container |
+| securityContext | object | `{}` | securityContext sets the security context for the container |
 | service | object | `{"annotations":{},"enabled":true,"externalDns":{"enabled":false},"labels":{},"nodePort":{},"port":{"name":"tcp-node","port":80,"targetPort":8080},"type":"ClusterIP"}` | service |
 | service.annotations | object | `{}` | Annotations to add to the service |
 | service.enabled | bool | `true` | service.enabled to enable and disable the creation of service |
