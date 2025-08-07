@@ -1,5 +1,21 @@
 apiVersion: v1
 entries:
+  australian-payments-plus:
+  - apiVersion: v2
+    appVersion: 1.0.0
+    created: "2025-08-07T06:42:12.722328314Z"
+    description: Helm Charts for Australian Payments Plus
+    digest: 2c6369a2f3e057219435ace309ac9bebc6734bb45b69fa1422096d7736eeb521
+    icon: https://github.com/Swiss-Digital-Assets-Institute/helm-charts/blob/main/charts/tooling/helm-icon.png
+    maintainers:
+    - email: hashgraph-group@hashgraph-group.com
+      name: hashgraph-group
+      url: www.hashgraph-group.com
+    name: australian-payments-plus
+    type: application
+    urls:
+    - https://github.com/Swiss-Digital-Assets-Institute/helm-charts/releases/download/australian-payments-plus-0.0.1/australian-payments-plus-0.0.1.tgz
+    version: 0.0.1
   infra:
   - apiVersion: v2
     appVersion: 1.0.0
@@ -939,4 +955,4 @@ entries:
     urls:
     - https://raw.githubusercontent.com/Swiss-Digital-Assets-Institute/helm-charts/artifacts/webapp-0.0.2.tgz
     version: 0.0.2
-generated: "2025-08-06T15:12:56.19273288Z"
+generated: "2025-08-07T06:42:12.849294565Z"
