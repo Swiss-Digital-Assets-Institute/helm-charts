@@ -1,5 +1,5 @@
 {{- if .Values.deployment.enabled }}
-{{- if not .Values.argoRollouts.enabled }} 
+{{- if not .Values.argoRollouts.enabled }}
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -12,7 +12,7 @@ spec:
   replicas: {{ default 1 .Values.replicaCount }}
   {{- end }}
   strategy:
-    type: {{ .Values.deployment.strategyType }} 
+    type: {{ .Values.deployment.strategyType }}
   selector:
     matchLabels:
       {{- include "webapp.selectorLabels" $ | nindent 6 }}
@@ -22,14 +22,11 @@ spec:
       labels: {{- include "all-deploy-labels" . | nindent 8 }}
     spec:
       terminationGracePeriodSeconds: {{ default "30" .Values.terminationGracePeriodSeconds }}
-      restartPolicy: {{ default "Always" .Values.restartPolicy }}    
+      restartPolicy: {{ default "Always" .Values.restartPolicy }}
       imagePullSecrets: {{- toYaml (default list .Values.imagePullSecrets) | nindent 8 }}
       serviceAccountName: {{ .Values.name }}
-      {{- if .Values.securityContext.enabled }}
-      securityContext: 
-        fsGroup: {{ .Values.securityContext.fsGroup }}
-        containerPort:  {{ .Values.securityContext.runAsUser }}
-      {{- end }}
+      securityContext:
+        {{- toYaml .Values.podSecurityContext | nindent 8 }}
       containers:
       - name: {{ .Values.name }}
         image: {{ include "image" . | quote }}
@@ -38,13 +35,15 @@ spec:
         args: {{- toYaml .Values.args | nindent 12 }}
         env: {{- include "all-envs" . | nindent 12 }}
         envFrom: {{- include "all-EnvFrom" . | nindent 12 }}
+        securityContext:
+          {{- toYaml .Values.securityContext | nindent 12 }}
         ports:
         - name: http
           containerPort: {{ .Values.container.port }}
         {{- if and .Values.monitoring.serviceMonitor.enabled .Values.monitoring.serviceMonitor.extraPort.enabled }}
         - name: {{ .Values.monitoring.serviceMonitor.extraPort.name }}
           containerPort:  {{ .Values.monitoring.serviceMonitor.extraPort.targetPort }}
-        {{- end }}          
+        {{- end }}
         {{- if .Values.actuator.enabled }}
         - name: {{ .Values.actuator.port.name }}
           containerPort:  {{ .Values.actuator.port.targetPort }}
@@ -55,7 +54,8 @@ spec:
         {{- if .Values.readinessProbe.enabled }}
         {{- include "readiness-probe" ( dict "readiness" .Values.readinessProbe "port" .Values.container.port "actuator" .Values.actuator ) | indent 8 }}
         {{- end }}
-        resources: {{ toYaml .Values.resources | nindent 12 }}
+        resources:
+          {{- toYaml .Values.resources | nindent 12 }}
         volumeMounts: {{ toYaml (default list .Values.volumeMounts)  | nindent 12 }}
       {{- if .Values.extraContainer.enabled }}
       - name: {{ .Values.extraContainer.name }}
@@ -67,7 +67,7 @@ spec:
           containerPort: {{ .Values.extraContainer.port.containerPort }}
         resources: {{ toYaml .Values.extraContainer.resources | nindent 12 }}
         volumeMounts: {{ toYaml .Values.extraContainer.volumeMounts | nindent 12 }}
-      {{- end }}        
+      {{- end }}
       volumes: {{ toYaml (default list .Values.volumes)  | nindent 8 }}
       nodeSelector: {{ toYaml (default dict .Values.nodeSelector) | nindent 8 }}
       affinity: {{ toYaml (default dict .Values.affinity) | nindent 8 }}
@@ -80,7 +80,7 @@ spec:
         labelSelector:
           matchLabels:
             {{- include "webapp.selectorLabels" . | nindent 12 }}
-      {{- end }}      
+      {{- end }}
   minReadySeconds: 30
 {{- end }}
 {{- end }}

@@ -29,6 +29,17 @@ commonLabels:
 actuator:
   enabled: false
 
+resources:
+  requests:
+    cpu: 208m
+    memory: 717Mi
+  limits:
+    memory: 717Mi
+
+securityContext:
+  fsGroup: 1000
+  runAsUser: 1000
+
 livenessProbe:
   enabled: true
   path: /v1/health
