@@ -272,7 +272,7 @@ imagePullSecrets:
 
 # --resources set deployment resources
 resources:
-  []
+  {}
   # --Resource requests are the minimum amount of CPU and memory that Kubernetes guarantees for the container
   # requests:
   #   cpu: {}
@@ -411,20 +411,20 @@ topologySpreadConstraints:
 # --podAnnotations adds custom annotations to the pod
 podAnnotations: {}
 
-# --A security context defines privilege and access control settings for a Pod or Container. About more: https://kubernetes.io/docs/tasks/configure-pod-container/security-context/
+# --podSecurityContext sets the security context for the pod
 podSecurityContext:
   {}
-  # --fsGroup: 2000
+  # fsGroup: 2000
 
-# --securityContext is the object to configure the security context of the container
+# --securityContext sets the security context for the container
 securityContext:
-  enabled: false
-  # --capabilities:
-  # --drop:
-  # ---ALL
-  # --readOnlyRootFilesystem: true
-  # --runAsNonRoot: true
-  # --runAsUser: 1000
+  {}
+  # capabilities:
+  #   drop:
+  #   - ALL
+  # readOnlyRootFilesystem: true
+  # runAsNonRoot: true
+  # runAsUser: 1000
 
 envs:
   []
