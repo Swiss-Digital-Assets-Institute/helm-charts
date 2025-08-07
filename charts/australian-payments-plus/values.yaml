@@ -3,32 +3,17 @@
 # Declare variables to be passed into your templates.
 
 # --name is the GitHub repository name of this application deployment
-name: ""
-
-# --nameOverride allows partial override of the name
-nameOverride: {}
-
-# --fullnameOverride allows full override of the name
-fullnameOverride: {}
+name: "applus"
 
 global:
   # --cluster sets the Cluster Name
   cluster: cluster.local
   # --env sets the Environment Name (dev, mng, prd)
-  env: ""
-  # --prometheus sets the Prometheus server URL
-  prometheus:
-    # --server sets prometheus endpoint
-    server: ""
+  env: "dev"
   # -- Network configuration
   network:
     # --domain sets the Default Domain
-    domain: ""
-  # --otel sets the endpoint for OpenTelemetry collector
-  otel:
-    endpoint: ""
-    port: ""
-    argument: "0.25"
+    domain: "<your-domain>"
 
 # --commonLabels sets common labels for all resources
 commonLabels: {}
@@ -80,7 +65,7 @@ service:
     # --Port is the port your application runs under
     port: 80
     # --targetPort is the port your application runs under
-    targetPort: 8080
+    targetPort: 3000
   # --Annotations to add to the service
   annotations: {}
   # --Labels to add to the service
@@ -138,7 +123,7 @@ replicaCount: 1
 # --autoscaling is the main object of autoscaling
 autoscaling:
   # --enabled is the flag to sinalize this funcionality is enabled
-  enabled: true
+  enabled: false
   # --minReplicas is the number of mim pods to be running
   minReplicas: 1
   # --maxReplicas is the number of maximum scaling pods
@@ -159,7 +144,7 @@ autoscaling:
 
 container:
   # --port is the port your application runs under
-  port: 8080
+  port: 3000
   # --readOnlyRootFilesystem is the prop to setup the container root filesystem as read-only
   readOnlyRootFilesystem: true
 
@@ -167,7 +152,7 @@ container:
 image:
   # --repository: is the registry of your application ex:556684128444.dkr.ecr.us-east-1.amazonaws.com/YOU-APP-ECR-REPO-NAME
   # if empty this helm will auto generate the image using aws.registry/values.name:values.image.tag
-  repository: ""
+  repository: "<your-registry>/<your-repo>/<your-image>"
   # --pullPolicy is the prop to setup the behavior of pull police. options is: IfNotPresent \| allways
   pullPolicy: IfNotPresent
   # --especify the tag of your image to deploy
@@ -182,26 +167,23 @@ imagePullSecrets:
 
 # --resources set deployment resources
 resources:
-  # --Resource requests are the minimum amount of CPU and memory that Kubernetes guarantees for the container
   requests:
     # --The amount of CPU requested for the container
-    cpu: "50m"
+    cpu: 50m
     # --The amount of memory requested for the container
-    memory: "64Mi"
+    memory: 512Mi
   # --Resource limits are the maximum amount of CPU and memory that the container is allowed to use
   limits:
     # --The maximum amount of CPU the container can use
-    cpu: "100m"
+    cpu: 100m
     # --The maximum amount of memory the container can use
-    memory: "128Mi"
+    memory: 1024Mi
 
 ## Health Check
 # --livenessProbe indicates whether the application is running and alive
 livenessProbe:
   # --Specifies whether the liveness probe is enabled
   enabled: false
-  # --The HTTP path to check for liveness
-  path: /health-check/liveness
   # --The scheme to use for the liveness probe (e.g., HTTP or HTTPS)
   scheme: HTTP
   # --Specifies a command to run inside the container to determine liveness
@@ -271,20 +253,22 @@ podSecurityContext:
   # --fsGroup: 2000
 
 envs:
-  []
-  # examples:
-  # please note that when the value is a number, you must quote the value to cast to string!
-  # - name: ENVIROMENT
-  #   value: dev
-  # - name: ENVIROMENT1
-  #   value: true
+  - name: API_PORT
+    value: "3000"
+  - name: NODE_ENV
+    value: "development"
+  - name: POSTGRES_HOST
+    value: "postgresql.australian-payments-plus.svc.cluster.local"
+  - name: POSTGRES_PORT
+    value: "5432"
+  - name: POSTGRES_USER
+    value: "applus"
+  - name: POSTGRES_DATABASE
+    value: "applus"
 
 envFrom:
-  []
-  # examples:
-  # please note that when the value is a number, you must quote the value to cast to string!
-  # - configMapRef
-  #     name: postgres-configs
+  - secretRef:
+      name: kvv-applus
 
 # --volumes specifies pod volumes
 volumes:
@@ -303,7 +287,7 @@ volumeMounts:
 # ExternalSecrets configuration
 externalSecrets:
   # -- If enabled, ExternalSecret resources will be created to sync secrets from external sources (e.g., Vault).
-  enabled: false
+  enabled: true
   # -- The time interval at which secrets are refreshed from the external source (e.g., Vault).
   # Default value is "30s", meaning secrets will be refreshed every 30 seconds.
   refreshInterval: "30s"
@@ -319,4 +303,124 @@ externalSecrets:
     creationPolicy: Owner
   # -- List of secrets to be synced from the external source (e.g., Vault).
   # Add secrets here, where each secretKey in Kubernetes will map to a corresponding key in the external store.
-  secrets: []
+  secrets:
+    - secretKey: API_PORT
+      remoteRef:
+        key: secrets/dev/tha-dev-elca-k8s/australian-payments-plus
+        property: API_PORT
+    - secretKey: NODE_ENV
+      remoteRef:
+        key: secrets/dev/tha-dev-elca-k8s/australian-payments-plus
+        property: NODE_ENV
+    - secretKey: DATABASE_URL
+      remoteRef:
+        key: secrets/dev/tha-dev-elca-k8s/australian-payments-plus
+        property: DATABASE_URL
+    - secretKey: ACCOUNT_CONFIG
+      remoteRef:
+        key: secrets/dev/tha-dev-elca-k8s/australian-payments-plus
+        property: ACCOUNT_CONFIG
+    - secretKey: PROVIDER_CONFIG
+      remoteRef:
+        key: secrets/dev/tha-dev-elca-k8s/australian-payments-plus
+        property: PROVIDER_CONFIG
+    - secretKey: CHAIN_CONFIG
+      remoteRef:
+        key: secrets/dev/tha-dev-elca-k8s/australian-payments-plus
+        property: CHAIN_CONFIG
+    - secretKey: JSON_RPC_PROVIDER_CONFIG
+      remoteRef:
+        key: secrets/dev/tha-dev-elca-k8s/australian-payments-plus
+        property: JSON_RPC_PROVIDER_CONFIG
+    - secretKey: HASHGRAPH_ACCOUNT_ID
+      remoteRef:
+        key: secrets/dev/tha-dev-elca-k8s/australian-payments-plus
+        property: HASHGRAPH_ACCOUNT_ID
+    - secretKey: HASHGRAPH_PUBLIC_KEY
+      remoteRef:
+        key: secrets/dev/tha-dev-elca-k8s/australian-payments-plus
+        property: HASHGRAPH_PUBLIC_KEY
+    - secretKey: HASHGRAPH_PRIVATE_KEY
+      remoteRef:
+        key: secrets/dev/tha-dev-elca-k8s/australian-payments-plus
+        property: HASHGRAPH_PRIVATE_KEY
+    - secretKey: HASHGRAPH_NETWORK
+      remoteRef:
+        key: secrets/dev/tha-dev-elca-k8s/australian-payments-plus
+        property: HASHGRAPH_NETWORK
+    - secretKey: HASHGRAPH_MIRROR_NODE_URL
+      remoteRef:
+        key: secrets/dev/tha-dev-elca-k8s/australian-payments-plus
+        property: HASHGRAPH_MIRROR_NODE_URL
+    - secretKey: HASHICORP_VAULT_URL
+      remoteRef:
+        key: secrets/dev/tha-dev-elca-k8s/australian-payments-plus
+        property: HASHICORP_VAULT_URL
+    - secretKey: HASHICORP_VAULT_TOKEN
+      remoteRef:
+        key: secrets/dev/tha-dev-elca-k8s/australian-payments-plus
+        property: HASHICORP_VAULT_TOKEN
+    - secretKey: RETRY_MAX_RETRIES
+      remoteRef:
+        key: secrets/dev/tha-dev-elca-k8s/australian-payments-plus
+        property: RETRY_MAX_RETRIES
+    - secretKey: RETRY_DELAY_MS
+      remoteRef:
+        key: secrets/dev/tha-dev-elca-k8s/australian-payments-plus
+        property: RETRY_DELAY_MS
+    - secretKey: ORCHESTRATION_SCHEDULER_ENABLED
+      remoteRef:
+        key: secrets/dev/tha-dev-elca-k8s/australian-payments-plus
+        property: ORCHESTRATION_SCHEDULER_ENABLED
+    - secretKey: ESCROW_ADDRESS
+      remoteRef:
+        key: secrets/dev/tha-dev-elca-k8s/australian-payments-plus
+        property: ESCROW_ADDRESS
+    - secretKey: CHAIN_TYPE_TEMP
+      remoteRef:
+        key: secrets/dev/tha-dev-elca-k8s/australian-payments-plus
+        property: CHAIN_TYPE_TEMP
+    - secretKey: CHAIN_TEMP
+      remoteRef:
+        key: secrets/dev/tha-dev-elca-k8s/australian-payments-plus
+        property: CHAIN_TEMP
+    - secretKey: NETWORK_TEMP
+      remoteRef:
+        key: secrets/dev/tha-dev-elca-k8s/australian-payments-plus
+        property: NETWORK_TEMP
+    - secretKey: INTERCHANGE_ADDRESS
+      remoteRef:
+        key: secrets/dev/tha-dev-elca-k8s/australian-payments-plus
+        property: INTERCHANGE_ADDRESS
+    - secretKey: REDBANK_MEMBER_FX_ADDRESS
+      remoteRef:
+        key: secrets/dev/tha-dev-elca-k8s/australian-payments-plus
+        property: REDBANK_MEMBER_FX_ADDRESS
+    - secretKey: BLUEBANK_MEMBER_FX_ADDRESS
+      remoteRef:
+        key: secrets/dev/tha-dev-elca-k8s/australian-payments-plus
+        property: BLUEBANK_MEMBER_FX_ADDRESS
+    - secretKey: REDCOIN_ADDRESS
+      remoteRef:
+        key: secrets/dev/tha-dev-elca-k8s/australian-payments-plus
+        property: REDCOIN_ADDRESS
+    - secretKey: BLUECOIN_ADDRESS
+      remoteRef:
+        key: secrets/dev/tha-dev-elca-k8s/australian-payments-plus
+        property: BLUECOIN_ADDRESS
+    - secretKey: NOTIFICATION_API_KEY
+      remoteRef:
+        key: secrets/dev/tha-dev-elca-k8s/australian-payments-plus
+        property: NOTIFICATION_API_KEY
+    - secretKey: NOTIFICATION_BASE_URL
+      remoteRef:
+        key: secrets/dev/tha-dev-elca-k8s/australian-payments-plus
+        property: NOTIFICATION_BASE_URL
+    - secretKey: ORCHESTRATION_PROCESS_TIMEOUT_SECONDS
+      remoteRef:
+        key: secrets/dev/tha-dev-elca-k8s/australian-payments-plus
+        property: ORCHESTRATION_PROCESS_TIMEOUT_SECONDS
+    - secretKey: POSTGRES_PASSWORD
+      remoteRef:
+        key: secrets/dev/tha-dev-elca-k8s/australian-payments-plus
+        property: POSTGRES_PASSWORD

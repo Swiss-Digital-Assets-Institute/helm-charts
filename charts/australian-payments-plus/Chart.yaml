@@ -1,6 +1,27 @@
 apiVersion: v2
 name: australian-payments-plus
-description: Helm Charts for Australian Payments Plus
+description: |
+  # AP+ API - Helm Chart
+
+  This package contains the Helm Chart for deploying the **AP+ API** service in a Kubernetes environment.
+
+  ## ⚙️ Prerequisites
+
+  - Kubernetes ≥ 1.21
+  - Helm ≥ 3.0
+  - Istio installed in the cluster (required if `istio.virtualServices.enabled: true`)
+  - External Secrets Operator installed and configured with Vault
+
+  ## 🚀 Installation
+
+  ```bash
+  # 1. Navigate to the Helm chart directory
+  cd applus-api-helm/
+
+  # 2. (Optional) Review and adjust values.yaml if needed
+
+  # 3. Install the application
+  helm upgrade --install applus-api . -f values.yaml
 icon: https://github.com/Swiss-Digital-Assets-Institute/helm-charts/blob/main/charts/tooling/helm-icon.png
 type: application
 version: 0.0.1
