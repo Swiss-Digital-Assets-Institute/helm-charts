@@ -1,6 +1,6 @@
 # infra
 
-![Version: 1.7.13](https://img.shields.io/badge/Version-1.7.13-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 1.0.0](https://img.shields.io/badge/AppVersion-1.0.0-informational?style=flat-square)
+![Version: 1.7.14](https://img.shields.io/badge/Version-1.7.14-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 1.0.0](https://img.shields.io/badge/AppVersion-1.0.0-informational?style=flat-square)
 
 Managing and maintaining cloud resources using crossplane
 
@@ -116,6 +116,11 @@ Managing and maintaining cloud resources using crossplane
 | aws.s3.lifeCycleConfiguration.rule | list | `[]` |  |
 | aws.s3.objectOwnership | string | `"BucketOwnerEnforced"` |  |
 | aws.s3.versioning.enabled | bool | `false` |  |
+| externalSecrets.enabled | bool | `false` | If enabled, ExternalSecret resources will be created to sync secrets from external sources (e.g., Vault). |
+| externalSecrets.refreshInterval | string | `"30s"` | The time interval at which secrets are refreshed from the external source (e.g., Vault). Default value is "30s", meaning secrets will be refreshed every 30 seconds. |
+| externalSecrets.secretStoreRef.kind | string | `"ClusterSecretStore"` | The kind of SecretStore used to fetch secrets. By default, this is set to "ClusterSecretStore" to allow cluster-wide secret management. |
+| externalSecrets.secretStoreRef.name | string | `"vault-backend"` | The name of the SecretStore backend. For Vault, this typically refers to the Vault connection (e.g., "vault-backend"). |
+| externalSecrets.target.creationPolicy | string | `"Owner"` | The creation policy for the target Kubernetes Secret. "Owner" means ExternalSecret manages the lifecycle of the created secret, deleting it when ExternalSecret is deleted. |
 | fullnameOverride | object | `{}` | fullnameOverride allows full override of the name |
 | global.env | string | `""` |  |
 | global.managed_by | string | `"crossplane"` |  |
