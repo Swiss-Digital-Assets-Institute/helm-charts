@@ -119,8 +119,10 @@ argoRollouts:
     initialDelay: "30s"
     # The interval between each measurement
     interval: "20s"
+
   # --Specifies whether the stable ReplicaSet should be dynamically scaled during rollout
   dynamicStableScale: true
+
   # --strategy is the object to configure the rollout strategy
   strategy:
     steps:
@@ -186,14 +188,17 @@ istio:
     public: false
     custom:
       hosts: []
+
   # --PeerAuthentication defines how traffic will be tunneled (or not) to the sidecar.
   peerAuthentication:
     # --enable peerAuthentication
     enabled: true
     # --set peerAuthentication mode, values (UNSET, DISABLE, PERMISSIVE, STRICT)
     mode: PERMISSIVE
+
   # --gateways set default gateway for virtual-service
   gateways: istio-ingress/istio-ingressgateway
+
   # --authorizationPolicy set default authorization policy
   authorizationPolicy:
     # --enable authorizationPolicy
@@ -218,6 +223,7 @@ serviceAccount:
 
 # --replicaCount is used when autoscaling.enabled is false to set a manually number of pods
 replicaCount: 1
+
 # --autoscaling is the main object of autoscaling
 autoscaling:
   # --enabled is the flag to sinalize this funcionality is enabled
@@ -240,13 +246,14 @@ autoscaling:
     #       type: Utilization
     #       averageUtilization: 20
 
+# --container is the object to configure the container
 container:
   # --port is the port your application runs under
   port: 8080
   # --readOnlyRootFilesystem is the prop to setup the container root filesystem as read-only
   readOnlyRootFilesystem: true
 
-  # --image is the object to specify the image to run in the deployment
+# --image is the object to specify the image to run in the deployment
 image:
   # --repository: is the registry of your application ex:556684128444.dkr.ecr.us-east-1.amazonaws.com/YOU-APP-ECR-REPO-NAME
   # if empty this helm will auto generate the image using aws.registry/values.name:values.image.tag
@@ -265,18 +272,15 @@ imagePullSecrets:
 
 # --resources set deployment resources
 resources:
+  []
   # --Resource requests are the minimum amount of CPU and memory that Kubernetes guarantees for the container
-  requests:
-    # --The amount of CPU requested for the container
-    cpu: "50m"
-    # --The amount of memory requested for the container
-    memory: "64Mi"
-  # --Resource limits are the maximum amount of CPU and memory that the container is allowed to use
-  limits:
-    # --The maximum amount of CPU the container can use
-    cpu: "100m"
-    # --The maximum amount of memory the container can use
-    memory: "128Mi"
+  # requests:
+  #   cpu: {}
+  #   memory: {}
+  # # --Resource limits are the maximum amount of CPU and memory that the container is allowed to use
+  # limits:
+  #   cpu:
+  #   memory:
 
 ## Health Check
 # --livenessProbe indicates whether the application is running and alive
@@ -411,6 +415,8 @@ podAnnotations: {}
 podSecurityContext:
   {}
   # --fsGroup: 2000
+
+# --securityContext is the object to configure the security context of the container
 securityContext:
   enabled: false
   # --capabilities:
