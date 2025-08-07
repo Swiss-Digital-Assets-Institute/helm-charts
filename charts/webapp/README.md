@@ -1,6 +1,6 @@
 # webapp
 
-![Version: 0.2.0](https://img.shields.io/badge/Version-0.2.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 1.0.0](https://img.shields.io/badge/AppVersion-1.0.0-informational?style=flat-square)
+![Version: 0.2.1](https://img.shields.io/badge/Version-0.2.1-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 1.0.0](https://img.shields.io/badge/AppVersion-1.0.0-informational?style=flat-square)
 
 Helm Charts for default Web Application
 
@@ -74,6 +74,7 @@ Helm Charts for default Web Application
 | consumers.annotations | object | `{}` | annotations to be added to the consumers |
 | consumers.list | list | `[]` | list is the array of consumer definition |
 | consumers.terminationGracePeriodSeconds | int | `30` | terminationGracePeriodSeconds configures terminationGracePeriodSeconds |
+| container | object | `{"port":8080,"readOnlyRootFilesystem":true}` | container is the object to configure the container |
 | container.port | int | `8080` | port is the port your application runs under |
 | container.readOnlyRootFilesystem | bool | `true` | readOnlyRootFilesystem is the prop to setup the container root filesystem as read-only |
 | cronjobs.list | list | `[]` | list is an array of spec for create multiples cronjobs |
@@ -101,6 +102,7 @@ Helm Charts for default Web Application
 | global.otel | object | `{"argument":"0.25","endpoint":"","port":""}` | otel sets the endpoint for OpenTelemetry collector |
 | global.prometheus | object | `{"server":""}` | prometheus sets the Prometheus server URL |
 | global.prometheus.server | string | `""` | server sets prometheus endpoint |
+| image | object | `{"pullPolicy":"IfNotPresent","repository":"","tag":"latest"}` | image is the object to specify the image to run in the deployment |
 | image.pullPolicy | string | `"IfNotPresent"` | pullPolicy is the prop to setup the behavior of pull police. options is: IfNotPresent \| allways |
 | image.repository | string | `""` | repository: is the registry of your application ex:556684128444.dkr.ecr.us-east-1.amazonaws.com/YOU-APP-ECR-REPO-NAME if empty this helm will auto generate the image using aws.registry/values.name:values.image.tag |
 | image.tag | string | `"latest"` | especify the tag of your image to deploy |
@@ -189,15 +191,9 @@ Helm Charts for default Web Application
 | readinessProbe.successThreshold | int | `1` | Minimum consecutive successes for the probe to be considered successful after having failed |
 | readinessProbe.timeoutSeconds | int | `3` | Number of seconds after which the readiness probe times out |
 | replicaCount | int | `1` | replicaCount is used when autoscaling.enabled is false to set a manually number of pods |
-| resources | object | `{"limits":{"cpu":"100m","memory":"128Mi"},"requests":{"cpu":"50m","memory":"64Mi"}}` | resources set deployment resources |
-| resources.limits | object | `{"cpu":"100m","memory":"128Mi"}` | Resource limits are the maximum amount of CPU and memory that the container is allowed to use |
-| resources.limits.cpu | string | `"100m"` | The maximum amount of CPU the container can use |
-| resources.limits.memory | string | `"128Mi"` | The maximum amount of memory the container can use |
-| resources.requests | object | `{"cpu":"50m","memory":"64Mi"}` | Resource requests are the minimum amount of CPU and memory that Kubernetes guarantees for the container |
-| resources.requests.cpu | string | `"50m"` | The amount of CPU requested for the container |
-| resources.requests.memory | string | `"64Mi"` | The amount of memory requested for the container |
+| resources | list | `[]` | resources set deployment resources |
 | restartPolicy | string | `"Always"` | restartPolicy is the object to specify the restart policy for the container |
-| securityContext | object | `{"enabled":false}` | fsGroup: 2000 |
+| securityContext | object | `{"enabled":false}` | securityContext is the object to configure the security context of the container |
 | service | object | `{"annotations":{},"enabled":true,"externalDns":{"enabled":false},"labels":{},"nodePort":{},"port":{"name":"tcp-node","port":80,"targetPort":8080},"type":"ClusterIP"}` | service |
 | service.annotations | object | `{}` | Annotations to add to the service |
 | service.enabled | bool | `true` | service.enabled to enable and disable the creation of service |
