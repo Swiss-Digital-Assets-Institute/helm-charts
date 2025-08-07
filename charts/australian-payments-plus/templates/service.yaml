@@ -1,0 +1,32 @@
+{{- if .Values.service.enabled }}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Values.name }}
+  namespace: {{ include "namespace" . }}
+  labels: {{- include "webapp.labels" . | nindent 4 }}
+  {{- with .Values.service.annotations }}
+  annotations:
+  {{- if .Values.externalDns.enabled }}
+    external-dns.alpha.kubernetes.io/hostname: {{ .Values.name }}.{{ .Values.global.network.domain }}
+  {{- end }}
+  {{ toYaml . | indent 4 }}
+{{- end }}
+spec:
+  type: {{ .Values.service.type }}
+  selector:
+    app: {{ .Values.name }}
+  ports:
+  {{- if eq .Values.service.type "ClusterIP" }}
+    - name: {{ .Values.service.port.name }}
+      port: {{ .Values.service.port.port }}
+      targetPort:  {{ .Values.service.port.targetPort }}
+      protocol: TCP
+  {{- end }}
+  {{- if eq .Values.service.type "NodePort" }}
+    - port: {{ .Values.service.port }}
+      targetPort: {{ .Values.container.port }}
+      nodePort: {{ .Values.service.nodePort }}
+  {{- end }}
+{{- end }}

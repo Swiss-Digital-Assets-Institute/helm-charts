@@ -1,0 +1,58 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.name }}
+  namespace: {{ include "namespace" . }}
+  annotations: {{- include "all-deploy-annotations" . | nindent 4 }}
+  labels: {{- include "all-deploy-labels" . | nindent 4 }}
+spec:
+  {{- if not .Values.autoscaling.enabled }}
+  replicas: {{ default 1 .Values.replicaCount }}
+  {{- end }}
+  strategy:
+    type: {{ .Values.deployment.strategyType }}
+  selector:
+    matchLabels:
+      {{- include "webapp.selectorLabels" $ | nindent 6 }}
+  template:
+    metadata:
+      annotations: {{- include "all-pod-annotations" . | nindent 8 }}
+      labels: {{- include "all-deploy-labels" . | nindent 8 }}
+    spec:
+      terminationGracePeriodSeconds: {{ default "30" .Values.terminationGracePeriodSeconds }}
+      restartPolicy: {{ default "Always" .Values.restartPolicy }}
+      imagePullSecrets: {{- toYaml (default list .Values.imagePullSecrets) | nindent 8 }}
+      serviceAccountName: {{ .Values.name }}
+      containers:
+      - name: {{ .Values.name }}
+        image: {{ include "image" . | quote }}
+        imagePullPolicy: {{ .Values.image.pullPolicy }}
+        command: {{- toYaml .Values.command | nindent 12 }}
+        args: {{- toYaml .Values.args | nindent 12 }}
+        env: {{- include "all-envs" . | nindent 12 }}
+        envFrom: {{- include "all-EnvFrom" . | nindent 12 }}
+        ports:
+        - name: http
+          containerPort: {{ .Values.container.port }}
+        {{- if .Values.livenessProbe.enabled }}
+        {{- include "liveness-probe" ( dict "liveness" .Values.livenessProbe "port" .Values.container.port ) | indent 8 }}
+        {{- end }}
+        {{- if .Values.readinessProbe.enabled }}
+        {{- include "readiness-probe" ( dict "readiness" .Values.readinessProbe "port" .Values.container.port ) | indent 8 }}
+        {{- end }}
+        resources: {{ toYaml .Values.resources | nindent 12 }}
+        volumeMounts: {{ toYaml (default list .Values.volumeMounts)  | nindent 12 }}
+      volumes: {{ toYaml (default list .Values.volumes)  | nindent 8 }}
+      nodeSelector: {{ toYaml (default dict .Values.nodeSelector) | nindent 8 }}
+      affinity: {{ toYaml (default dict .Values.affinity) | nindent 8 }}
+      tolerations: {{ toYaml (default list .Values.tolerations)  | nindent 8 }}
+      {{- if .Values.topologySpreadConstraints.enabled }}
+      topologySpreadConstraints:
+      - maxSkew: {{ .Values.topologySpreadConstraints.maxSkew }}
+        topologyKey: {{ .Values.topologySpreadConstraints.topologyKey | quote }}
+        whenUnsatisfiable: {{ .Values.topologySpreadConstraints.whenUnsatisfiable | quote }}
+        labelSelector:
+          matchLabels:
+            {{- include "webapp.selectorLabels" . | nindent 12 }}
+      {{- end }}
+  minReadySeconds: 30

@@ -1,0 +1,182 @@
+name: "applus"
+global:
+  env: dev
+  network:
+    domain: "elca.hashgraph-group.com"
+image:
+  repository: harbor.pvt.mng.hashgraph-group.com/ecr-proxy/australian-payments-plus/applus
+  tag: "4bc9de3"
+autoscaling:
+  enabled: false
+  minReplicas: 1
+  maxReplicas: 3
+istio:
+  virtualServices:
+    enabled: true
+container:
+  port: 3000
+service:
+  port:
+    targetPort: 3000
+envs:
+  - name: API_PORT
+    value: "3000"
+  - name: NODE_ENV
+    value: "development"
+  - name: POSTGRES_HOST
+    value: "postgresql.australian-payments-plus.svc.cluster.local"
+  - name: POSTGRES_PORT
+    value: "5432"
+  - name: POSTGRES_USER
+    value: "applus"
+  - name: POSTGRES_DATABASE
+    value: "applus"
+envFrom:
+  - secretRef:
+      name: kvv-applus
+resources:
+  requests:
+    cpu: 50m
+    memory: 512Mi
+  limits:
+    cpu: 100m
+    memory: 1024Mi
+livenessProbe:
+  path: /v1/health
+  initialDelaySeconds: 30
+  periodSeconds: 15
+  timeoutSeconds: 10
+  successThreshold: 1
+  failureThreshold: 5
+readinessProbe:
+  path: /v1/health
+  initialDelaySeconds: 30
+  periodSeconds: 5
+  timeoutSeconds: 3
+  successThreshold: 1
+  failureThreshold: 3
+externalSecrets:
+  enabled: true
+  secretStoreRef:
+    name: vault-backend
+  secrets:
+    - secretKey: API_PORT
+      remoteRef:
+        key: secrets/dev/tha-dev-elca-k8s/australian-payments-plus
+        property: API_PORT
+    - secretKey: NODE_ENV
+      remoteRef:
+        key: secrets/dev/tha-dev-elca-k8s/australian-payments-plus
+        property: NODE_ENV
+    - secretKey: DATABASE_URL
+      remoteRef:
+        key: secrets/dev/tha-dev-elca-k8s/australian-payments-plus
+        property: DATABASE_URL
+    - secretKey: ACCOUNT_CONFIG
+      remoteRef:
+        key: secrets/dev/tha-dev-elca-k8s/australian-payments-plus
+        property: ACCOUNT_CONFIG
+    - secretKey: PROVIDER_CONFIG
+      remoteRef:
+        key: secrets/dev/tha-dev-elca-k8s/australian-payments-plus
+        property: PROVIDER_CONFIG
+    - secretKey: CHAIN_CONFIG
+      remoteRef:
+        key: secrets/dev/tha-dev-elca-k8s/australian-payments-plus
+        property: CHAIN_CONFIG
+    - secretKey: JSON_RPC_PROVIDER_CONFIG
+      remoteRef:
+        key: secrets/dev/tha-dev-elca-k8s/australian-payments-plus
+        property: JSON_RPC_PROVIDER_CONFIG
+    - secretKey: HASHGRAPH_ACCOUNT_ID
+      remoteRef:
+        key: secrets/dev/tha-dev-elca-k8s/australian-payments-plus
+        property: HASHGRAPH_ACCOUNT_ID
+    - secretKey: HASHGRAPH_PUBLIC_KEY
+      remoteRef:
+        key: secrets/dev/tha-dev-elca-k8s/australian-payments-plus
+        property: HASHGRAPH_PUBLIC_KEY
+    - secretKey: HASHGRAPH_PRIVATE_KEY
+      remoteRef:
+        key: secrets/dev/tha-dev-elca-k8s/australian-payments-plus
+        property: HASHGRAPH_PRIVATE_KEY
+    - secretKey: HASHGRAPH_NETWORK
+      remoteRef:
+        key: secrets/dev/tha-dev-elca-k8s/australian-payments-plus
+        property: HASHGRAPH_NETWORK
+    - secretKey: HASHGRAPH_MIRROR_NODE_URL
+      remoteRef:
+        key: secrets/dev/tha-dev-elca-k8s/australian-payments-plus
+        property: HASHGRAPH_MIRROR_NODE_URL
+    - secretKey: HASHICORP_VAULT_URL
+      remoteRef:
+        key: secrets/dev/tha-dev-elca-k8s/australian-payments-plus
+        property: HASHICORP_VAULT_URL
+    - secretKey: HASHICORP_VAULT_TOKEN
+      remoteRef:
+        key: secrets/dev/tha-dev-elca-k8s/australian-payments-plus
+        property: HASHICORP_VAULT_TOKEN
+    - secretKey: RETRY_MAX_RETRIES
+      remoteRef:
+        key: secrets/dev/tha-dev-elca-k8s/australian-payments-plus
+        property: RETRY_MAX_RETRIES
+    - secretKey: RETRY_DELAY_MS
+      remoteRef:
+        key: secrets/dev/tha-dev-elca-k8s/australian-payments-plus
+        property: RETRY_DELAY_MS
+    - secretKey: ORCHESTRATION_SCHEDULER_ENABLED
+      remoteRef:
+        key: secrets/dev/tha-dev-elca-k8s/australian-payments-plus
+        property: ORCHESTRATION_SCHEDULER_ENABLED
+    - secretKey: ESCROW_ADDRESS
+      remoteRef:
+        key: secrets/dev/tha-dev-elca-k8s/australian-payments-plus
+        property: ESCROW_ADDRESS
+    - secretKey: CHAIN_TYPE_TEMP
+      remoteRef:
+        key: secrets/dev/tha-dev-elca-k8s/australian-payments-plus
+        property: CHAIN_TYPE_TEMP
+    - secretKey: CHAIN_TEMP
+      remoteRef:
+        key: secrets/dev/tha-dev-elca-k8s/australian-payments-plus
+        property: CHAIN_TEMP
+    - secretKey: NETWORK_TEMP
+      remoteRef:
+        key: secrets/dev/tha-dev-elca-k8s/australian-payments-plus
+        property: NETWORK_TEMP
+    - secretKey: INTERCHANGE_ADDRESS
+      remoteRef:
+        key: secrets/dev/tha-dev-elca-k8s/australian-payments-plus
+        property: INTERCHANGE_ADDRESS
+    - secretKey: REDBANK_MEMBER_FX_ADDRESS
+      remoteRef:
+        key: secrets/dev/tha-dev-elca-k8s/australian-payments-plus
+        property: REDBANK_MEMBER_FX_ADDRESS
+    - secretKey: BLUEBANK_MEMBER_FX_ADDRESS
+      remoteRef:
+        key: secrets/dev/tha-dev-elca-k8s/australian-payments-plus
+        property: BLUEBANK_MEMBER_FX_ADDRESS
+    - secretKey: REDCOIN_ADDRESS
+      remoteRef:
+        key: secrets/dev/tha-dev-elca-k8s/australian-payments-plus
+        property: REDCOIN_ADDRESS
+    - secretKey: BLUECOIN_ADDRESS
+      remoteRef:
+        key: secrets/dev/tha-dev-elca-k8s/australian-payments-plus
+        property: BLUECOIN_ADDRESS
+    - secretKey: NOTIFICATION_API_KEY
+      remoteRef:
+        key: secrets/dev/tha-dev-elca-k8s/australian-payments-plus
+        property: NOTIFICATION_API_KEY
+    - secretKey: NOTIFICATION_BASE_URL
+      remoteRef:
+        key: secrets/dev/tha-dev-elca-k8s/australian-payments-plus
+        property: NOTIFICATION_BASE_URL
+    - secretKey: ORCHESTRATION_PROCESS_TIMEOUT_SECONDS
+      remoteRef:
+        key: secrets/dev/tha-dev-elca-k8s/australian-payments-plus
+        property: ORCHESTRATION_PROCESS_TIMEOUT_SECONDS
+    - secretKey: POSTGRES_PASSWORD
+      remoteRef:
+        key: secrets/dev/tha-dev-elca-k8s/australian-payments-plus
+        property: POSTGRES_PASSWORD
