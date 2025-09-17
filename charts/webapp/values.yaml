@@ -169,6 +169,7 @@ service:
   ports:
     # -- A list of ports needed if more than one port needs to be exposed.
     # Defined both port and ports to make it atmost backward compatible.
+    # Either port or ports should be defined. Not both together.
     - name: tcp-node
       port: 80
       targetPort: 8080
