@@ -19,15 +19,35 @@ spec:
     app: {{ .Values.name }}
   ports:
   {{- if eq .Values.service.type "ClusterIP" }}
-    - name: {{ .Values.service.port.name }}
-      port: {{ .Values.service.port.port }}
-      targetPort:  {{ .Values.service.port.targetPort }}
-      protocol: TCP
-  {{- include "service" (dict "service" .Values.service "actuator" .Values.actuator "monitor" .Values.monitoring) | indent 2 }}
+    {{- if .Values.service.ports }}
+      {{- range .Values.service.ports }}
+      - name: {{ .name }}
+        port: {{ .port }}
+        targetPort: {{ .targetPort }}
+        protocol: {{ .protocol | default "TCP" }}
+      {{- end }}
+    {{- else }}
+      - name: {{ .Values.service.port.name }}
+        port: {{ .Values.service.port.port }}
+        targetPort: {{ .Values.service.port.targetPort }}
+        protocol: TCP
+    {{- end }}
+    {{- include "service" (dict "service" .Values.service "actuator" .Values.actuator "monitor" .Values.monitoring) | indent 2 }}
   {{- end }}
   {{- if eq .Values.service.type "NodePort" }}
-    - port: {{ .Values.service.port }}
-      targetPort: {{ .Values.container.port }}
-      nodePort: {{ .Values.service.nodePort }}
+    {{- if .Values.service.ports }}
+      {{- range .Values.service.ports }}
+      - port: {{ .port }}
+        targetPort: {{ .targetPort }}
+        {{- if .nodePort }}
+        nodePort: {{ .nodePort }}
+        {{- end }}
+        protocol: {{ .protocol | default "TCP" }}
+      {{- end }}
+    {{- else }}
+      - port: {{ .Values.service.port }}
+        targetPort: {{ .Values.container.port }}
+        nodePort: {{ .Values.service.nodePort }}
+    {{- end }}
   {{- end }}
 {{- end }}

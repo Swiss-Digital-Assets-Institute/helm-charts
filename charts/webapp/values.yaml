@@ -166,6 +166,17 @@ service:
     port: 80
     # --targetPort is the port your application runs under
     targetPort: 8080
+  ports:
+    # -- A list of ports needed if more than one port needs to be exposed.
+    # Defined both port and ports to make it atmost backward compatible.
+    - name: tcp-node
+      port: 80
+      targetPort: 8080
+      protocol: TCP
+    - name: metrics
+      port: 8081
+      targetPort: 8081
+      protocol: TCP
   # --Annotations to add to the service
   annotations: {}
   # --Labels to add to the service
