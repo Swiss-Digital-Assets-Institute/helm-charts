@@ -1,6 +1,6 @@
 # infra
 
-![Version: 1.7.14](https://img.shields.io/badge/Version-1.7.14-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 1.0.0](https://img.shields.io/badge/AppVersion-1.0.0-informational?style=flat-square)
+![Version: 1.7.15](https://img.shields.io/badge/Version-1.7.15-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 1.0.0](https://img.shields.io/badge/AppVersion-1.0.0-informational?style=flat-square)
 
 Managing and maintaining cloud resources using crossplane
 
@@ -96,7 +96,7 @@ Managing and maintaining cloud resources using crossplane
 | aws.rds.passwordSecretRef.name | string | `""` |  |
 | aws.rds.passwordSecretRef.namespace | string | `""` |  |
 | aws.rds.preferredBackupWindow | string | `"03:00-05:00"` |  |
-| aws.rds.security.enableDeletionProtection | bool | `false` |  |
+| aws.rds.security.enableDeletionProtection | bool | `true` |  |
 | aws.rds.storage.enableAutoscaling | bool | `false` |  |
 | aws.rds.storage.enableDedicatedLogVolume | bool | `false` |  |
 | aws.rds.storage.maxAllocatedStorage | int | `500` |  |
