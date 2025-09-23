@@ -113,7 +113,7 @@ aws:
       performanceInsightsRetentionPeriod: 30
       performanceInsightsKmsKeyId: ""
     security:
-      enableDeletionProtection: true
+      enableDeletionProtection: false
     masterUserName: "postgres"
     passwordSecretRef:
       name: ""
