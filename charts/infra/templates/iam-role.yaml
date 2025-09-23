@@ -23,5 +23,5 @@ spec:
         policy: |
 {{ include "infra.customIamPolicy" . | indent 10 }}
   providerConfigRef:
-    name: {{ .Values.global.env }}
+    name: "crossplane-service-user"
 {{- end }}
