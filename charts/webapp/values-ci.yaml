@@ -5,11 +5,11 @@
 # --name is the github repository name of this application deploy
 name: "ci"
 
-image:
-  repository: 000000000.dkr.ecr.eu-central-2.amazonaws.com/myapp/frontend
-  tag: "4cdd4ec"
-
 global:
+  # --cluster sets the Cluster Name
+  cluster: cluster.local
+  # --imageRegistry sets the image registry, e.g., "000000000.dkr.ecr.eu-central-2.amazonaws.com/myapp"
+  imageRegistry: "000000000.dkr.ecr.eu-central-2.amazonaws.com"
   commonLabels:
     cost-center: devops
     region: us-east-1
@@ -21,6 +21,11 @@ global:
   otel:
     endpoint: http://alloy.observability.svc.cluster.local
     port: 4317
+
+# --image is the docker image configuration
+image:
+  # --image.tag is the image tag, e.g., a git sha or version number
+  tag: "4cdd4ec"
 
 commonLabels:
   environment: ci

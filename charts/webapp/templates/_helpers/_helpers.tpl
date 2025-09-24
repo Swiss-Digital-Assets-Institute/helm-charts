@@ -77,7 +77,8 @@ kind: Deployment
 {{- end }}
 {{- end }}
 
-{{/* Generate the default image string to deployment */}}
+
+{{/* Generate the default image string to deployment 
 {{- define "image" -}}
 {{- if not .Values.image.repository }}
 {{- printf "%s/%s:%s" .Values.image.repository .Values.name .Values.image.tag }}
@@ -85,6 +86,21 @@ kind: Deployment
 {{- printf "%s:%s" .Values.image.repository .Values.image.tag }}
 {{- end  }}
 {{- end  }}
+*/}}
+
+{{/* Generate the default image string for deployment */}}
+{{- define "image" -}}
+  {{- $registry := .Values.global.imageRegistry | default "" -}}
+  {{- $repository := .Values.image.repository | default (printf "%s/%s" .Release.Namespace .Release.Name) -}}
+  {{- $tag := .Values.image.tag | default "latest" -}}
+
+  {{- if $registry }}
+    {{- printf "%s/%s:%s" $registry $repository $tag }}
+  {{- else }}
+    {{- printf "%s:%s" $repository $tag }}
+  {{- end }}
+{{- end }}
+
 
 {{- define "all-volumes" }}
 {{- $volumes := .Values.volumes }}
