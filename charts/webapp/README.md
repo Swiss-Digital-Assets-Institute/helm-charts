@@ -1,6 +1,6 @@
 # webapp
 
-![Version: 0.2.3](https://img.shields.io/badge/Version-0.2.3-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 1.0.0](https://img.shields.io/badge/AppVersion-1.0.0-informational?style=flat-square)
+![Version: 0.2.4](https://img.shields.io/badge/Version-0.2.4-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 1.0.0](https://img.shields.io/badge/AppVersion-1.0.0-informational?style=flat-square)
 
 Helm Charts for default Web Application
 
@@ -173,8 +173,8 @@ Helm Charts for default Web Application
 | nodeSelector | object | `{}` | nodeSelector allows you to constrain a Pod to only be able to run on particular node(s) |
 | podAnnotations | object | `{}` | podAnnotations adds custom annotations to the pod |
 | podSecurityContext | object | `{}` | podSecurityContext sets the security context for the pod |
-| quota | object | `{"enabled":true,"resources":{"hard":{"limits.cpu":"2","limits.memory":"2Gi","requests.cpu":"1","requests.memory":"1Gi"}}}` | ResourceQuota provides constraints that limit aggregate resource consumption per namespace |
-| quota.enabled | bool | `true` | Specifies whether a resource quota should be created |
+| quota | object | `{"enabled":false,"resources":{"hard":{"limits.cpu":"2","limits.memory":"2Gi","requests.cpu":"1","requests.memory":"1Gi"}}}` | ResourceQuota provides constraints that limit aggregate resource consumption per namespace |
+| quota.enabled | bool | `false` | Specifies whether a resource quota should be created |
 | quota.resources | object | `{"hard":{"limits.cpu":"2","limits.memory":"2Gi","requests.cpu":"1","requests.memory":"1Gi"}}` | resources Specifies the hard resources |
 | quota.resources.hard."limits.cpu" | string | `"2"` | limits.cpu Specifies the total CPU limits allowed for all pods in the namespace |
 | quota.resources.hard."limits.memory" | string | `"2Gi"` | limits.memory Specifies the total memory limits allowed for all pods in the namespace |
