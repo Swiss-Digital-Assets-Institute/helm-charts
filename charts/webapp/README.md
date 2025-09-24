@@ -1,6 +1,6 @@
 # webapp
 
-![Version: 0.2.2](https://img.shields.io/badge/Version-0.2.2-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 1.0.0](https://img.shields.io/badge/AppVersion-1.0.0-informational?style=flat-square)
+![Version: 0.2.3](https://img.shields.io/badge/Version-0.2.3-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 1.0.0](https://img.shields.io/badge/AppVersion-1.0.0-informational?style=flat-square)
 
 Helm Charts for default Web Application
 
@@ -97,6 +97,7 @@ Helm Charts for default Web Application
 | fullnameOverride | object | `{}` | fullnameOverride allows full override of the name |
 | global.cluster | string | `"cluster.local"` | cluster sets the Cluster Name |
 | global.env | string | `""` | env sets the Environment Name (dev, mng, prd) |
+| global.imageRegistry | string | `""` |  |
 | global.network | object | `{"domain":""}` | Network configuration |
 | global.network.domain | string | `""` | domain sets the Default Domain |
 | global.otel | object | `{"argument":"0.25","endpoint":"","port":""}` | otel sets the endpoint for OpenTelemetry collector |
