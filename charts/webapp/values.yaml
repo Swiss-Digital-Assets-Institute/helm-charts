@@ -460,7 +460,7 @@ volumeMounts:
 # --ResourceQuota provides constraints that limit aggregate resource consumption per namespace
 quota:
   # --Specifies whether a resource quota should be created
-  enabled: true
+  enabled: false
   # --resources Specifies the hard resources
   resources:
     hard:
