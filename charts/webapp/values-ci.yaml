@@ -7,7 +7,8 @@ name: "ci"
 
 global:
   # --cluster sets the Cluster Name
-  cluster: cluster.local
+  cluster:
+    name: ci-cluster
   # --imageRegistry sets the image registry, e.g., "000000000.dkr.ecr.eu-central-2.amazonaws.com/myapp"
   imageRegistry: "000000000.dkr.ecr.eu-central-2.amazonaws.com"
   commonLabels:
@@ -82,10 +83,8 @@ instrumentation:
 externalSecrets:
   enabled: true
   secrets:
-    - secretKey: FOO
-      remoteRef:
-        key: data/dev/ci
-        property: FOO
+    - FOO
+    - BAR
 
 extraContainer:
   enabled: true

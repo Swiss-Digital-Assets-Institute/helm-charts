@@ -13,7 +13,9 @@ fullnameOverride: {}
 
 global:
   # --cluster sets the Cluster Name
-  cluster: cluster.local
+  cluster:
+    domain: cluster.local
+    name: ""
   imageRegistry: ""
   # --env sets the Environment Name (dev, mng, prd)
   env: ""
