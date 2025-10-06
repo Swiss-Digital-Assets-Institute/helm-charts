@@ -4,7 +4,7 @@ kind: Rollout
 metadata:
   name: {{ .Values.name }}
   namespace: {{ include "namespace" . }}
-  annotations: {{- include "merge.annotations" . | nindent 4 }}  
+  annotations: {{- include "merge.annotations" . | nindent 4 }}
   labels: {{ include "webapp.labels" . | nindent 4 }}
 spec:
   {{- if not .Values.autoscaling.enabled }}
@@ -17,7 +17,7 @@ spec:
         startingStep: 1   # index of step list, of when to start this analysis
         args:
         - name: service
-          value: {{ .Values.name }}.{{ .Values.name }}.svc.{{ .Values.global.cluster }}
+          value: {{ .Values.name }}.{{ .Values.name }}.svc.{{ .Values.global.cluster.name }}
         - name: namespace
           valueFrom:
             fieldRef:

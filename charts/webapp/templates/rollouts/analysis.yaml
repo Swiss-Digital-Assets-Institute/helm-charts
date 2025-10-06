@@ -22,12 +22,12 @@ spec:
           query: >+
             sum(irate(istio_requests_total{
               reporter="source",
-              destination_service=~"{{ .Values.name }}.{{ .Values.name }}.svc.{{ .Values.global.cluster }}",
+              destination_service=~"{{ .Values.name }}.{{ .Values.name }}.svc.{{ .Values.global.cluster.name }}",
               response_code!~"5.*"}[40s])
             )
             /
             sum(irate(istio_requests_total{
               reporter="source",
-              destination_service=~"{{ .Values.name }}.{{ .Values.name }}.svc.{{ .Values.global.cluster }}"}[40s])
+              destination_service=~"{{ .Values.name }}.{{ .Values.name }}.svc.{{ .Values.global.cluster.name }}"}[40s])
             )
 {{- end }}

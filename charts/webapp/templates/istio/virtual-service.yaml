@@ -10,7 +10,7 @@ metadata:
     link.argocd.argoproj.io/external-link: https://{{ .Values.name }}.pub.{{ .Values.global.env }}.{{ .Values.global.network.domain }}
     {{- else }}
     link.argocd.argoproj.io/external-link: https://{{ .Values.name }}.pvt.{{ .Values.global.env }}.{{ .Values.global.network.domain }}
-    {{- end }}  
+    {{- end }}
   labels:
     app: {{ .Values.name }}
     version: {{ .Values.image.tag | quote }}
@@ -30,12 +30,12 @@ spec:
     route:
     - destination:
         subset: stable  # referenced in canary.trafficRouting.istio.destinationRule.stableSubsetName
-        host: {{ .Values.name }}.{{ include "namespace" . }}.svc.{{ .Values.global.cluster }}
+        host: {{ .Values.name }}.{{ include "namespace" . }}.svc.{{ .Values.global.cluster.name }}
         port:
           number: {{ .Values.service.port.port }}
       weight: 100
     - destination:
-        host: {{ .Values.name }}.{{ include "namespace" . }}.svc.{{ .Values.global.cluster }}
+        host: {{ .Values.name }}.{{ include "namespace" . }}.svc.{{ .Values.global.cluster.name }}
         port:
           number: {{ .Values.service.port.port }}
         subset: canary # referenced in canary.trafficRouting.istio.destinationRule.canarySubsetName
@@ -44,7 +44,7 @@ spec:
   - name: {{ .Values.name }}
     route:
     - destination:
-        host: {{ .Values.name }}.{{ include "namespace" . }}.svc.{{ .Values.global.cluster }}
+        host: {{ .Values.name }}.{{ include "namespace" . }}.svc.{{ .Values.global.cluster.name }}
         port:
           number: {{ .Values.service.port.port }}
   {{- end }}
