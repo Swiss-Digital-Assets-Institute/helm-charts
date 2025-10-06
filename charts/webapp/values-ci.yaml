@@ -7,7 +7,9 @@ name: "ci"
 
 global:
   # --cluster sets the Cluster Name
-  cluster: cluster.local
+  cluster:
+    domain: cluster.local
+    name: cluster01
   # --imageRegistry sets the image registry, e.g., "000000000.dkr.ecr.eu-central-2.amazonaws.com/myapp"
   imageRegistry: "000000000.dkr.ecr.eu-central-2.amazonaws.com"
   commonLabels:
