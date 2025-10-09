@@ -1,6 +1,6 @@
 # infra
 
-![Version: 1.7.18](https://img.shields.io/badge/Version-1.7.18-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 1.0.0](https://img.shields.io/badge/AppVersion-1.0.0-informational?style=flat-square)
+![Version: 1.7.19](https://img.shields.io/badge/Version-1.7.19-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 1.0.0](https://img.shields.io/badge/AppVersion-1.0.0-informational?style=flat-square)
 
 Managing and maintaining cloud resources using crossplane
 
@@ -63,6 +63,7 @@ Managing and maintaining cloud resources using crossplane
 | aws.ecr.scanOnPush | bool | `true` |  |
 | aws.eksOidcId | string | `""` |  |
 | aws.enabled | bool | `true` |  |
+| aws.irsa.serviceAccountNameOverride | string | `""` |  |
 | aws.kms.additional_tags | object | `{}` |  |
 | aws.kms.deletionWindowInDays | int | `365` |  |
 | aws.kms.enabled | bool | `false` |  |
@@ -116,7 +117,6 @@ Managing and maintaining cloud resources using crossplane
 | aws.s3.lifeCycleConfiguration.rule | list | `[]` |  |
 | aws.s3.objectOwnership | string | `"BucketOwnerEnforced"` |  |
 | aws.s3.versioning.enabled | bool | `false` |  |
-| aws.serviceAccountNameOverride | string | `""` |  |
 | externalSecrets.enabled | bool | `false` | If enabled, ExternalSecret resources will be created to sync secrets from external sources (e.g., Vault). |
 | externalSecrets.refreshInterval | string | `"30s"` | The time interval at which secrets are refreshed from the external source (e.g., Vault). Default value is "30s", meaning secrets will be refreshed every 30 seconds. |
 | externalSecrets.secretStoreRef.kind | string | `"ClusterSecretStore"` | The kind of SecretStore used to fetch secrets. By default, this is set to "ClusterSecretStore" to allow cluster-wide secret management. |
