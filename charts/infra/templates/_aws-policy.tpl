@@ -7,6 +7,7 @@ IAM ROLE LOGIC HERE. Trust policy and the inline policy gets dynamically generat
   {{- $account := required "You must set .Values.aws.account (AWS Account)" .Values.aws.account -}}
   {{- $eksOidcId := required "You must set .Values.aws.eksOidcId (AWS EKS OIDC ID)" .Values.aws.eksOidcId -}}
   {{- $releaseName := .Release.Name -}}
+  {{- $serviceAccountName := ( .Values.aws.serviceAccountNameOverride | default $releaseName ) -}}
   {
     "Version": "2012-10-17",
     "Statement": [
@@ -28,7 +29,7 @@ IAM ROLE LOGIC HERE. Trust policy and the inline policy gets dynamically generat
         "Action": "sts:AssumeRoleWithWebIdentity",
         "Condition": {
           "StringEquals": {
-            "oidc.eks.{{ $region }}.amazonaws.com/id/{{ $eksOidcId }}:sub": "system:serviceaccount:{{ $.Release.Namespace }}:{{ $releaseName }}",
+            "oidc.eks.{{ $region }}.amazonaws.com/id/{{ $eksOidcId }}:sub": "system:serviceaccount:{{ $.Release.Namespace }}:{{ $serviceAccountName }}",
             "oidc.eks.{{ $region }}.amazonaws.com/id/{{ $eksOidcId }}:aud": "sts.amazonaws.com"
           }
         }
