@@ -16,7 +16,8 @@ aws:
   account: ""
   region: "eu-central-2"
   eksOidcId: ""
-  serviceAccountNameOverride: ""
+  irsa:
+    serviceAccountNameOverride: ""
 
   s3:
     enabled: false
