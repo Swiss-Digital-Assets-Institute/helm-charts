@@ -161,22 +161,23 @@ aws:
         viewerProtocolPolicy: "redirect-to-https"
         compress: true
         minTtl: 0
-        defaultTtl: 86400
-        maxTtl: 31536000
+      defaultTtl: 86400
+      maxTtl: 31536000
+
+  ses:
+    enabled: false
+    domainName: ""
+    dkim:
+      enabled: true
+      keyLength: RSA_1024_BIT
+    mailFromBehavior: UseDefaultMailFrom
+    additional_tags: {}
 
 externalSecrets:
-  # -- If enabled, ExternalSecret resources will be created to sync secrets from external sources (e.g., Vault).
   enabled: false
-  # -- The time interval at which secrets are refreshed from the external source (e.g., Vault).
-  # Default value is "30s", meaning secrets will be refreshed every 30 seconds.
   refreshInterval: "30s"
   secretStoreRef:
-    # -- The kind of SecretStore used to fetch secrets.
-    # By default, this is set to "ClusterSecretStore" to allow cluster-wide secret management.
     kind: ClusterSecretStore
-    # -- The name of the SecretStore backend. For Vault, this typically refers to the Vault connection (e.g., "vault-backend").
     name: vault-backend
   target:
-    # -- The creation policy for the target Kubernetes Secret.
-    # "Owner" means ExternalSecret manages the lifecycle of the created secret, deleting it when ExternalSecret is deleted.
     creationPolicy: Owner
