@@ -161,8 +161,8 @@ aws:
         viewerProtocolPolicy: "redirect-to-https"
         compress: true
         minTtl: 0
-      defaultTtl: 86400
-      maxTtl: 31536000
+        defaultTtl: 86400
+        maxTtl: 31536000
 
   ses:
     enabled: false
