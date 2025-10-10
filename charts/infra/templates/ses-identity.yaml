@@ -1,0 +1,26 @@
+{{- if and (.Values.aws.enabled | default true) .Values.aws.ses.enabled }}
+{{ include "infra.checkAwsMandates" . }}
+{{- $ses := .Values.aws.ses -}}
+{{- if not ($ses.domainName | default "") -}}
+  {{- fail "You must set .Values.aws.ses.domainName when SES is enabled" -}}
+{{- end -}}
+---
+apiVersion: mail.hashgraphgroup.com/v1alpha1
+kind: SesIdentity
+metadata:
+  name: {{ include "infra.resourceName" (dict "global" .Values.global "Release" .Release) }}
+  namespace: {{ .Release.Namespace }}
+  labels:
+{{ include "infra.labels" . | indent 4 }}
+spec:
+  compositionRef:
+    name: hashgraphgroup-mails
+  domainName: {{ $ses.domainName | quote }}
+  dkim:
+    enabled: {{ $ses.dkim.enabled | default true }}
+    keyLength: {{ $ses.dkim.keyLength | default "RSA_1024_BIT" }}
+  mailFromBehavior: {{ $ses.mailFromBehavior | default "UseDefaultMailFrom" }}
+  tags:
+{{ include "infra.allTags" (dict "Values" .Values "section" $ses) | indent 4 }}
+{{- end }}
+
