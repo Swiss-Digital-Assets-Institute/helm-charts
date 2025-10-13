@@ -9,8 +9,8 @@ metadata:
   annotations:
     crossplane.io/external-name: {{ include "infra.s3BucketName" . }}
   labels:
-    app.kubernetes.io/name: {{ include "infra.resourceName" (dict "global" .Values.global "Release" .Release) }}
-    app.kubernetes.io/instance: {{ include "infra.resourceName" (dict "global" .Values.global "Release" .Release) }}
+    app.kubernetes.io/name: {{ include "infra.resourceName" (dict "commonLabels" .Values.commonLabels "Release" .Release) }}
+    app.kubernetes.io/instance: {{ include "infra.resourceName" (dict "commonLabels" .Values.commonLabels "Release" .Release) }}
     app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
     app.kubernetes.io/managed-by: {{ .Release.Service | quote }}
     helm.sh/chart: {{ printf "%s-%s" .Chart.Name (.Chart.Version | replace "+" "_") }}
@@ -38,8 +38,8 @@ spec:
     region: {{ .Values.aws.region | quote }}
     bucketSelector:
       matchLabels:
-        app.kubernetes.io/name: {{ include "infra.resourceName" (dict "global" .Values.global "Release" .Release) }}
-        app.kubernetes.io/instance: {{ include "infra.resourceName" (dict "global" .Values.global "Release" .Release) }}
+        app.kubernetes.io/name: {{ include "infra.resourceName" (dict "commonLabels" .Values.commonLabels "Release" .Release) }}
+        app.kubernetes.io/instance: {{ include "infra.resourceName" (dict "commonLabels" .Values.commonLabels "Release" .Release) }}
         app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
         app.kubernetes.io/managed-by: {{ .Release.Service | quote }}
         helm.sh/chart: {{ printf "%s-%s" .Chart.Name (.Chart.Version | replace "+" "_") }}
@@ -64,8 +64,8 @@ spec:
     region: {{ .Values.aws.region | quote }}
     bucketSelector:
       matchLabels:
-        app.kubernetes.io/name: {{ include "infra.resourceName" (dict "global" .Values.global "Release" .Release) }}
-        app.kubernetes.io/instance: {{ include "infra.resourceName" (dict "global" .Values.global "Release" .Release) }}
+        app.kubernetes.io/name: {{ include "infra.resourceName" (dict "commonLabels" .Values.commonLabels "Release" .Release) }}
+        app.kubernetes.io/instance: {{ include "infra.resourceName" (dict "commonLabels" .Values.commonLabels "Release" .Release) }}
         app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
         app.kubernetes.io/managed-by: {{ .Release.Service | quote }}
         helm.sh/chart: {{ printf "%s-%s" .Chart.Name (.Chart.Version | replace "+" "_") }}

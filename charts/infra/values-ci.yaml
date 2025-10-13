@@ -1,13 +1,21 @@
 # This file is used to set global values for the CI environment in the Helm chart.
 # It includes AWS configurations, S3 settings, KMS, ECR, RDS,
 # --global configuration for CI environment
+
+# Global settings
 global:
-  # --global.env: Environment name, e.g., "ci"
-  env: "test"
+  env: "ci-test"
+  cluster:
+    name: "cluster-name"
+  network:
+    domain: "example.com"
+
+commonLabels:
+  # --commonLabels.env: Environment name, e.g., "ci"
+  env: "ci-test"
   org: "ci"
   team: "devops"
   project: "shared"
-  managed_by: "crossplane"
 
 aws:
   enabled: true
@@ -41,11 +49,21 @@ aws:
   cdn:
     enabled: false
 
+  ses:
+    enabled: false
+    domainNameOverride: ""
+    dkim:
+      enabled: true
+      keyLength: RSA_1024_BIT
+    mailFromBehavior: UseDefaultMailFrom
+    additional_tags: {}
+
 # ExternalSecrets configuration
 externalSecrets:
-  enabled: true
-  secrets:
-    - secretKey: DB_PASSWORD
-      remoteRef:
-        key: secrets/test/cluster-name/app-name/infra
-        property: DB_PASSWORD
+  enabled: false
+  refreshInterval: "30s"
+  secretStoreRef:
+    kind: ClusterSecretStore
+    name: vault-backend
+  target:
+    creationPolicy: Owner

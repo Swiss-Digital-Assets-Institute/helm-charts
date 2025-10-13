@@ -26,8 +26,8 @@ Input:
 {{- if $override -}}
   {{- $override -}}
 {{- else -}}
-  {{- $org := required "You must set .global.org" .global.org -}}
-  {{- $env := required "You must set .global.env" .global.env -}}
+  {{- $org := required "You must set .commonLabels.org" .commonLabels.org -}}
+  {{- $env := required "You must set .commonLabels.env" .commonLabels.env -}}
   {{- $base := include "infra.baseReleaseName" . -}}
   {{- printf "%s-%s-%s" $org $env $base | trunc 63 | trimSuffix "-" -}}
 {{- end -}}
@@ -38,12 +38,20 @@ Default tags, as required in all resources.
 If section.additional_tags exists, merge with these.
 */}}
 {{- define "infra.allTags" -}}
-{{- $global := .Values.global -}}
+{{- $labels := .Values.commonLabels -}}
 {{- $section := .section | default dict -}}
-{{- $defaults := dict "org" (required "You must set .Values.global.org" $global.org) "env" (required "You must set .Values.global.env" $global.env) "team" (required "You must set .Values.global.team" $global.team) "managed_by" (required "You must set .Values.global.managed_by" $global.managed_by) "project" (required "You must set .Values.global.project" $global.project) -}}
+{{- $defaults := dict
+    "org" (required "You must set .Values.commonLabels.org" $labels.org)
+    "env" (required "You must set .Values.commonLabels.env" $labels.env)
+    "team" (required "You must set .Values.commonLabels.team" $labels.team)
+    "managed_by" "crossplane"
+    "project" (required "You must set .Values.commonLabels.project" $labels.project)
+  -}}
 
 {{- if $section.additional_tags }}
   {{- $allTags := merge (deepCopy $defaults) $section.additional_tags }}
+  {{- /* Ensure managed_by stays hardcoded */ -}}
+  {{- $_ := set $allTags "managed_by" "crossplane" -}}
   {{- toYaml $allTags }}
 {{- else }}
   {{- toYaml $defaults }}
