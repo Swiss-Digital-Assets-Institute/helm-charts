@@ -1,21 +1,27 @@
 {{- if and (.Values.aws.enabled | default true) .Values.aws.ses.enabled }}
 {{ include "infra.checkAwsMandates" . }}
 {{- $ses := .Values.aws.ses -}}
-{{- if not ($ses.domainName | default "") -}}
-  {{- fail "You must set .Values.aws.ses.domainName when SES is enabled" -}}
+{{- /* Determine SES domain: allow override, else compute as <release>.<env>.<global.network.domain> */ -}}
+{{- $ctx := dict -}}
+{{- $_ := set $ctx "domainName" ($ses.domainNameOverride | default "") -}}
+{{- if not (get $ctx "domainName") -}}
+  {{- $env := required "You must set .Values.global.env" .Values.global.env -}}
+  {{- $networkDomain := required "You must set .Values.global.network.domain" .Values.global.network.domain -}}
+  {{- $baseName := include "infra.baseReleaseName" . -}}
+  {{- $_ := set $ctx "domainName" (printf "%s.%s.%s" $baseName $env $networkDomain) -}}
 {{- end -}}
 ---
 apiVersion: mail.hashgraphgroup.com/v1alpha1
 kind: SesIdentity
 metadata:
-  name: {{ include "infra.resourceName" (dict "global" .Values.global "Release" .Release) }}
+  name: {{ include "infra.sesIdentityName" . }}
   namespace: {{ .Release.Namespace }}
   labels:
 {{ include "infra.labels" . | indent 4 }}
 spec:
   compositionRef:
     name: hashgraphgroup-mails
-  domainName: {{ $ses.domainName | quote }}
+  domainName: {{ get $ctx "domainName" | quote }}
   dkim:
     enabled: {{ $ses.dkim.enabled | default true }}
     keyLength: {{ $ses.dkim.keyLength | default "RSA_1024_BIT" }}
@@ -23,4 +29,3 @@ spec:
   tags:
 {{ include "infra.allTags" (dict "Values" .Values "section" $ses) | indent 4 }}
 {{- end }}
-

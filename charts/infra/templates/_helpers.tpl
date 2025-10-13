@@ -10,10 +10,42 @@ Extract the base release name by removing -infra suffix
 {{- end -}}
 
 {{/*
-Get the release name with -infra suffix
+Expand the name of the chart.
+*/}}
+{{- define "infra.name" -}}
+{{- default .Chart.Name .Values.nameOverride | trunc 63 | trimSuffix "-" }}
+{{- end }}
+
+{{/*
+Create a default fully qualified app name.
+We truncate at 63 chars because some Kubernetes name fields are limited to this (by the DNS naming spec).
+If release name contains chart name it will be used as a full name.
+*/}}
+{{- define "infra.fullname" -}}
+{{- if .Values.fullnameOverride }}
+{{- .Values.fullnameOverride | trunc 63 | trimSuffix "-" }}
+{{- else }}
+{{- $name := default .Chart.Name .Values.nameOverride }}
+{{- if contains $name .Release.Name }}
+{{- .Release.Name | trunc 63 | trimSuffix "-" }}
+{{- else }}
+{{- printf "%s-%s" .Release.Name $name | trunc 63 | trimSuffix "-" }}
+{{- end }}
+{{- end }}
+{{- end }}
+
+{{/*
+Create chart name and version as used by the chart label.
+*/}}
+{{- define "infra.chart" -}}
+{{- printf "%s-%s" .Chart.Name .Chart.Version | replace "+" "_" | trunc 63 | trimSuffix "-" }}
+{{- end }}
+
+{{/*
+Get the release name (no -infra suffix)
 */}}
 {{- define "infra.releaseName" -}}
-{{ printf "%s-infra" (include "infra.baseReleaseName" .) }}
+{{ include "infra.baseReleaseName" . }}
 {{- end -}}
 
 {{/*
@@ -26,8 +58,8 @@ Input:
 {{- if $override -}}
   {{- $override -}}
 {{- else -}}
-  {{- $org := required "You must set .global.org" .global.org -}}
-  {{- $env := required "You must set .global.env" .global.env -}}
+  {{- $org := required "You must set .commonLabels.org" .commonLabels.org -}}
+  {{- $env := required "You must set .commonLabels.env" .commonLabels.env -}}
   {{- $base := include "infra.baseReleaseName" . -}}
   {{- printf "%s-%s-%s" $org $env $base | trunc 63 | trimSuffix "-" -}}
 {{- end -}}
@@ -38,12 +70,20 @@ Default tags, as required in all resources.
 If section.additional_tags exists, merge with these.
 */}}
 {{- define "infra.allTags" -}}
-{{- $global := .Values.global -}}
+{{- $labels := .Values.commonLabels -}}
 {{- $section := .section | default dict -}}
-{{- $defaults := dict "org" (required "You must set .Values.global.org" $global.org) "env" (required "You must set .Values.global.env" $global.env) "team" (required "You must set .Values.global.team" $global.team) "managed_by" (required "You must set .Values.global.managed_by" $global.managed_by) "project" (required "You must set .Values.global.project" $global.project) -}}
+{{- $defaults := dict
+    "org" (required "You must set .Values.commonLabels.org" $labels.org)
+    "env" (required "You must set .Values.commonLabels.env" $labels.env)
+    "team" (required "You must set .Values.commonLabels.team" $labels.team)
+    "managed_by" "crossplane"
+    "project" (required "You must set .Values.commonLabels.project" $labels.project)
+  -}}
 
 {{- if $section.additional_tags }}
   {{- $allTags := merge (deepCopy $defaults) $section.additional_tags }}
+  {{- /* Ensure managed_by stays hardcoded */ -}}
+  {{- $_ := set $allTags "managed_by" "crossplane" -}}
   {{- toYaml $allTags }}
 {{- else }}
   {{- toYaml $defaults }}

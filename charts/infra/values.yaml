@@ -4,12 +4,23 @@ nameOverride: {}
 # --fullnameOverride allows full override of the name
 fullnameOverride: {}
 
-global:
+commonLabels:
   env: ""
   org: ""
   team: ""
-  managed_by: "crossplane"
+  # managed_by is hardcoded to "crossplane" in templates
   project: ""
+
+# Global settings used by some templates (e.g., ExternalSecrets, SES)
+global:
+  # Environment name used in some computed values
+  env: ""
+  cluster:
+    # Cluster name used in secret paths
+    name: ""
+  network:
+    # Base DNS domain used to compute SES identity
+    domain: ""
 
 aws:
   enabled: true
@@ -18,6 +29,8 @@ aws:
   eksOidcId: ""
   irsa:
     serviceAccountNameOverride: ""
+  iam:
+    roleNameOverride: ""
 
   s3:
     enabled: false
@@ -126,6 +139,7 @@ aws:
 
   cdn:
     enabled: false
+    distributionNameOverride: ""
     additional_tags: {}
     domainName: ""
     bucketName: ""
@@ -166,7 +180,7 @@ aws:
 
   ses:
     enabled: false
-    domainName: ""
+    domainNameOverride: ""
     dkim:
       enabled: true
       keyLength: RSA_1024_BIT
@@ -175,6 +189,7 @@ aws:
 
 externalSecrets:
   enabled: false
+  nameOverride: ""
   refreshInterval: "30s"
   secretStoreRef:
     kind: ClusterSecretStore

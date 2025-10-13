@@ -1,15 +1,31 @@
 {{- define "infra.rdsInstanceName" -}}
-    {{- include "infra.resourceName" (dict "override" .Values.aws.rds.instanceNameOverride "global" .Values.global "Release" .Release) -}}
+    {{- default (include "infra.releaseName" .) .Values.aws.rds.instanceNameOverride -}}
 {{- end -}}
 
 {{- define "infra.s3BucketName" -}}
-    {{- include "infra.resourceName" (dict "override" .Values.aws.s3.bucketNameOverride "global" .Values.global "Release" .Release) -}}
+    {{- default (include "infra.releaseName" .) .Values.aws.s3.bucketNameOverride -}}
 {{- end -}}
 
 {{- define "infra.kmsKeyName" -}}
-    {{- include "infra.resourceName" (dict "override" .Values.aws.kms.keyNameOverride "global" .Values.global "Release" .Release) -}}
+    {{- default (include "infra.releaseName" .) .Values.aws.kms.keyNameOverride -}}
 {{- end -}}
 
 {{- define "infra.ecrRepoName" -}}
-    {{- include "infra.resourceName" (dict "override" .Values.aws.ecr.repoNameOverride "global" .Values.global "Release" .Release) -}}
+    {{- default (include "infra.releaseName" .) .Values.aws.ecr.repoNameOverride -}}
+{{- end -}}
+
+{{- define "infra.externalSecretName" -}}
+    {{- default (include "infra.releaseName" .) .Values.externalSecrets.nameOverride -}}
+{{- end -}}
+
+{{- define "infra.iamRoleName" -}}
+    {{- default (include "infra.releaseName" .) .Values.aws.iam.roleNameOverride -}}
+{{- end -}}
+
+{{- define "infra.cdnName" -}}
+    {{- default (include "infra.releaseName" .) .Values.aws.cdn.distributionNameOverride -}}
+{{- end -}}
+
+{{- define "infra.sesIdentityName" -}}
+    {{- default (include "infra.releaseName" .) .Values.aws.ses.identityNameOverride -}}
 {{- end -}}
