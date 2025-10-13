@@ -4,11 +4,11 @@
 apiVersion: {{ include "infra.iamApiVersion" . }}
 kind: Role
 metadata:
-  name: {{ include "infra.resourceName" (dict "commonLabels" .Values.commonLabels "Release" .Release) }}
+  name: {{ include "infra.iamRoleName" . }}
   namespace: {{ .Release.Namespace }}
   labels:
-    app.kubernetes.io/name: {{ include "infra.resourceName" (dict "commonLabels" .Values.commonLabels "Release" .Release) }}
-    app.kubernetes.io/instance: {{ include "infra.resourceName" (dict "commonLabels" .Values.commonLabels "Release" .Release) }}
+    app.kubernetes.io/name: {{ include "infra.iamRoleName" . }}
+    app.kubernetes.io/instance: {{ include "infra.iamRoleName" . }}
     app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
     app.kubernetes.io/managed-by: {{ .Release.Service | quote }}
     helm.sh/chart: {{ printf "%s-%s" .Chart.Name (.Chart.Version | replace "+" "_") }}
@@ -19,7 +19,7 @@ spec:
     tags:
 {{ include "infra.allTags" (dict "Values" .Values "section" (dict)) | indent 6 }}
     inlinePolicy:
-      - name: {{ include "infra.resourceName" (dict "commonLabels" .Values.commonLabels "Release" .Release) }}
+      - name: {{ include "infra.iamRoleName" . }}
         policy: |
 {{ include "infra.customIamPolicy" . | indent 10 }}
   providerConfigRef:

@@ -22,3 +22,4 @@
 *.tmproj
 .vscode/
 results.yaml
+rendered/

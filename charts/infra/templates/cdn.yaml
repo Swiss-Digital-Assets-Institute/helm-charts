@@ -4,12 +4,12 @@
 apiVersion: {{ include "infra.cdnApiVersion" . }}
 kind: CDN
 metadata:
-  name: {{ include "infra.resourceName" (dict "commonLabels" .Values.commonLabels "Release" .Release) }}
+  name: {{ include "infra.cdnName" . }}
   namespace: {{ .Release.Namespace }}
   annotations:
-    crossplane.io/external-name: {{ include "infra.resourceName" (dict "commonLabels" .Values.commonLabels "Release" .Release) }}
+    crossplane.io/external-name: {{ include "infra.cdnName" . }}
   labels:
-    name: {{ include "infra.resourceName" (dict "commonLabels" .Values.commonLabels "Release" .Release) }}
+    name: {{ include "infra.cdnName" . }}
 {{ include "infra.labels" . | indent 4 }}
 spec:
   {{- $cdn := default dict .Values.aws.cdn }}
@@ -33,7 +33,7 @@ spec:
       maxAgeSeconds: {{ $cors.maxAgeSeconds | default 3600 }}
   cloudfront:
     enabled: {{ $cf.enabled | default true }}
-    comment: {{ $cf.comment | default (printf "%s created using crossplane" (include "infra.resourceName" (dict "commonLabels" .Values.commonLabels "Release" .Release))) | quote }}
+    comment: {{ $cf.comment | default (printf "%s created using crossplane" (include "infra.cdnName" .)) | quote }}
     defaultRootObject: {{ $cf.defaultRootObject | default "index.html" | quote }}
     priceClass: {{ $cf.priceClass | default "PriceClass_100" | quote }}
     httpVersion: {{ $cf.httpVersion | default "http2" | quote }}

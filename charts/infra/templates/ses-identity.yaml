@@ -14,7 +14,7 @@
 apiVersion: mail.hashgraphgroup.com/v1alpha1
 kind: SesIdentity
 metadata:
-  name: {{ include "infra.resourceName" (dict "commonLabels" .Values.commonLabels "Release" .Release) }}
+  name: {{ include "infra.sesIdentityName" . }}
   namespace: {{ .Release.Namespace }}
   labels:
 {{ include "infra.labels" . | indent 4 }}
