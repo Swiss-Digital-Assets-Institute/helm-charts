@@ -29,6 +29,8 @@ aws:
   eksOidcId: ""
   irsa:
     serviceAccountNameOverride: ""
+  iam:
+    roleNameOverride: ""
 
   s3:
     enabled: false
@@ -137,6 +139,7 @@ aws:
 
   cdn:
     enabled: false
+    distributionNameOverride: ""
     additional_tags: {}
     domainName: ""
     bucketName: ""
@@ -186,6 +189,7 @@ aws:
 
 externalSecrets:
   enabled: false
+  nameOverride: ""
   refreshInterval: "30s"
   secretStoreRef:
     kind: ClusterSecretStore
