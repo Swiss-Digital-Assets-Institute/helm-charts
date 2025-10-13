@@ -51,6 +51,7 @@ aws:
 
   ses:
     enabled: false
+    identityNameOverride: ""
     domainNameOverride: ""
     dkim:
       enabled: true
