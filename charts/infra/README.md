@@ -1,6 +1,6 @@
 # infra
 
-![Version: 1.7.21](https://img.shields.io/badge/Version-1.7.21-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 1.0.0](https://img.shields.io/badge/AppVersion-1.0.0-informational?style=flat-square)
+![Version: 1.7.22](https://img.shields.io/badge/Version-1.7.22-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 1.0.0](https://img.shields.io/badge/AppVersion-1.0.0-informational?style=flat-square)
 
 Managing and maintaining cloud resources using crossplane
 
@@ -30,6 +30,7 @@ Managing and maintaining cloud resources using crossplane
 | aws.cdn.cloudFront.originAccessIdentity | bool | `false` |  |
 | aws.cdn.cloudFront.priceClass | string | `"PriceClass_All"` |  |
 | aws.cdn.cloudFront.viewerProtocolPolicy | string | `"redirect-to-https"` |  |
+| aws.cdn.distributionNameOverride | string | `""` |  |
 | aws.cdn.domainName | string | `""` |  |
 | aws.cdn.enabled | bool | `false` |  |
 | aws.cdn.s3.corsPolicy.allowedHeaders[0] | string | `"*"` |  |
@@ -63,6 +64,7 @@ Managing and maintaining cloud resources using crossplane
 | aws.ecr.scanOnPush | bool | `true` |  |
 | aws.eksOidcId | string | `""` |  |
 | aws.enabled | bool | `true` |  |
+| aws.iam.roleNameOverride | string | `""` |  |
 | aws.irsa.serviceAccountNameOverride | string | `""` |  |
 | aws.kms.additional_tags | object | `{}` |  |
 | aws.kms.deletionWindowInDays | int | `365` |  |
@@ -120,20 +122,23 @@ Managing and maintaining cloud resources using crossplane
 | aws.ses.additional_tags | object | `{}` |  |
 | aws.ses.dkim.enabled | bool | `true` |  |
 | aws.ses.dkim.keyLength | string | `"RSA_1024_BIT"` |  |
-| aws.ses.domainName | string | `""` |  |
+| aws.ses.domainNameOverride | string | `""` |  |
 | aws.ses.enabled | bool | `false` |  |
 | aws.ses.mailFromBehavior | string | `"UseDefaultMailFrom"` |  |
+| commonLabels.env | string | `""` |  |
+| commonLabels.org | string | `""` |  |
+| commonLabels.project | string | `""` |  |
+| commonLabels.team | string | `""` |  |
 | externalSecrets.enabled | bool | `false` |  |
+| externalSecrets.nameOverride | string | `""` |  |
 | externalSecrets.refreshInterval | string | `"30s"` |  |
 | externalSecrets.secretStoreRef.kind | string | `"ClusterSecretStore"` |  |
 | externalSecrets.secretStoreRef.name | string | `"vault-backend"` |  |
 | externalSecrets.target.creationPolicy | string | `"Owner"` |  |
 | fullnameOverride | object | `{}` | fullnameOverride allows full override of the name |
+| global.cluster.name | string | `""` |  |
 | global.env | string | `""` |  |
-| global.managed_by | string | `"crossplane"` |  |
-| global.org | string | `""` |  |
-| global.project | string | `""` |  |
-| global.team | string | `""` |  |
+| global.network.domain | string | `""` |  |
 | nameOverride | object | `{}` | nameOverride allows partial override of the name |
 
 ----------------------------------------------
