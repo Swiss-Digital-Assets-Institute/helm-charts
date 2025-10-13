@@ -12,6 +12,7 @@ spec:
   engine: {{ .Values.aws.rds.engine | default "postgres" | quote }}
   engineVersion: {{ .Values.aws.rds.engineVersion | default "15.12" | quote }}
   dbName: {{ .Values.aws.rds.dbName | default (include "infra.baseReleaseName" .) | quote }}
+  schemaName: {{ include "infra.rdsSchemaName" . | quote }}
   instanceClass: {{ required "You must set aws.rds.instanceClass in your values.yaml" .Values.aws.rds.instanceClass | quote }}
 
   storage:
@@ -52,9 +53,9 @@ spec:
 
   masterUserName: {{ .Values.aws.rds.masterUserName | default "postgres" | quote }}
   passwordSecretRef:
-    name: {{ required "aws.rds.passwordSecretRef.name is required" .Values.aws.rds.passwordSecretRef.name | quote }}
-    key: {{ required "aws.rds.passwordSecretRef.key is required" .Values.aws.rds.passwordSecretRef.key | quote }}
-    namespace: {{ required "aws.rds.passwordSecretRef.namespace is required" .Values.aws.rds.passwordSecretRef.namespace | quote }}
+    name: {{ printf "kvv-%s-infra" (include "infra.releaseName" .) | quote }}
+    key: DB_PASSWORD
+    namespace: {{ (.Values.aws.rds.namespace | default .Release.Namespace) | quote }}
   preferredBackupWindow: {{ .Values.aws.rds.preferredBackupWindow | default "03:00-05:00" | quote }}
 
   tags:

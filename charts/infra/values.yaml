@@ -98,6 +98,7 @@ aws:
     instanceNameOverride: ""
     namespace: ""
     dbName: ""
+    schemaNameOverride: ""
     instanceClass: db.t3.micro
     engine: postgres
     engineVersion: "15.12"
@@ -180,6 +181,7 @@ aws:
 
   ses:
     enabled: false
+    identityNameOverride: ""
     domainNameOverride: ""
     dkim:
       enabled: true
