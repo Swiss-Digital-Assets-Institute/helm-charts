@@ -1,6 +1,6 @@
 # infra
 
-![Version: 1.7.22](https://img.shields.io/badge/Version-1.7.22-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 1.0.0](https://img.shields.io/badge/AppVersion-1.0.0-informational?style=flat-square)
+![Version: 1.7.23](https://img.shields.io/badge/Version-1.7.23-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 1.0.0](https://img.shields.io/badge/AppVersion-1.0.0-informational?style=flat-square)
 
 Managing and maintaining cloud resources using crossplane
 
@@ -99,6 +99,7 @@ Managing and maintaining cloud resources using crossplane
 | aws.rds.passwordSecretRef.name | string | `""` |  |
 | aws.rds.passwordSecretRef.namespace | string | `""` |  |
 | aws.rds.preferredBackupWindow | string | `"03:00-05:00"` |  |
+| aws.rds.schemaNameOverride | string | `""` |  |
 | aws.rds.security.enableDeletionProtection | bool | `true` |  |
 | aws.rds.storage.enableAutoscaling | bool | `false` |  |
 | aws.rds.storage.enableDedicatedLogVolume | bool | `false` |  |
@@ -124,6 +125,7 @@ Managing and maintaining cloud resources using crossplane
 | aws.ses.dkim.keyLength | string | `"RSA_1024_BIT"` |  |
 | aws.ses.domainNameOverride | string | `""` |  |
 | aws.ses.enabled | bool | `false` |  |
+| aws.ses.identityNameOverride | string | `""` |  |
 | aws.ses.mailFromBehavior | string | `"UseDefaultMailFrom"` |  |
 | commonLabels.env | string | `""` |  |
 | commonLabels.org | string | `""` |  |
