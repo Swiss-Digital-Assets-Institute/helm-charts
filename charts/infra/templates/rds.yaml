@@ -1,0 +1,62 @@
+{{- if and (.Values.aws.rds.enabled | default false) (.Values.aws.enabled | default true) }}
+---
+# RDS PgSQL Resource
+apiVersion: {{ include "infra.rdsApiVersion" . }}
+kind: PgSQL
+metadata:
+  name: {{ include "infra.rdsInstanceName" . }}
+  namespace: {{ .Values.aws.rds.namespace | default .Release.Namespace }}
+spec:
+  region: {{ .Values.aws.region | quote }}
+  allocatedStorage: {{ .Values.aws.rds.allocatedStorage | default 500 | int}}
+  engine: {{ .Values.aws.rds.engine | default "postgres" | quote }}
+  engineVersion: {{ .Values.aws.rds.engineVersion | default "15.12" | quote }}
+  dbName: {{ .Values.aws.rds.dbName | default (include "infra.baseReleaseName" .) | quote }}
+  instanceClass: {{ required "You must set aws.rds.instanceClass in your values.yaml" .Values.aws.rds.instanceClass | quote }}
+
+  storage:
+    type: {{ .Values.aws.rds.storage.type | default "gp3" | quote }}
+    {{- if and (.Values.aws.rds.storage.type) (eq .Values.aws.rds.storage.type "io2") }}
+    provisionedIops: {{ .Values.aws.rds.storage.provisionedIops | default 3000 | int }}
+    {{- end }}
+    enableAutoscaling: {{ .Values.aws.rds.storage.enableAutoscaling | default false }}
+    maxAllocatedStorage: {{ .Values.aws.rds.storage.maxAllocatedStorage | default 500 | int }}
+    enableDedicatedLogVolume: {{ .Values.aws.rds.storage.enableDedicatedLogVolume | default false }}
+  backup:
+    enabled: {{ .Values.aws.rds.backup.enabled | default false }}
+    {{- if .Values.aws.rds.backup.enabled }}
+    backupRetentionPeriod: {{ .Values.aws.rds.backup.backupRetentionPeriod | default 7 | int }}
+    copyTagsToSnapshot: {{ .Values.aws.rds.backup.copyTagsToSnapshot | default true }}
+    {{- if .Values.aws.rds.backup.replication.enabled }}
+    replication:
+      enabled: true
+      destinationRegion: {{ required "destinationRegion required if replication.enabled" .Values.aws.rds.backup.replication.destinationRegion | quote }}
+      kmsKeyId: {{ required "kmsKeyId required if replication.enabled" .Values.aws.rds.backup.replication.kmsKeyId | quote }}
+    {{- end }}
+  {{- end }}
+
+  ha:
+    enabled: {{ .Values.aws.rds.ha.enabled | default false }}
+
+  {{- if .Values.aws.rds.monitoring.enableInsights }}
+  monitoring:
+    enableInsights: true
+    insightsMode: {{ .Values.aws.rds.monitoring.insightsMode | default "standard" | quote }}
+    enablePerformanceInsights: {{ .Values.aws.rds.monitoring.enablePerformanceInsights | default false }}
+    performanceInsightsRetentionPeriod: {{ .Values.aws.rds.monitoring.performanceInsightsRetentionPeriod | default 30 }}
+    performanceInsightsKmsKeyId: {{ .Values.aws.rds.monitoring.performanceInsightsKmsKeyId | default "" | quote }}
+  {{- end }}
+
+  security:
+    enableDeletionProtection: {{ .Values.aws.rds.security.enableDeletionProtection | default true }}
+
+  masterUserName: {{ .Values.aws.rds.masterUserName | default "postgres" | quote }}
+  passwordSecretRef:
+    name: {{ required "aws.rds.passwordSecretRef.name is required" .Values.aws.rds.passwordSecretRef.name | quote }}
+    key: {{ required "aws.rds.passwordSecretRef.key is required" .Values.aws.rds.passwordSecretRef.key | quote }}
+    namespace: {{ required "aws.rds.passwordSecretRef.namespace is required" .Values.aws.rds.passwordSecretRef.namespace | quote }}
+  preferredBackupWindow: {{ .Values.aws.rds.preferredBackupWindow | default "03:00-05:00" | quote }}
+
+  tags:
+{{ include "infra.allTags" (dict "Values" .Values "section" .Values.aws.rds) | indent 4 }}
+{{- end }}

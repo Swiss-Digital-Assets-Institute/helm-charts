@@ -2,5 +2,4 @@ results.yaml
 vscode/
 !.vscode/launch.json
 .vscode
-templates/
 charts/infra/rendered/
