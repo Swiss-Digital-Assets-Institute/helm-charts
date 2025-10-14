@@ -15,7 +15,6 @@ global:
   org: ""
   # --cluster sets the Cluster Name
   cluster:
-    domain: cluster.local
     name: ""
   imageRegistry: ""
   # --env sets the Environment Name (dev, mng, prd)
