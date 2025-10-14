@@ -95,7 +95,7 @@ Helm Charts for default Web Application
 | extraContainer | object | `{"enabled":false,"env":[{"name":"ENV_VAR","value":"value"}],"image":"extra-container-image:latest","imagePullPolicy":"Always","name":"extra-container","port":{"containerPort":8081,"name":"http"},"resources":{"limits":{"cpu":"200m","memory":"128Mi"},"requests":{"cpu":"100m","memory":"64Mi"}},"volumeMounts":[{"mountPath":"/etc/config","name":"config-volume"}]}` | extraContainer configuration for an extra container in the pod |
 | extraContainer.enabled | bool | `false` | If enabled, create an extra container in the pod |
 | fullnameOverride | object | `{}` | fullnameOverride allows full override of the name |
-| global.cluster | object | `{"domain":"cluster.local","name":""}` | cluster sets the Cluster Name |
+| global.cluster | object | `{"name":""}` | cluster sets the Cluster Name |
 | global.env | string | `""` | env sets the Environment Name (dev, mng, prd) |
 | global.imageRegistry | string | `""` |  |
 | global.network | object | `{"domain":""}` | Network configuration |
