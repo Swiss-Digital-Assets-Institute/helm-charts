@@ -1,6 +1,6 @@
 # infra
 
-![Version: 1.7.30](https://img.shields.io/badge/Version-1.7.30-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 1.0.0](https://img.shields.io/badge/AppVersion-1.0.0-informational?style=flat-square)
+![Version: 1.7.31](https://img.shields.io/badge/Version-1.7.31-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 1.0.0](https://img.shields.io/badge/AppVersion-1.0.0-informational?style=flat-square)
 
 Managing and maintaining cloud resources using crossplane
 
@@ -134,6 +134,7 @@ Managing and maintaining cloud resources using crossplane
 | externalSecrets.refreshInterval | string | `"30s"` |  |
 | externalSecrets.secretStoreRef.kind | string | `"ClusterSecretStore"` |  |
 | externalSecrets.secretStoreRef.name | string | `"vault-backend"` |  |
+| externalSecrets.secrets | list | `[]` |  |
 | externalSecrets.target.creationPolicy | string | `"Owner"` |  |
 | fullnameOverride | object | `{}` | fullnameOverride allows full override of the name |
 | global.cluster.name | string | `""` |  |
