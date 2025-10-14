@@ -5,16 +5,16 @@
 Validate required globals: .global.env and .global.org
 These must be set in values.yaml, else fail the chart rendering.
 */}}
-{{- if not .global.env -}}
-  {{- fail "You must set .global.env" -}}
+{{- if not .Values.global.env -}}
+  {{- fail "You must set .Values.global.env" -}}
 {{- end -}}
 
-{{- if not .global.org -}}
-  {{- fail "You must set .global.org" -}}
+{{- if not .Values.global.org -}}
+  {{- fail "You must set .Values.global.org" -}}
 {{- end -}}
 
-{{- $env := .global.env -}}
-{{- $org := .global.org -}}
+{{- $env := .Values.global.env -}}
+{{- $org := .Values.global.org -}}
 
 {{/* Required AWS-level keys */}}
 {{- define "infra.checkAwsMandates" -}}
@@ -30,12 +30,6 @@ These must be set in values.yaml, else fail the chart rendering.
 #########################################################
 # All functions related to names and naming conventions.#
 #########################################################
-{{/* 
-Define a releaseName variable (strips thg-/tha- and -infra).
-This variable is used across all functions for consistency.
-*/}}
-{{- $releaseName := include "infra.releaseName" . -}}
-
 
 {{/*
 infra.releaseName:
@@ -65,7 +59,7 @@ Example:
   {{- if $override }}
     {{ $override }}
   {{- else }}
-    {{- $releaseName | lower | replace "-" "_" -}}
+    {{- include "infra.releaseName" . | lower | replace "-" "_" -}}
   {{- end -}}
 {{- end -}}
 
@@ -79,7 +73,7 @@ Example:
   Output = example-test-xyz-abc-123
 */}}
 {{- define "infra.resourceName" -}}
-  {{- printf "%s-%s-%s" $org $env $releaseName -}}
+  {{- printf "%s-%s-%s" $org $env (include "infra.releaseName" .) -}}
 {{- end -}}
 
 
@@ -136,8 +130,8 @@ Includes org and env from globals (overrides anything else).
 {{- define "infra.labels" -}}
 org: {{ $org }}
 env: {{ $env }}
-app.kubernetes.io/name: {{ $releaseName }}
-app.kubernetes.io/instance: {{ $releaseName }}
+app.kubernetes.io/name: {{ include "infra.releaseName" . }}
+app.kubernetes.io/instance: {{ include "infra.releaseName" . }}
 app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
 app.kubernetes.io/managed-by: {{ .Release.Service | quote }}
 helm.sh/chart: {{ printf "%s-%s" .Chart.Name (.Chart.Version | replace "+" "_") }}
