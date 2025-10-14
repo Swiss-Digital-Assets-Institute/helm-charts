@@ -61,10 +61,6 @@ aws:
 
 # ExternalSecrets configuration
 externalSecrets:
-  enabled: false
-  refreshInterval: "30s"
-  secretStoreRef:
-    kind: ClusterSecretStore
-    name: vault-backend
-  target:
-    creationPolicy: Owner
+  enabled: true
+  secrets:
+    - DB_PASSWORD
