@@ -2,15 +2,15 @@
 # MANDATORY CHECKS #
 ####################
 {{/* 
-Validate required globals: ..global.env and .global.org
+Validate required globals: ..Values.global.env and .Values.global.org
 These must be set in values.yaml, else fail the chart rendering.
 */}}
-{{- if not .global.env -}}
-  {{- fail "You must set .global.env" -}}
+{{- if not .Values.global.env -}}
+  {{- fail "You must set .Values.global.env" -}}
 {{- end -}}
 
-{{- if not .global.org -}}
-  {{- fail "You must set .global.org" -}}
+{{- if not .Values.global.org -}}
+  {{- fail "You must set .Values.global.org" -}}
 {{- end -}}
 
 {{/* Required AWS-level keys */}}
@@ -70,8 +70,8 @@ Example:
   Output = example-test-xyz-abc-123
 */}}
 {{- define "infra.resourceName" -}}
-  {{- $org := .global.org -}}
-  {{- $env := .global.env -}}
+  {{- $org := .Values.global.org -}}
+  {{- $env := .Values.global.env -}}
   {{- printf "%s-%s-%s" $org $env (include "infra.releaseName" .) -}}
 {{- end -}}
 
@@ -89,8 +89,8 @@ Builds default tags from:
 Ensures managed_by is always "crossplane".
 */}}
 {{- define "infra.allTags" -}}
-  {{- $org := .global.org -}}
-  {{- $env := .global.env -}}
+  {{- $org := .Values.global.org -}}
+  {{- $env := .Values.global.env -}}
   {{- $labels := .Values.commonLabels | default dict -}}
   {{- $section := .section | default dict -}}
   {{- $additional := $section.additional_tags | default dict -}}
@@ -129,8 +129,8 @@ Helm labels with the new convention.
 Includes org and env from globals (overrides anything else).
 */}}
 {{- define "infra.labels" -}}
-  {{- $org := .global.org -}}
-  {{- $env := .global.env -}}
+  {{- $org := .Values.global.org -}}
+  {{- $env := .Values.global.env -}}
 org: {{ $org }}
 env: {{ $env }}
 app.kubernetes.io/name: {{ include "infra.releaseName" . }}
