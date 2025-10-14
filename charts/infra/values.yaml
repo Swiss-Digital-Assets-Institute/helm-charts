@@ -197,3 +197,4 @@ externalSecrets:
     name: vault-backend
   target:
     creationPolicy: Owner
+  secrets: []
