@@ -12,6 +12,7 @@ nameOverride: {}
 fullnameOverride: {}
 
 global:
+  org: ""
   # --cluster sets the Cluster Name
   cluster:
     domain: cluster.local
@@ -73,8 +74,7 @@ consumers:
   # --terminationGracePeriodSeconds configures terminationGracePeriodSeconds
   terminationGracePeriodSeconds: 30
   # --list is the array of consumer definition
-  list:
-    []
+  list: []
     # - name: required
     #   command:
     #     - required
@@ -84,8 +84,7 @@ cronjobs:
   # --suspend used to disable all cronjobs in the list
   suspend: false
   # --list is an array of spec for create multiples cronjobs
-  list:
-    []
+  list: []
     # - name: cron1
     #   schecule: "* * * * *"
     #   command:
@@ -216,11 +215,15 @@ istio:
 
 # --ServiceAccount A service account provides an identity for processes that run in a Pod, about more: https://kubernetes.io/docs/tasks/configure-pod-container/configure-service-account/
 serviceAccount:
-  name: {}
+  name: ""
   # --Specifies whether a service account should be created
   enabled: true
+  # --Specifies whether IRSA (IAM Roles for Service Accounts) is enabled
+  irsa:
+    # --Specifies whether IRSA (IAM Roles for Service Accounts) is enabled
+    enabled: false
   # --Annotations to add to the service account
-  annotations: {}
+  annotations: ""
   # --serviceAccount.annotations Automont Service Account Token
   automountServiceAccountToken: true
 
@@ -240,8 +243,7 @@ autoscaling:
   # --targetMemoryUtilizationPercentage is the percentage of memoty when reached to scale new pods
   targetMemoryUtilizationPercentage: 80
   # --customRules is a place to customize your application autoscaler using the original API available at: https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale/
-  customRules:
-    []
+  customRules: []
     # - type: Resource
     #   resource:
     #     name: memory
@@ -267,15 +269,13 @@ image:
   tag: "latest"
 
 # --imagePullSecrets secret used to download image on private container registry
-imagePullSecrets:
-  []
+imagePullSecrets: []
   # --imagePullSecrets.enabled create secret do pull docker images in private registrys
   # enabled: true
   # name: ghcr-secret
 
 # --resources set deployment resources
-resources:
-  {}
+resources: {}
   # --Resource requests are the minimum amount of CPU and memory that Kubernetes guarantees for the container
   # requests:
   #   cpu: {}
@@ -415,13 +415,11 @@ topologySpreadConstraints:
 podAnnotations: {}
 
 # --podSecurityContext sets the security context for the pod
-podSecurityContext:
-  {}
+podSecurityContext: {}
   # fsGroup: 2000
 
 # --securityContext sets the security context for the container
-securityContext:
-  {}
+securityContext: {}
   # capabilities:
   #   drop:
   #   - ALL
@@ -429,8 +427,7 @@ securityContext:
   # runAsNonRoot: true
   # runAsUser: 1000
 
-envs:
-  []
+envs: []
   # examples:
   # please note that when the value is a number, you must quote the value to cast to string!
   # - name: ENVIROMENT
@@ -438,23 +435,20 @@ envs:
   # - name: ENVIROMENT1
   #   value: true
 
-envFrom:
-  []
+envFrom: []
   # examples:
   # please note that when the value is a number, you must quote the value to cast to string!
   # - configMapRef
   #     name: postgres-configs
 
 # --volumes specifies pod volumes
-volumes:
-  []
+volumes: []
   # - name: sensitive-config
   #   secret:
   #     secretName: app-secrets
 
 # --volumeMounts specifies where Kubernetes will mount Pod volumes
-volumeMounts:
-  []
+volumeMounts: []
   # - name: sensitive-config
   #   mountPath: /sensitive-config/
   #   readOnly: true
