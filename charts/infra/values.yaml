@@ -5,16 +5,15 @@ nameOverride: {}
 fullnameOverride: {}
 
 commonLabels:
-  env: ""
-  org: ""
   team: ""
-  # managed_by is hardcoded to "crossplane" in templates
   project: ""
 
 # Global settings used by some templates (e.g., ExternalSecrets, SES)
 global:
   # Environment name used in some computed values
   env: ""
+  # Organization name used in some computed values
+  org: ""
   cluster:
     # Cluster name used in secret paths
     name: ""
