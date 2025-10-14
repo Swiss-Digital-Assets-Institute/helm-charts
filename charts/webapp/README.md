@@ -1,6 +1,6 @@
 # webapp
 
-![Version: 0.2.6](https://img.shields.io/badge/Version-0.2.6-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 1.0.0](https://img.shields.io/badge/AppVersion-1.0.0-informational?style=flat-square)
+![Version: 0.2.7](https://img.shields.io/badge/Version-0.2.7-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 1.0.0](https://img.shields.io/badge/AppVersion-1.0.0-informational?style=flat-square)
 
 Helm Charts for default Web Application
 
@@ -100,6 +100,7 @@ Helm Charts for default Web Application
 | global.imageRegistry | string | `""` |  |
 | global.network | object | `{"domain":""}` | Network configuration |
 | global.network.domain | string | `""` | domain sets the Default Domain |
+| global.org | string | `""` |  |
 | global.otel | object | `{"argument":"0.25","endpoint":"","port":""}` | otel sets the endpoint for OpenTelemetry collector |
 | global.prometheus | object | `{"server":""}` | prometheus sets the Prometheus server URL |
 | global.prometheus.server | string | `""` | server sets prometheus endpoint |
@@ -207,10 +208,12 @@ Helm Charts for default Web Application
 | service.port.port | int | `80` | Port is the port your application runs under |
 | service.port.targetPort | int | `8080` | targetPort is the port your application runs under |
 | service.type | string | `"ClusterIP"` | Service An abstract way to expose an application running on a set of Pods as a network service. |
-| serviceAccount | object | `{"annotations":{},"automountServiceAccountToken":true,"enabled":true,"name":{}}` | ServiceAccount A service account provides an identity for processes that run in a Pod, about more: https://kubernetes.io/docs/tasks/configure-pod-container/configure-service-account/ |
+| serviceAccount | object | `{"annotations":{},"automountServiceAccountToken":true,"enabled":true,"irsa":{"enabled":false},"name":""}` | ServiceAccount A service account provides an identity for processes that run in a Pod, about more: https://kubernetes.io/docs/tasks/configure-pod-container/configure-service-account/ |
 | serviceAccount.annotations | object | `{}` | Annotations to add to the service account |
 | serviceAccount.automountServiceAccountToken | bool | `true` | serviceAccount.annotations Automont Service Account Token |
 | serviceAccount.enabled | bool | `true` | Specifies whether a service account should be created |
+| serviceAccount.irsa | object | `{"enabled":false}` | Specifies whether IRSA (IAM Roles for Service Accounts) is enabled |
+| serviceAccount.irsa.enabled | bool | `false` | Specifies whether IRSA (IAM Roles for Service Accounts) is enabled |
 | terminationGracePeriodSeconds | int | `30` | terminationGracePeriodSeconds is the number of seconds to wait before terminating a pod |
 | tolerations | list | `[]` | tolerations allows the pods to schedule onto nodes with taints |
 | topologySpreadConstraints | object | `{"enabled":true,"maxSkew":1,"topologyKey":"topology.kubernetes.io/zone","whenUnsatisfiable":"ScheduleAnyway"}` | topologySpreadConstraints allows you to constrain the pods to run on nodes with a certain topology |
