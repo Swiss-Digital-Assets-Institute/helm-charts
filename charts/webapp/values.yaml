@@ -223,7 +223,7 @@ serviceAccount:
     # --Specifies whether IRSA (IAM Roles for Service Accounts) is enabled
     enabled: false
   # --Annotations to add to the service account
-  annotations: ""
+  annotations: {}
   # --serviceAccount.annotations Automont Service Account Token
   automountServiceAccountToken: true
 
