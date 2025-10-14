@@ -1,6 +1,6 @@
 # infra
 
-![Version: 1.7.24](https://img.shields.io/badge/Version-1.7.24-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 1.0.0](https://img.shields.io/badge/AppVersion-1.0.0-informational?style=flat-square)
+![Version: 1.7.25](https://img.shields.io/badge/Version-1.7.25-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 1.0.0](https://img.shields.io/badge/AppVersion-1.0.0-informational?style=flat-square)
 
 Managing and maintaining cloud resources using crossplane
 
@@ -127,8 +127,6 @@ Managing and maintaining cloud resources using crossplane
 | aws.ses.enabled | bool | `false` |  |
 | aws.ses.identityNameOverride | string | `""` |  |
 | aws.ses.mailFromBehavior | string | `"UseDefaultMailFrom"` |  |
-| commonLabels.env | string | `""` |  |
-| commonLabels.org | string | `""` |  |
 | commonLabels.project | string | `""` |  |
 | commonLabels.team | string | `""` |  |
 | externalSecrets.enabled | bool | `false` |  |
@@ -141,6 +139,7 @@ Managing and maintaining cloud resources using crossplane
 | global.cluster.name | string | `""` |  |
 | global.env | string | `""` |  |
 | global.network.domain | string | `""` |  |
+| global.org | string | `""` |  |
 | nameOverride | object | `{}` | nameOverride allows partial override of the name |
 
 ----------------------------------------------
