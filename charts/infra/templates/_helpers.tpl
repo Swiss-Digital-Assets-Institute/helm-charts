@@ -1,103 +1,20 @@
-{{/*
-Extract the base release name by removing -infra suffix
+####################
+# MANDATORY CHECKS #
+####################
+{{/* 
+Validate required globals: .global.env and .global.org
+These must be set in values.yaml, else fail the chart rendering.
 */}}
-{{- define "infra.baseReleaseName" -}}
-{{- if hasSuffix "-infra" .Release.Name -}}
-  {{- .Release.Name | trimSuffix "-infra" -}}
-{{- else -}}
-  {{- .Release.Name -}}
-{{- end -}}
+{{- if not .global.env -}}
+  {{- fail "You must set .global.env" -}}
 {{- end -}}
 
-{{/*
-Expand the name of the chart.
-*/}}
-{{- define "infra.name" -}}
-{{- default .Chart.Name .Values.nameOverride | trunc 63 | trimSuffix "-" }}
-{{- end }}
-
-{{/*
-Create a default fully qualified app name.
-We truncate at 63 chars because some Kubernetes name fields are limited to this (by the DNS naming spec).
-If release name contains chart name it will be used as a full name.
-*/}}
-{{- define "infra.fullname" -}}
-{{- if .Values.fullnameOverride }}
-{{- .Values.fullnameOverride | trunc 63 | trimSuffix "-" }}
-{{- else }}
-{{- $name := default .Chart.Name .Values.nameOverride }}
-{{- if contains $name .Release.Name }}
-{{- .Release.Name | trunc 63 | trimSuffix "-" }}
-{{- else }}
-{{- printf "%s-%s" .Release.Name $name | trunc 63 | trimSuffix "-" }}
-{{- end }}
-{{- end }}
-{{- end }}
-
-{{/*
-Create chart name and version as used by the chart label.
-*/}}
-{{- define "infra.chart" -}}
-{{- printf "%s-%s" .Chart.Name .Chart.Version | replace "+" "_" | trunc 63 | trimSuffix "-" }}
-{{- end }}
-
-{{/*
-Get the release name (no -infra suffix)
-*/}}
-{{- define "infra.releaseName" -}}
-{{ include "infra.baseReleaseName" . }}
+{{- if not .global.org -}}
+  {{- fail "You must set .global.org" -}}
 {{- end -}}
 
-{{/*
-Compose resource name as org-env-releaseName, unless overridden via resource override
-Input:
-  override: (string, override value from values file)
-*/}}
-{{- define "infra.resourceName" -}}
-{{- $override := .override -}}
-{{- if $override -}}
-  {{- $override -}}
-{{- else -}}
-  {{- $org := required "You must set .commonLabels.org" .commonLabels.org -}}
-  {{- $env := required "You must set .commonLabels.env" .commonLabels.env -}}
-  {{- $base := include "infra.baseReleaseName" . -}}
-  {{- printf "%s-%s-%s" $org $env $base | trunc 63 | trimSuffix "-" -}}
-{{- end -}}
-{{- end -}}
-
-{{/*
-Default tags, as required in all resources.
-If section.additional_tags exists, merge with these.
-*/}}
-{{- define "infra.allTags" -}}
-{{- $labels := .Values.commonLabels -}}
-{{- $section := .section | default dict -}}
-{{- $defaults := dict
-    "org" (required "You must set .Values.commonLabels.org" $labels.org)
-    "env" (required "You must set .Values.commonLabels.env" $labels.env)
-    "team" (required "You must set .Values.commonLabels.team" $labels.team)
-    "managed_by" "crossplane"
-    "project" (required "You must set .Values.commonLabels.project" $labels.project)
-  -}}
-
-{{- if $section.additional_tags }}
-  {{- $allTags := merge (deepCopy $defaults) $section.additional_tags }}
-  {{- /* Ensure managed_by stays hardcoded */ -}}
-  {{- $_ := set $allTags "managed_by" "crossplane" -}}
-  {{- toYaml $allTags }}
-{{- else }}
-  {{- toYaml $defaults }}
-{{- end -}}
-{{- end -}}
-
-{{/* Helm labels with the new convention */}}
-{{- define "infra.labels" -}}
-app.kubernetes.io/name: {{ include "infra.releaseName" . }}
-app.kubernetes.io/instance: {{ include "infra.releaseName" . }}
-app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
-app.kubernetes.io/managed-by: {{ .Release.Service | quote }}
-helm.sh/chart: {{ printf "%s-%s" .Chart.Name (.Chart.Version | replace "+" "_") }}
-{{- end -}}
+{{- $env := .global.env -}}
+{{- $org := .global.org -}}
 
 {{/* Required AWS-level keys */}}
 {{- define "infra.checkAwsMandates" -}}
@@ -107,4 +24,121 @@ helm.sh/chart: {{ printf "%s-%s" .Chart.Name (.Chart.Version | replace "+" "_") 
 {{- if not .Values.aws.eksOidcId -}}
   {{- fail "You must set .Values.aws.eksOidcId (AWS EKS OIDC ID)" -}}
 {{- end -}}
+{{- end -}}
+
+
+#########################################################
+# All functions related to names and naming conventions.#
+#########################################################
+{{/* 
+Define a releaseName variable (strips thg-/tha- and -infra).
+This variable is used across all functions for consistency.
+*/}}
+{{- $releaseName := include "infra.releaseName" . -}}
+
+
+{{/*
+infra.releaseName:
+Get the canonical release name by stripping "tha-" / "thg-" prefix
+and removing any "-infra" suffix.
+*/}}
+{{- define "infra.releaseName" -}}
+  {{- $name := .Release.Name -}}
+  {{- $name = regexReplaceAll "^(tha-|thg-)" $name "" -}}
+  {{- if hasSuffix "-infra" $name -}}
+    {{- $name | trimSuffix "-infra" -}}
+  {{- else -}}
+    {{- $name -}}
+  {{- end -}}
+{{- end -}}
+
+
+{{/*
+infra.rdsSchemaName:
+Convert cleaned release name into lower snake_case for RDS schema.
+If aws.rds.schemaNameOverride is set, that takes precedence.
+Example:
+  tha-xyz-abc-123-infra -> xyz_abc_123
+*/}}
+{{- define "infra.rdsSchemaName" -}}
+  {{- $override := .Values.aws.rds.schemaNameOverride | default "" -}}
+  {{- if $override }}
+    {{ $override }}
+  {{- else }}
+    {{- $releaseName | lower | replace "-" "_" -}}
+  {{- end -}}
+{{- end -}}
+
+
+{{/*
+infra.resourceName:
+Builds resource name including org and env.
+Example:
+  releaseName = tha-xyz-abc-123
+  org = example, env = test
+  Output = example-test-xyz-abc-123
+*/}}
+{{- define "infra.resourceName" -}}
+  {{- printf "%s-%s-%s" $org $env $releaseName -}}
+{{- end -}}
+
+
+####################################################
+# All helpers functions related to tags and labels #
+####################################################
+
+{{/*
+infra.allTags:
+Builds default tags from:
+  - Globals: $org, $env (always take precedence)
+  - .Values.commonLabels (except org/env are ignored)
+  - section.additional_tags (optional, except org/env are ignored)
+Ensures managed_by is always "crossplane".
+*/}}
+{{- define "infra.allTags" -}}
+  {{- $labels := .Values.commonLabels | default dict -}}
+  {{- $section := .section | default dict -}}
+  {{- $additional := $section.additional_tags | default dict -}}
+
+  {{- /* Remove org/env from commonLabels if present */ -}}
+  {{- $_ := unset $labels "org" -}}
+  {{- $_ := unset $labels "env" -}}
+
+  {{- /* Remove org/env from additional_tags if present */ -}}
+  {{- $_ := unset $additional "org" -}}
+  {{- $_ := unset $additional "env" -}}
+
+  {{- /* Base tags always required */ -}}
+  {{- $defaults := dict
+      "org" $org
+      "env" $env
+      "managed_by" "crossplane"
+    -}}
+
+  {{- /* Merge in commonLabels */ -}}
+  {{- $merged := merge (deepCopy $defaults) $labels -}}
+
+  {{- /* Merge in additional_tags */ -}}
+  {{- $allTags := merge (deepCopy $merged) $additional -}}
+
+  {{- /* Ensure managed_by stays hardcoded */ -}}
+  {{- $_ := set $allTags "managed_by" "crossplane" -}}
+
+  {{- toYaml $allTags }}
+{{- end -}}
+
+
+{{/*
+infra.labels:
+Helm labels with the new convention.
+Includes org and env from globals (overrides anything else).
+*/}}
+{{- define "infra.labels" -}}
+org: {{ $org }}
+env: {{ $env }}
+app.kubernetes.io/name: {{ $releaseName }}
+app.kubernetes.io/instance: {{ $releaseName }}
+app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
+app.kubernetes.io/managed-by: {{ .Release.Service | quote }}
+helm.sh/chart: {{ printf "%s-%s" .Chart.Name (.Chart.Version | replace "+" "_") }}
 {{- end -}}
