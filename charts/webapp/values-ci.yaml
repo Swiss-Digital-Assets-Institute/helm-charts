@@ -6,6 +6,7 @@
 name: "ci"
 
 global:
+  org: "test"
   # --cluster sets the Cluster Name
   cluster:
     name: ci-cluster
@@ -22,6 +23,10 @@ global:
   otel:
     endpoint: http://alloy.observability.svc.cluster.local
     port: 4317
+
+aws:
+  account: "000000000000"
+  region: "eu-central-2"
 
 # --image is the docker image configuration
 image:
@@ -45,6 +50,11 @@ resources:
 securityContext:
   fsGroup: 1000
   runAsUser: 1000
+
+serviceAccount:
+  enabled: true
+  irsa:
+    enabled: true
 
 livenessProbe:
   enabled: true
