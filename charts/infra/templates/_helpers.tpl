@@ -47,12 +47,12 @@ and removing any "-infra" suffix.
 {{/*
 infra.rdsSchemaName:
 Convert cleaned release name into lower snake_case for RDS schema.
-If aws.rds.schemaNameOverride is set, that takes precedence.
+If aws.rds.dbNameOverride is set, that takes precedence.
 Example:
   tha-xyz-abc-123-infra -> xyz_abc_123
 */}}
 {{- define "infra.rdsSchemaName" -}}
-  {{- $override := .Values.aws.rds.schemaNameOverride | default "" -}}
+  {{- $override := .Values.aws.rds.dbNameOverride | default "" -}}
   {{- if $override }}
     {{ $override }}
   {{- else }}
