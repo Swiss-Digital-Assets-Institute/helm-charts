@@ -1,6 +1,6 @@
 # infra
 
-![Version: 1.7.32](https://img.shields.io/badge/Version-1.7.32-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 1.0.0](https://img.shields.io/badge/AppVersion-1.0.0-informational?style=flat-square)
+![Version: 1.7.33](https://img.shields.io/badge/Version-1.7.33-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 1.0.0](https://img.shields.io/badge/AppVersion-1.0.0-informational?style=flat-square)
 
 Managing and maintaining cloud resources using crossplane
 
@@ -79,7 +79,7 @@ Managing and maintaining cloud resources using crossplane
 | aws.rds.backup.replication.destinationRegion | string | `""` |  |
 | aws.rds.backup.replication.enabled | bool | `false` |  |
 | aws.rds.backup.replication.kmsKeyId | string | `""` |  |
-| aws.rds.dbName | string | `""` |  |
+| aws.rds.dbNameOverride | string | `""` |  |
 | aws.rds.dbSubnetGroupName | string | `""` |  |
 | aws.rds.enabled | bool | `false` |  |
 | aws.rds.engine | string | `"postgres"` |  |
@@ -99,7 +99,6 @@ Managing and maintaining cloud resources using crossplane
 | aws.rds.passwordSecretRef.name | string | `""` |  |
 | aws.rds.passwordSecretRef.namespace | string | `""` |  |
 | aws.rds.preferredBackupWindow | string | `"03:00-05:00"` |  |
-| aws.rds.schemaNameOverride | string | `""` |  |
 | aws.rds.security.enableDeletionProtection | bool | `true` |  |
 | aws.rds.storage.enableAutoscaling | bool | `false` |  |
 | aws.rds.storage.enableDedicatedLogVolume | bool | `false` |  |
