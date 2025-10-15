@@ -11,7 +11,7 @@ spec:
   allocatedStorage: {{ .Values.aws.rds.allocatedStorage | default 500 | int}}
   engine: {{ .Values.aws.rds.engine | default "postgres" | quote }}
   engineVersion: {{ .Values.aws.rds.engineVersion | default "15.12" | quote }}
-  dbName: {{ include "infra.rdsSchemaName" . | trim | quote }}
+  dbName: {{ (include "infra.rdsSchemaName" . | trim) | quote }}
   instanceClass: {{ required "You must set aws.rds.instanceClass in your values.yaml" .Values.aws.rds.instanceClass | quote }}
 
   storage:
