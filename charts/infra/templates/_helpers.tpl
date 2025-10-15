@@ -52,14 +52,13 @@ Example:
   tha-xyz-abc-123-infra -> xyz_abc_123
 */}}
 {{- define "infra.rdsSchemaName" -}}
-  {{- $override := .Values.aws.rds.dbNameOverride | default "" -}}
-  {{- if $override }}
-    {{ $override }}
-  {{- else }}
+  {{- $override := .Values.aws.rds.schemaNameOverride | default "" -}}
+  {{- if $override -}}
+    {{- $override -}}
+  {{- else -}}
     {{- include "infra.releaseName" . | lower | replace "-" "_" -}}
   {{- end -}}
 {{- end -}}
-
 
 {{/*
 infra.resourceName:
