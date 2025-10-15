@@ -96,8 +96,7 @@ aws:
     enabled: false
     instanceNameOverride: ""
     namespace: ""
-    dbName: ""
-    schemaNameOverride: ""
+    dbNameOverride: ""
     instanceClass: db.t3.micro
     engine: postgres
     engineVersion: "15.12"
