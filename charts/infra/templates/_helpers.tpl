@@ -35,7 +35,6 @@ and removing any "-infra" suffix.
 */}}
 {{- define "infra.releaseName" -}}
   {{- $name := .Release.Name -}}
-  # {{- $name = regexReplaceAll "^(tha-|thg-)" $name "" -}}
   {{- if hasSuffix "-infra" $name -}}
     {{- $name | trimSuffix "-infra" -}}
   {{- else -}}
