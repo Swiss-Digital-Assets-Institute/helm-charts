@@ -35,7 +35,6 @@ and removing any "-infra" suffix.
 */}}
 {{- define "infra.releaseName" -}}
   {{- $name := .Release.Name -}}
-  # {{- $name = regexReplaceAll "^(tha-|thg-)" $name "" -}}
   {{- if hasSuffix "-infra" $name -}}
     {{- $name | trimSuffix "-infra" -}}
   {{- else -}}
@@ -53,14 +52,18 @@ Precedence:
 Example:
   tha-xyz-abc-123-infra -> xyz_abc_123
 */}}
+
 {{- define "infra.rdsDbSchemaName" -}}
   {{- $override := .Values.aws.rds.dbNameOverride | default "" -}}
   {{- if $override -}}
     {{- printf "%s" $override -}}
   {{- else -}}
-    {{- printf "%s" (include "infra.releaseName" . | lower | replace "-" "_") -}}
+    {{- $name := include "infra.releaseName" . | lower | replace "-" "_" -}}
+    {{- $name = regexReplaceAll "^(tha_|thg_)" $name "" -}}
+    {{- printf "%s" $name -}}
   {{- end -}}
 {{- end -}}
+
 
 
 {{/*
