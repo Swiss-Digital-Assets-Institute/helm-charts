@@ -1,0 +1,88 @@
+# Example values file for joining an existing IPFS Cluster
+#
+# Usage:
+#   helm install ipfs-new-nodes . -n ipfs-new -f values-join-cluster-example.yaml
+#
+# Prerequisites:
+#   1. Existing IPFS Cluster is running
+#   2. Network connectivity to existing cluster (port 9096)
+#   3. Same sharedSecret as existing cluster
+#   4. Bootstrap peer addresses from existing cluster
+
+# Number of new nodes to add to the existing cluster
+replicaCount: 1
+
+# IMPORTANT: This MUST match the existing cluster's shared secret
+# Get from existing cluster's values or secret
+sharedSecret: "your-existing-cluster-secret-32-bytes-hex"
+
+# Bootstrap configuration to join existing cluster
+bootstrap:
+  # Enable bootstrap mode
+  enabled: true
+
+  # List of bootstrap peer multiaddresses
+  # Get these from existing cluster using:
+  #   kubectl exec -n existing-namespace cluster-0-ipfs-cluster-0 -- ipfs-cluster-ctl id
+  #
+  # Format: /ip4/<host>/tcp/9096/p2p/<peer-id>
+  # Specify 2-3 peers for redundancy
+  peers:
+    - /ip4/10.0.1.100/tcp/9096/p2p/12D3KooWExistingPeer1ABC123
+    - /ip4/10.0.1.101/tcp/9096/p2p/12D3KooWExistingPeer2DEF456
+    # You can also use DNS-based addresses if available
+    # - /dns4/cluster-0.existing-cluster.svc.cluster.local/tcp/9096/p2p/12D3KooWPeer1
+
+# IPFS Cluster node configuration
+cluster:
+  image:
+    repository: ipfs/ipfs-cluster
+    pullPolicy: IfNotPresent
+    tag: ""  # Uses chart appVersion (v0.14.2)
+
+  resources:
+    limits:
+      cpu: 500m
+      memory: 512Mi
+    requests:
+      cpu: 250m
+      memory: 256Mi
+
+  storage:
+    storageClassName: "standard"
+    volumeSize: "1Gi"
+
+  service:
+    type: ClusterIP  # Keep internal
+
+# IPFS storage node configuration
+ipfs:
+  image:
+    repository: ipfs/go-ipfs
+    pullPolicy: IfNotPresent
+    tag: "latest"
+
+  resources:
+    limits:
+      cpu: 2000m
+      memory: 4Gi
+    requests:
+      cpu: 1000m
+      memory: 2Gi
+
+  storage:
+    storageClassName: "standard"
+    volumeSize: "10Gi"
+
+  service:
+    type: ClusterIP
+
+# Service account
+serviceAccount:
+  create: true
+  annotations: {}
+  name: ""
+
+# Ingress (typically not needed for additional nodes)
+ingress:
+  enabled: false
