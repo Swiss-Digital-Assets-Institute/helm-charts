@@ -59,6 +59,10 @@ aws:
     mailFromBehavior: UseDefaultMailFrom
     additional_tags: {}
 
+  sqs:
+    enabled: true
+    fifo: true
+
 # ExternalSecrets configuration
 externalSecrets:
   enabled: true

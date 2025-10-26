@@ -1,0 +1,24 @@
+{{- if and (.Values.aws.enabled | default true) .Values.aws.sqs.enabled }}
+{{ include "infra.checkAwsMandates" . }}
+---
+apiVersion: sqs.aws.upbound.io/v1beta1
+kind: Queue
+metadata:
+  name: {{ include "infra.sqsQueueName" . }}
+  namespace: {{ .Release.Namespace }}
+  labels:
+    name: {{ include "infra.sqsQueueName" . }}
+spec:
+  providerConfigRef:
+    name: "crossplane-service-user"
+  forProvider:
+    region: {{ .Values.aws.region | quote }}
+    name: {{ include "infra.sqsQueueName" . }}
+    fifoQueue: {{ .Values.aws.sqs.fifo | default false }}
+    contentBasedDeduplication: {{ .Values.aws.sqs.contentBasedDeduplication | default false }}
+    delaySeconds: {{ printf "%d" (int (default 0 .Values.aws.sqs.delaySeconds)) }}
+    visibilityTimeoutSeconds: {{ printf "%d" (int (default 30 .Values.aws.sqs.visibilityTimeoutSeconds)) }}
+    messageRetentionSeconds: {{ printf "%d" (int (default 345600 .Values.aws.sqs.messageRetentionSeconds)) }} # 4 days
+    tags:
+{{ include "infra.allTags" (dict "Values" .Values "section" .Values.aws.sqs) | indent 6 }}
+{{- end }}

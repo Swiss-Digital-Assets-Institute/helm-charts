@@ -187,6 +187,15 @@ aws:
     mailFromBehavior: UseDefaultMailFrom
     additional_tags: {}
 
+  sqs:
+    enabled: false
+    fifo: false
+    queueNameOverride: ""
+    contentBasedDeduplication: true
+    delaySeconds: 0
+    visibilityTimeoutSeconds: 60
+    messageRetentionSeconds: 1209600 # 14 days
+
 externalSecrets:
   enabled: false
   nameOverride: ""
