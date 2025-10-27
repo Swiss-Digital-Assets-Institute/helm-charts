@@ -38,10 +38,7 @@ Managing and maintaining cloud resources using crossplane
 | aws.cdn.s3.corsPolicy.allowedMethods[1] | string | `"HEAD"` |  |
 | aws.cdn.s3.corsPolicy.allowedOrigins[0] | string | `"*"` |  |
 | aws.cdn.s3.corsPolicy.maxAgeSeconds | int | `3600` |  |
-| aws.ecr.accountAccessList[0] | string | `"107282186755"` |  |
-| aws.ecr.accountAccessList[1] | string | `"009160051835"` |  |
-| aws.ecr.accountAccessList[2] | string | `"009160051778"` |  |
-| aws.ecr.accountAccessList[3] | string | `"458845629758"` |  |
+| aws.ecr.accountAccessList | list | `[]` |  |
 | aws.ecr.additional_tags | object | `{}` |  |
 | aws.ecr.enabled | bool | `false` |  |
 | aws.ecr.imageTagMutability | string | `"MUTABLE"` |  |
@@ -71,6 +68,7 @@ Managing and maintaining cloud resources using crossplane
 | aws.kms.enabled | bool | `false` |  |
 | aws.kms.keyNameOverride | string | `""` |  |
 | aws.kms.rotateKey | bool | `false` |  |
+| aws.providerConfigRef.name | string | `"crossplane-service-user"` |  |
 | aws.rds.additional_tags | object | `{}` |  |
 | aws.rds.allocatedStorage | int | `20` |  |
 | aws.rds.backup.backupRetentionPeriod | int | `30` |  |
@@ -126,6 +124,13 @@ Managing and maintaining cloud resources using crossplane
 | aws.ses.enabled | bool | `false` |  |
 | aws.ses.identityNameOverride | string | `""` |  |
 | aws.ses.mailFromBehavior | string | `"UseDefaultMailFrom"` |  |
+| aws.sqs.contentBasedDeduplication | bool | `true` |  |
+| aws.sqs.delaySeconds | int | `0` |  |
+| aws.sqs.enabled | bool | `false` |  |
+| aws.sqs.fifo | bool | `false` |  |
+| aws.sqs.messageRetentionSeconds | int | `1209600` |  |
+| aws.sqs.queueNameOverride | string | `""` |  |
+| aws.sqs.visibilityTimeoutSeconds | int | `60` |  |
 | commonLabels.project | string | `""` |  |
 | commonLabels.team | string | `""` |  |
 | externalSecrets.enabled | bool | `false` |  |
