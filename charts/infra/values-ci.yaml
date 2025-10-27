@@ -34,7 +34,10 @@ aws:
     enabled: false
 
   ecr:
-    enabled: false
+    enabled: true
+    accountAccessList:
+      - "000000000001"
+      - "000000000002"
 
   # rds:
   #   enabled: false

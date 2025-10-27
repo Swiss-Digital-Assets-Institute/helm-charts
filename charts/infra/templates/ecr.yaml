@@ -20,7 +20,7 @@ spec:
     tags:
 {{ include "infra.allTags" (dict "Values" .Values "section" .Values.aws.ecr) | indent 6 }}
   providerConfigRef:
-    name: mgmt-ecr
+    name: {{ .Values.aws.providerConfigRef.name | quote }}
 
 {{- if and .Values.aws.ecr.accountAccessList (gt (len .Values.aws.ecr.accountAccessList) 0) }}
 ---
@@ -40,7 +40,7 @@ spec:
     policy: |-
 {{ include "infra.ecrRegistryPolicy" . | indent 6 }}
   providerConfigRef:
-    name: mgmt-ecr
+    name: {{ .Values.aws.providerConfigRef.name | quote }}
 {{- end }}
 
 {{- if .Values.aws.ecr.lifecyclePolicy.rules }}
@@ -66,6 +66,6 @@ spec:
     region: {{ .Values.aws.region | quote }}
     repository: {{ include "infra.ecrRepoName" . }}
   providerConfigRef:
-    name: mgmt-ecr
+    name: {{ .Values.aws.providerConfigRef.name | quote }}
 {{- end }}
 {{- end }}

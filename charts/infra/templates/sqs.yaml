@@ -10,7 +10,7 @@ metadata:
     name: {{ include "infra.sqsQueueName" . }}
 spec:
   providerConfigRef:
-    name: "crossplane-service-user"
+    name: {{ .Values.aws.providerConfigRef.name | quote }}
   forProvider:
     region: {{ .Values.aws.region | quote }}
     name: {{ include "infra.sqsQueueName" . }}
