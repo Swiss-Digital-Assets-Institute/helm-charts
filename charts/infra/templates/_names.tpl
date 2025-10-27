@@ -61,3 +61,18 @@ Defaults to org-env-releaseName unless overridden.
 {{- define "infra.sesIdentityName" -}}
     {{- default (include "infra.resourceName" .) (default "" .Values.aws.ses.identityNameOverride) -}}
 {{- end -}}
+
+{{/*
+infra.sqsQueueName:
+Defaults to org-env-releaseName unless overridden.
+Appends ".fifo" automatically if FIFO is enabled.
+*/}}
+{{- define "infra.sqsQueueName" -}}
+{{- $baseName := (default (include "infra.resourceName" .) (default "" .Values.aws.sqs.queueNameOverride)) -}}
+{{- if .Values.aws.sqs.fifo -}}
+{{ printf "%s.fifo" $baseName }}
+{{- else -}}
+{{ $baseName }}
+{{- end -}}
+{{- end -}}
+

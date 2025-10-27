@@ -23,6 +23,8 @@ global:
 
 aws:
   enabled: true
+  providerConfigRef:
+    name: crossplane-service-user
   account: ""
   region: "eu-central-2"
   eksOidcId: ""
@@ -63,11 +65,7 @@ aws:
     repoNameOverride: ""
     imageTagMutability: "MUTABLE"
     scanOnPush: true
-    accountAccessList:
-      - "107282186755"
-      - "009160051835"
-      - "009160051778"
-      - "458845629758"
+    accountAccessList: []
     additional_tags: {}
     lifecyclePolicy:
       rules:
@@ -186,6 +184,15 @@ aws:
       keyLength: RSA_1024_BIT
     mailFromBehavior: UseDefaultMailFrom
     additional_tags: {}
+
+  sqs:
+    enabled: false
+    fifo: false
+    queueNameOverride: ""
+    contentBasedDeduplication: true
+    delaySeconds: 0
+    visibilityTimeoutSeconds: 60
+    messageRetentionSeconds: 1209600 # 14 days
 
 externalSecrets:
   enabled: false

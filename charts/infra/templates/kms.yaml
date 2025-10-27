@@ -17,5 +17,5 @@ spec:
     description: {{ include "infra.kmsKeyName" . }}
     enableKeyRotation: {{ .Values.aws.kms.rotateKey | default false }}
   providerConfigRef:
-    name: "crossplane-service-user"
+    name: {{ .Values.aws.providerConfigRef.name | quote }}
 {{- end }}
