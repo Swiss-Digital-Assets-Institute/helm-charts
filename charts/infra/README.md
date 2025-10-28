@@ -1,6 +1,6 @@
 # infra
 
-![Version: 1.7.40](https://img.shields.io/badge/Version-1.7.40-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 1.0.0](https://img.shields.io/badge/AppVersion-1.0.0-informational?style=flat-square)
+![Version: 1.7.41](https://img.shields.io/badge/Version-1.7.41-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 1.0.0](https://img.shields.io/badge/AppVersion-1.0.0-informational?style=flat-square)
 
 Managing and maintaining cloud resources using crossplane
 
@@ -39,6 +39,7 @@ Managing and maintaining cloud resources using crossplane
 | aws.cdn.s3.corsPolicy.allowedOrigins[0] | string | `"*"` |  |
 | aws.cdn.s3.corsPolicy.maxAgeSeconds | int | `3600` |  |
 | aws.ecr.accountAccessList | list | `[]` |  |
+| aws.ecr.additionalAnnotations | object | `{}` |  |
 | aws.ecr.additional_tags | object | `{}` |  |
 | aws.ecr.enabled | bool | `false` |  |
 | aws.ecr.imageTagMutability | string | `"MUTABLE"` |  |
@@ -57,7 +58,7 @@ Managing and maintaining cloud resources using crossplane
 | aws.ecr.lifecyclePolicy.rules[1].selection.countUnit | string | `"days"` |  |
 | aws.ecr.lifecyclePolicy.rules[1].selection.tagPatternList[0] | string | `"dev*"` |  |
 | aws.ecr.lifecyclePolicy.rules[1].selection.tagStatus | string | `"tagged"` |  |
-| aws.ecr.repoNameOverride | string | `""` |  |
+| aws.ecr.repoNames | list | `[]` |  |
 | aws.ecr.scanOnPush | bool | `true` |  |
 | aws.eksOidcId | string | `""` |  |
 | aws.enabled | bool | `true` |  |
