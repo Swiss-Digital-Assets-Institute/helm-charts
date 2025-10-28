@@ -27,8 +27,13 @@ infra.ecrRepoName:
 Defaults to org-env-releaseName unless overridden.
 */}}
 {{- define "infra.ecrRepoName" -}}
-    {{- default (include "infra.resourceName" .) .Values.aws.ecr.repoNameOverride -}}
+{{- if .Values.aws.ecr.repoNameOverride }}
+{{ .Values.aws.ecr.repoNameOverride }}
+{{- else }}
+{{ printf "%s/%s" .Release.Namespace .Release.Name | replace " " "-" | lower }}
+{{- end }}
 {{- end -}}
+
 
 {{/*
 infra.externalSecretName:
@@ -75,4 +80,3 @@ Appends ".fifo" automatically if FIFO is enabled.
 {{ $baseName }}
 {{- end -}}
 {{- end -}}
-
