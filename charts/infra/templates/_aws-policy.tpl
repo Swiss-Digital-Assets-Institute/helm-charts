@@ -62,15 +62,15 @@ IAM ROLE LOGIC HERE. Trust policy and the inline policy gets dynamically generat
           "ecr:DescribeRepositories",
           "ecr:GetAuthorizationToken",
           "ecr:GetDownloadUrlForLayer",
+          "ecr:InitiateLayerUpload",
           "ecr:GetLifecyclePolicy",
           "ecr:GetRepositoryPolicy",
-          "ecr:InitiateLayerUpload",
           "ecr:ListImages",
           "ecr:ListTagsForResource",
           "ecr:PutImage",
           "ecr:UploadLayerPart"
-        ],
-        "Resource": "*"
+        ]{{ if .resourceArn }},
+        "Resource": {{ printf "%q" .resourceArn }}{{ end }}
       }
     ]
   }
