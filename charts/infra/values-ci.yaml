@@ -35,6 +35,7 @@ aws:
 
   ecr:
     enabled: true
+    repoNames: []
     accountAccessList:
       - "000000000001"
       - "000000000002"
