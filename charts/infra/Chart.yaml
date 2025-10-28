@@ -7,5 +7,5 @@ keywords:
   - Crossplane
 description: Managing and maintaining cloud resources using crossplane
 type: application
-version: 1.7.42
+version: 1.7.43
 appVersion: "1.0.0"
