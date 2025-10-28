@@ -62,8 +62,12 @@ aws:
 
   ecr:
     enabled: false
-    repoNameOverride: ""
+    # repoNames: a list of repository name suffixes. When provided,
+    # the chart will create one repo per name with format <namespace>/<name>.
+    # If empty or not set, falls back to default <namespace>/<releaseName>.
+    repoNames: []
     imageTagMutability: "MUTABLE"
+    additionalAnnotations: {}
     scanOnPush: true
     accountAccessList: []
     additional_tags: {}

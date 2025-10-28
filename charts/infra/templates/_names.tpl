@@ -24,14 +24,28 @@ Defaults to org-env-releaseName unless overridden.
 
 {{/*
 infra.ecrRepoName:
-Defaults to org-env-releaseName unless overridden.
+Returns the external ECR repo name <namespace>/<releaseName>.
 */}}
 {{- define "infra.ecrRepoName" -}}
-{{- if .Values.aws.ecr.repoNameOverride }}
-{{ .Values.aws.ecr.repoNameOverride }}
-{{- else }}
 {{ printf "%s/%s" .Release.Namespace .Release.Name | replace " " "-" | lower }}
-{{- end }}
+{{- end -}}
+
+{{/*
+infra.ecrK8sName:
+Kubernetes-safe name for ECR resources.
+Defaults to org-env-<releaseName>, or org-env-<repo> when a repo override is supplied.
+Usage:
+  - Default (single repo): {{ include "infra.ecrK8sName" (dict "root" .) }}
+  - With repo name:        {{ include "infra.ecrK8sName" (dict "root" . "repo" "gohan") }}
+*/}}
+{{- define "infra.ecrK8sName" -}}
+  {{- $root := .root -}}
+  {{- $repo := .repo | default "" -}}
+  {{- if $repo -}}
+    {{- printf "%s-%s-%s" $root.Values.global.org $root.Values.global.env $repo | replace " " "-" | lower -}}
+  {{- else -}}
+    {{- include "infra.resourceName" $root -}}
+  {{- end -}}
 {{- end -}}
 
 

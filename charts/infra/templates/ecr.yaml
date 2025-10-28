@@ -1,13 +1,97 @@
 {{- if and (.Values.aws.enabled | default true) .Values.aws.ecr.enabled }}
 {{ include "infra.checkAwsMandates" . }}
+
+{{- $hasRepoList := and .Values.aws.ecr.repoNames (gt (len .Values.aws.ecr.repoNames) 0) -}}
+{{- if $hasRepoList -}}
+  {{- range $i, $r := .Values.aws.ecr.repoNames }}
+    {{- $fullRepo := (printf "%s/%s" $.Release.Namespace $r | replace " " "-" | lower) -}}
+    {{- $k8sName := include "infra.ecrK8sName" (dict "root" $ "repo" $r) -}}
+---
+apiVersion: {{ include "infra.ecrApiVersion" $ }}
+kind: Repository
+metadata:
+  name: {{ $k8sName }}
+  namespace: {{ $.Release.Namespace }}
+  annotations:
+    crossplane.io/external-name: {{ $fullRepo }}
+  labels:
+    name: {{ $k8sName }}
+{{ include "infra.allTags" (dict "Values" $.Values "section" $.Values.aws.ecr) | indent 4 }}
+spec:
+  forProvider:
+    region: {{ $.Values.aws.region | quote }}
+    imageTagMutability: {{ $.Values.aws.ecr.imageTagMutability | default "MUTABLE" | quote }}
+    imageScanningConfiguration:
+      scanOnPush: {{ $.Values.aws.ecr.scanOnPush | default false }}
+    encryptionConfiguration:
+      - encryptionType: "AES256"
+    tags:
+{{ include "infra.allTags" (dict "Values" $.Values "section" $.Values.aws.ecr) | indent 6 }}
+  providerConfigRef:
+    name: {{ $.Values.aws.providerConfigRef.name | quote }}
+
+{{ if and $.Values.aws.ecr.accountAccessList (gt (len $.Values.aws.ecr.accountAccessList) 0) }}
+---
+apiVersion: {{ include "infra.ecrRegistryPolicyApiVersion" $ }}
+kind: RegistryPolicy
+metadata:
+  name: {{ $k8sName }}-registry-policy
+  namespace: {{ $.Release.Namespace }}
+  annotations:
+    crossplane.io/external-name: {{ $fullRepo }}
+  labels:
+    name: {{ $k8sName }}-registry-policy
+{{ include "infra.allTags" (dict "Values" $.Values "section" $.Values.aws.ecr) | indent 4 }}
+spec:
+  forProvider:
+    region: {{ $.Values.aws.region | quote }}
+    policy: |-
+{{ include "infra.ecrRegistryPolicy" $ | indent 6 }}
+  providerConfigRef:
+    name: {{ $.Values.aws.providerConfigRef.name | quote }}
+{{ end }}
+
+{{ if $.Values.aws.ecr.lifecyclePolicy.rules }}
+---
+apiVersion: {{ include "infra.ecrLifecyclePolicyApiVersion" $ }}
+kind: LifecyclePolicy
+metadata:
+  name: {{ $k8sName }}-lifecycle-policy
+  namespace: {{ $.Release.Namespace }}
+  annotations:
+    crossplane.io/external-name: {{ $fullRepo }}
+  labels:
+    name: {{ $k8sName }}-lifecycle-policy
+{{ include "infra.allTags" (dict "Values" $.Values "section" $.Values.aws.ecr) | indent 4 }}
+spec:
+  forProvider:
+    policy: |-
+      {
+        "rules": [
+{{ include "infra.ecrLifecyclePolicyRules" $ | indent 10 }}
+        ]
+      }
+    region: {{ $.Values.aws.region | quote }}
+    repository: {{ $fullRepo }}
+  providerConfigRef:
+    name: {{ $.Values.aws.providerConfigRef.name | quote }}
+{{ end }}
+  {{- end }}
+{{- else -}}
+{{- $k8sName := include "infra.ecrK8sName" (dict "root" .) -}}
 ---
 apiVersion: {{ include "infra.ecrApiVersion" . }}
 kind: Repository
 metadata:
-  name: {{ include "infra.ecrRepoName" . }}
+  name: {{ $k8sName }}
   namespace: {{ .Release.Namespace }}
+  annotations:
+    crossplane.io/external-name: {{ include "infra.ecrRepoName" . | trim }}
+{{- with .Values.aws.ecr.additionalAnnotations }}
+{{ toYaml . | indent 4 }}
+{{- end }}
   labels:
-    name: {{ include "infra.ecrRepoName" . }}
+    name: {{ $k8sName }}
 {{ include "infra.allTags" (dict "Values" .Values "section" .Values.aws.ecr) | indent 4 }}
 spec:
   forProvider:
@@ -27,12 +111,12 @@ spec:
 apiVersion: {{ include "infra.ecrRegistryPolicyApiVersion" . }}
 kind: RegistryPolicy
 metadata:
-  name: {{ include "infra.ecrRepoName" . }}-registry-policy
+  name: {{ $k8sName }}-registry-policy
   namespace: {{ .Release.Namespace }}
   annotations:
-    crossplane.io/external-name: {{ include "infra.ecrRepoName" . }}
+    crossplane.io/external-name: {{ include "infra.ecrRepoName" . | trim }}
   labels:
-    name: {{ include "infra.ecrRepoName" . }}-registry-policy
+    name: {{ $k8sName }}-registry-policy
 {{ include "infra.allTags" (dict "Values" .Values "section" .Values.aws.ecr) | indent 4 }}
 spec:
   forProvider:
@@ -48,12 +132,12 @@ spec:
 apiVersion: {{ include "infra.ecrLifecyclePolicyApiVersion" . }}
 kind: LifecyclePolicy
 metadata:
-  name: {{ include "infra.ecrRepoName" . }}-lifecycle-policy
+  name: {{ $k8sName }}-lifecycle-policy
   namespace: {{ .Release.Namespace }}
   annotations:
-    crossplane.io/external-name: {{ include "infra.ecrRepoName" . }}
+    crossplane.io/external-name: {{ include "infra.ecrRepoName" . | trim }}
   labels:
-    name: {{ include "infra.ecrRepoName" . }}-lifecycle-policy
+    name: {{ $k8sName }}-lifecycle-policy
 {{ include "infra.allTags" (dict "Values" .Values "section" .Values.aws.ecr) | indent 4 }}
 spec:
   forProvider:
@@ -64,8 +148,9 @@ spec:
         ]
       }
     region: {{ .Values.aws.region | quote }}
-    repository: {{ include "infra.ecrRepoName" . }}
+    repository: {{ include "infra.ecrRepoName" . | trim }}
   providerConfigRef:
     name: {{ .Values.aws.providerConfigRef.name | quote }}
+{{- end }}
 {{- end }}
 {{- end }}
