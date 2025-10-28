@@ -13,7 +13,7 @@ ecr.aws.upbound.io/v1beta2
 ecr.aws.upbound.io/v1beta1
 {{- end -}}
 
-{{- define "infra.ecrRegistryPolicyApiVersion" -}}
+{{- define "infra.ecrRepositoryPolictApiVersion" -}}
 ecr.aws.upbound.io/v1beta1
 {{- end -}}
 
