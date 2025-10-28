@@ -34,9 +34,6 @@ Returns the external ECR repo name <namespace>/<releaseName>.
 infra.ecrK8sName:
 Kubernetes-safe name for ECR resources.
 Defaults to org-env-<releaseName>, or org-env-<repo> when a repo override is supplied.
-Usage:
-  - Default (single repo): {{ include "infra.ecrK8sName" (dict "root" .) }}
-  - With repo name:        {{ include "infra.ecrK8sName" (dict "root" . "repo" "gohan") }}
 */}}
 {{- define "infra.ecrK8sName" -}}
   {{- $root := .root -}}
