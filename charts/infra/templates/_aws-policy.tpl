@@ -39,7 +39,7 @@ IAM ROLE LOGIC HERE. Trust policy and the inline policy gets dynamically generat
 {{- end -}}
 
 # ECR ACCOUNT SHARING POLICY
-{{- define "infra.ecrRegistryPolicy" -}}
+{{- define "infra.ecrRepositoryPolicy" -}}
   {{- $accounts := .Values.aws.ecr.accountAccessList | default list -}}
   {
     "Version": "2012-10-17",

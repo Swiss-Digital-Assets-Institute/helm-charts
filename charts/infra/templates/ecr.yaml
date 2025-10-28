@@ -32,21 +32,24 @@ spec:
 
 {{ if and $.Values.aws.ecr.accountAccessList (gt (len $.Values.aws.ecr.accountAccessList) 0) }}
 ---
-apiVersion: {{ include "infra.ecrRegistryPolicyApiVersion" $ }}
-kind: RegistryPolicy
+apiVersion: {{ include "infra.ecrRepositoryPolictApiVersion" $ }}
+kind: RepositoryPolicy
 metadata:
-  name: {{ $k8sName }}-registry-policy
+  name: {{ $k8sName }}-repository-policy
   namespace: {{ $.Release.Namespace }}
   annotations:
     crossplane.io/external-name: {{ $fullRepo }}
   labels:
-    name: {{ $k8sName }}-registry-policy
+    name: {{ $k8sName }}-repository-policy
 {{ include "infra.allTags" (dict "Values" $.Values "section" $.Values.aws.ecr) | indent 4 }}
 spec:
   forProvider:
     region: {{ $.Values.aws.region | quote }}
     policy: |-
-{{ include "infra.ecrRegistryPolicy" $ | indent 6 }}
+{{ include "infra.ecrRepositoryPolicy" $ | indent 6 }}
+    repositorySelector:
+      matchLabels:
+        name: {{ $k8sName }}
   providerConfigRef:
     name: {{ $.Values.aws.providerConfigRef.name | quote }}
 {{ end }}
@@ -108,21 +111,24 @@ spec:
 
 {{- if and .Values.aws.ecr.accountAccessList (gt (len .Values.aws.ecr.accountAccessList) 0) }}
 ---
-apiVersion: {{ include "infra.ecrRegistryPolicyApiVersion" . }}
-kind: RegistryPolicy
+apiVersion: {{ include "infra.ecrRepositoryPolictApiVersion" . }}
+kind: RepositoryPolicy
 metadata:
-  name: {{ $k8sName }}-registry-policy
+  name: {{ $k8sName }}-repository-policy
   namespace: {{ .Release.Namespace }}
   annotations:
     crossplane.io/external-name: {{ include "infra.ecrRepoName" . | trim }}
   labels:
-    name: {{ $k8sName }}-registry-policy
+    name: {{ $k8sName }}-repository-policy
 {{ include "infra.allTags" (dict "Values" .Values "section" .Values.aws.ecr) | indent 4 }}
 spec:
   forProvider:
     region: {{ .Values.aws.region | quote }}
     policy: |-
-{{ include "infra.ecrRegistryPolicy" . | indent 6 }}
+{{ include "infra.ecrRepositoryPolicy" . | indent 6 }}
+    repositorySelector:
+      matchLabels:
+        name: {{ $k8sName }}
   providerConfigRef:
     name: {{ .Values.aws.providerConfigRef.name | quote }}
 {{- end }}
