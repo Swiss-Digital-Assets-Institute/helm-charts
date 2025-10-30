@@ -1,0 +1,101 @@
+---
+{{- if .Values.istio.enabled }}
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: {{ include "helm-ipfs-cluster.fullname" . }}-public
+  labels:
+    {{- include "helm-ipfs-cluster.labels" . | nindent 4 }}
+spec:
+  hosts:
+  {{- range .Values.istio.hosts }}
+    - {{ . | quote }}
+  {{- end }}
+  gateways:
+  {{- range .Values.istio.gateways }}
+    - {{ . | quote }}
+  {{- end }}
+  http:
+    # IPFS Gateway - content retrieval
+    - match:
+        - uri:
+            prefix: /ipfs/
+      route:
+        - destination:
+            host: {{ include "helm-ipfs-cluster.ipfs-name" . }}.{{ .Release.Namespace }}.svc.cluster.local
+            port:
+              number: 8080
+    - match:
+        - uri:
+            prefix: /ipns/
+      route:
+        - destination:
+            host: {{ include "helm-ipfs-cluster.ipfs-name" . }}.{{ .Release.Namespace }}.svc.cluster.local
+            port:
+              number: 8080
+    
+    # IPFS HTTP API - for uploads and management
+    - match:
+        - uri:
+            prefix: /api/v0/
+      route:
+        - destination:
+            host: {{ include "helm-ipfs-cluster.ipfs-name" . }}.{{ .Release.Namespace }}.svc.cluster.local
+            port:
+              number: 5001
+    
+    # WebUI (if enabled on 5001)
+    - match:
+        - uri:
+            prefix: /webui
+      route:
+        - destination:
+            host: {{ include "helm-ipfs-cluster.ipfs-name" . }}.{{ .Release.Namespace }}.svc.cluster.local
+            port:
+              number: 5001
+    
+    # Default - gateway root
+    - match:
+        - uri:
+            prefix: /
+      route:
+        - destination:
+            host: {{ include "helm-ipfs-cluster.ipfs-name" . }}.{{ .Release.Namespace }}.svc.cluster.local
+            port:
+              number: 8080
+{{- end }}
+
+---
+{{- if and .Values.istio.enabled .Values.istio.adminEnabled }}
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: {{ include "helm-ipfs-cluster.fullname" . }}-admin
+  labels:
+    {{- include "helm-ipfs-cluster.labels" . | nindent 4 }}
+spec:
+  hosts:
+  {{- range .Values.istio.adminHosts }}
+    - {{ . | quote }}
+  {{- end }}
+  gateways:
+  {{- range .Values.istio.adminGateways }}
+    - {{ . | quote }}
+  {{- end }}
+  http:
+    # Redirect root to cluster info
+    - match:
+        - uri:
+            exact: /
+      redirect:
+        uri: /id
+    # All cluster API endpoints
+    - match:
+        - uri:
+            prefix: /
+      route:
+        - destination:
+            host: {{ include "helm-ipfs-cluster.name" . }}-cluster.{{ .Release.Namespace }}.svc.cluster.local
+            port:
+              number: 9094
+{{- end }}

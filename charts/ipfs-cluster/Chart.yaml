@@ -1,0 +1,12 @@
+apiVersion: v2
+name: ipfs-cluster
+icon: https://en.wikipedia.org/wiki/InterPlanetary_File_System#/media/File:Ipfs-logo-1024-ice-text.png
+keywords:
+  - IPFS
+  - IPFS Cluster
+  - ipfs-cluster
+  - ipfs
+description: Managing and maintaining IPFS clusters in kubernetes.
+type: application
+version: 1.0.0
+appVersion: "1.0.0"

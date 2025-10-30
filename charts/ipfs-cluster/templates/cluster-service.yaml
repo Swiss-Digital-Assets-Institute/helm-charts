@@ -1,0 +1,26 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "helm-ipfs-cluster.name" . }}-cluster
+  labels:
+    {{- include "helm-ipfs-cluster.selectorLabels" . | nindent 4 }}
+    nodeType: cluster
+spec:
+  clusterIP: None
+  type: {{ .Values.cluster.service.type | default .Values.service.type }}
+  ports:
+  - port: 9096
+    name: p2p
+    protocol: TCP
+  - port: 9094
+    name: api
+    protocol: TCP
+  {{- if .Values.metrics.enabled }}
+  - port: 8888
+    name: metrics
+    protocol: TCP
+  {{- end }}
+  selector:
+    {{- include "helm-ipfs-cluster.selectorLabels" . | nindent 4 }}
+    nodeType: cluster

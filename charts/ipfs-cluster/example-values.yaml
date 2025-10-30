@@ -1,0 +1,103 @@
+# ==============================================================================
+# EXAMPLE CONFIGURATION
+
+# replicaCount: 3
+#
+# bootstrap:
+#   enabled: true
+#   peers: []
+#
+# sharedSecret: "6a721b61565700091a178c85e88292f89ea3a88d3e16455936c20657390d28f8"
+#
+# metrics:
+#   enabled: true
+#
+# cluster:
+#   image:
+#     repository: ipfs/ipfs-cluster
+#     pullPolicy: IfNotPresent
+#     tag: "v1.0.8"
+#   resources:
+#     limits:
+#       cpu: 1000m
+#       memory: 2Gi
+#     requests:
+#       cpu: 500m
+#       memory: 1Gi
+#   storage:
+#     storageClassName: "fast-ssd"
+#     volumeSize: "5Gi"
+#   service:
+#     type: ClusterIP
+#   livenessProbe:
+#     enabled: true
+#     initialDelaySeconds: 30
+#     periodSeconds: 10
+#     timeoutSeconds: 5
+#     failureThreshold: 3
+#   readinessProbe:
+#     enabled: true
+#     initialDelaySeconds: 15
+#     periodSeconds: 10
+#     timeoutSeconds: 5
+#     failureThreshold: 3
+#   affinity:
+#     podAntiAffinity:
+#       preferredDuringSchedulingIgnoredDuringExecution:
+#         - weight: 100
+#           podAffinityTerm:
+#             labelSelector:
+#               matchExpressions:
+#                 - key: nodeType
+#                   operator: In
+#                   values:
+#                     - cluster
+#             topologyKey: kubernetes.io/hostname
+#
+# ipfs:
+#   image:
+#     repository: ipfs/go-ipfs
+#     pullPolicy: IfNotPresent
+#     tag: "latest"
+#   resources:
+#     limits:
+#       cpu: 1000m
+#       memory: 2Gi
+#     requests:
+#       cpu: 500m
+#       memory: 1Gi
+#   storage:
+#     storageClassName: "fast-ssd"
+#     volumeSize: "100Gi"
+#   service:
+#     type: ClusterIP
+#   livenessProbe:
+#     enabled: true
+#   readinessProbe:
+#     enabled: true
+#   affinity:
+#     podAntiAffinity:
+#       preferredDuringSchedulingIgnoredDuringExecution:
+#         - weight: 100
+#           podAffinityTerm:
+#             labelSelector:
+#               matchExpressions:
+#                 - key: nodeType
+#                   operator: In
+#                   values:
+#                     - ipfs
+#             topologyKey: kubernetes.io/hostname
+#
+# fullnameOverride: "my-ipfs-cluster"
+#
+# istio:
+#   enabled: true
+#   gateways:
+#     - istio-ingress/ingressgateway-public
+#   hosts:
+#     - ipfs.example.com
+#   adminEnabled: true
+#   adminGateways:
+#     - istio-ingress/ingressgateway-admin
+#   adminHosts:
+#     - ipfs-admin.example.com

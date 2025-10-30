@@ -1,0 +1,116 @@
+nameOverride: "test-ci"
+
+fullnameOverride: "test-ci"
+
+replicaCount: 3
+
+serviceAccount:
+  create: true
+  annotations: {}
+  name: ""
+
+service:
+  type: ClusterIP
+
+sharedSecret: ""
+
+bootstrap:
+  enabled: true
+  peers: []
+
+metrics:
+  enabled: false
+
+# IPFS Cluster configuration
+cluster:
+  image:
+    repository: ipfs/ipfs-cluster
+    pullPolicy: IfNotPresent
+    tag: ""
+  
+  imagePullSecrets: []
+  
+  podSecurityContext: {}
+  
+  securityContext: {}
+  
+  service:
+    type: ""
+    annotations: {}
+
+  resources: {}
+  
+  storage:
+    storageClassName: ""
+    volumeSize: "1Gi"
+  
+  livenessProbe:
+    enabled: false
+    initialDelaySeconds: 30
+    periodSeconds: 10
+    timeoutSeconds: 5
+    failureThreshold: 3
+  
+  # Readiness probe configuration
+  readinessProbe:
+    enabled: false
+    initialDelaySeconds: 15
+    periodSeconds: 10
+    timeoutSeconds: 5
+    failureThreshold: 3
+  
+  nodeSelector: {}
+  
+  tolerations: []
+  
+  affinity: {}
+
+# IPFS node configuration
+ipfs:
+  image:
+    repository: ipfs/go-ipfs
+    pullPolicy: IfNotPresent
+    tag: "latest"
+  
+  imagePullSecrets: []
+  
+  podSecurityContext: {}
+  securityContext: {}
+  service:
+    type: ""
+    annotations: {}
+  
+  resources: {}
+  
+  storage:
+    storageClassName: ""
+    volumeSize: "1Gi"
+  
+
+  livenessProbe:
+    enabled: false
+    initialDelaySeconds: 30
+    periodSeconds: 10
+    timeoutSeconds: 5
+    failureThreshold: 3
+  
+  readinessProbe:
+    enabled: false
+    initialDelaySeconds: 15
+    periodSeconds: 10
+    timeoutSeconds: 5
+    failureThreshold: 3
+  
+  nodeSelector: {}
+  
+  tolerations: []
+  
+  affinity: {}
+
+istio:
+  enabled: false
+  gateways: []
+  hosts: []
+  adminEnabled: false
+  adminGateways: []
+  adminHosts: []

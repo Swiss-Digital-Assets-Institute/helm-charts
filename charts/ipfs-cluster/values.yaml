@@ -1,0 +1,227 @@
+# Chart name override
+nameOverride: ""
+
+# Full name override for all resources
+fullnameOverride: ""
+
+# Number of IPFS and Cluster nodes to deploy
+replicaCount: 3
+
+
+# Service account configuration
+serviceAccount:
+  # Specifies whether a service account should be created
+  create: true
+  # Annotations to add to the service account
+  annotations: {}
+  # The name of the service account to use.
+  # If not set and create is true, a name is generated using the fullname template
+  name: ""
+
+# Default service type for all services (can be overridden per component)
+service:
+  type: ClusterIP
+
+# Shared secret for cluster authentication
+# Generate with: od -vN 32 -An -tx1 /dev/urandom | tr -d ' \n'
+# Leave empty to skip cluster secret configuration
+sharedSecret: ""
+
+# Bootstrap configuration for cluster formation
+bootstrap:
+  # Enable bootstrap mode (peer discovery)
+  enabled: true
+  # External bootstrap peers (multiaddrs)
+  # Example: ["/dns4/cluster.example.com/tcp/9096/p2p/12D3..."]
+  peers: []
+
+# Prometheus metrics configuration
+metrics:
+  # Enable Prometheus metrics scraping
+  enabled: false
+
+# IPFS Cluster configuration
+cluster:
+  image:
+    repository: ipfs/ipfs-cluster
+    pullPolicy: IfNotPresent
+    # Overrides the image tag whose default is the chart appVersion
+    tag: "v1.0.8"
+  
+  # Image pull secrets for private registries
+  imagePullSecrets: []
+  
+  # Pod security context
+  podSecurityContext: {}
+  #   fsGroup: 2000
+  
+  # Container security context
+  securityContext: {}
+  #   capabilities:
+  #     drop:
+  #     - ALL
+  #   readOnlyRootFilesystem: true
+  #   runAsNonRoot: true
+  #   runAsUser: 1000
+  
+  # Service configuration
+  service:
+    type: "ClusterIP"
+    annotations: {}
+  
+  # Resource limits and requests
+  resources: {}
+  #   limits:
+  #     cpu: 1000m
+  #     memory: 2Gi
+  #   requests:
+  #     cpu: 500m
+  #     memory: 1Gi
+  
+  # Persistent storage configuration
+  storage:
+    # Storage class name (empty string uses cluster default)
+    storageClassName: ""
+    # Volume size for cluster data
+    volumeSize: "1Gi"
+  
+  # Liveness probe configuration
+  livenessProbe:
+    enabled: true
+    initialDelaySeconds: 30
+    periodSeconds: 10
+    timeoutSeconds: 5
+    failureThreshold: 3
+  
+  # Readiness probe configuration
+  readinessProbe:
+    enabled: true
+    initialDelaySeconds: 15
+    periodSeconds: 10
+    timeoutSeconds: 5
+    failureThreshold: 3
+  
+  # Node selector for pod assignment
+  nodeSelector: {}
+  
+  # Tolerations for pod assignment
+  tolerations: []
+  
+  # Affinity rules for pod assignment
+  affinity: 
+    podAntiAffinity:
+      preferredDuringSchedulingIgnoredDuringExecution:
+        - weight: 100
+          podAffinityTerm:
+            labelSelector:
+              matchExpressions:
+                - key: nodeType
+                  operator: In
+                  values:
+                    - cluster
+            topologyKey: kubernetes.io/hostname
+
+# IPFS node configuration
+ipfs:
+  image:
+    repository: ipfs/go-ipfs
+    pullPolicy: IfNotPresent
+    tag: "latest"
+  
+  # Image pull secrets for private registries
+  imagePullSecrets: []
+  
+  # Pod security context
+  podSecurityContext: {}
+  #   fsGroup: 2000
+  
+  # Container security context
+  securityContext: {}
+  #   capabilities:
+  #     drop:
+  #     - ALL
+  #   readOnlyRootFilesystem: true
+  #   runAsNonRoot: true
+  #   runAsUser: 1000
+  
+  # Service configuration
+  service:
+    type: "ClusterIP"
+    annotations: {}
+  
+  # Resource limits and requests
+  resources: 
+    limits:
+      cpu: 1000m
+      memory: 2Gi
+    requests:
+      cpu: 500m
+      memory: 1Gi
+  
+  # Persistent storage configuration
+  storage:
+    # Storage class name (empty string uses cluster default)
+    storageClassName: ""
+    # Volume size for IPFS data
+    volumeSize: "50Gi"
+  
+  # Liveness probe configuration
+  livenessProbe:
+    enabled: true
+    initialDelaySeconds: 30
+    periodSeconds: 10
+    timeoutSeconds: 5
+    failureThreshold: 3
+  
+  # Readiness probe configuration
+  readinessProbe:
+    enabled: true
+    initialDelaySeconds: 15
+    periodSeconds: 10
+    timeoutSeconds: 5
+    failureThreshold: 3
+  
+  # Node selector for pod assignment
+  nodeSelector: {}
+  
+  # Tolerations for pod assignment
+  tolerations: []
+  
+  # Affinity rules for pod assignment
+  affinity: 
+    podAntiAffinity:
+      preferredDuringSchedulingIgnoredDuringExecution:
+        - weight: 100
+          podAffinityTerm:
+            labelSelector:
+              matchExpressions:
+                - key: nodeType
+                  operator: In
+                  values:
+                    - ipfs
+            topologyKey: kubernetes.io/hostname
+
+# Istio VirtualService configuration
+istio:
+  # Enable Istio VirtualService resources
+  enabled: false
+  
+  # Public gateway configuration (for content retrieval)
+  # List of Istio Gateway resources to attach to
+  gateways: []
+  #   - istio-ingress/ingressgateway-public
+  
+  # Hostnames for the public gateway
+  hosts: []
+  #   - ipfs.example.com
+  
+  # Admin gateway configuration (for cluster management)
+  adminEnabled: false
+  
+  # List of Istio Gateway resources for admin access
+  adminGateways: []
+  #   - istio-ingress/ingressgateway-admin
+  
+  # Hostnames for the admin gateway
+  adminHosts: []
+  #   - ipfs-admin.example.com

@@ -1,0 +1,9 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "helm-ipfs-cluster.name" . }}-cluster-config
+data:
+  {{- range $i := until (int .Values.replicaCount) }}
+  CLUSTER_IPFSHTTP_NODEMULTIADDRESS_{{ $i }}: "/dns4/{{ include "helm-ipfs-cluster.ipfs-name" $ }}-{{ $i }}.{{ include "helm-ipfs-cluster.ipfs-name" $ }}-headless.{{ $.Release.Namespace }}.svc.cluster.local/tcp/5001"
+  {{- end }}
