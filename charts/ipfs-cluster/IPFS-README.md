@@ -145,7 +145,6 @@ This chart deploys two main StatefulSets:
 
 ### IPFS Node Ports
 
-````markdown
 | Port | Name     | Protocol | Purpose                                   | Access Level |
 | ---- | -------- | -------- | ----------------------------------------- | ------------ |
 | 4001 | swarm    | TCP      | P2P communication between IPFS nodes      | Internal/P2P |
@@ -195,14 +194,11 @@ This chart deploys two main StatefulSets:
 
 ### IPFS Cluster Ports
 
-```markdown
 | Port | Name    | Protocol | Purpose                            | Access Level |
 | ---- | ------- | -------- | ---------------------------------- | ------------ | -------------------------------------------------------------------------- |
 | 9094 | api     | TCP      | Cluster REST API                   | Restricted   |
 | 9096 | p2p     | TCP      | Cluster peer-to-peer communication | Internal     |
 | 8888 | metrics | TCP      | Prometheus metrics (optional)      | Monitoring   | Name Protocol Purpose Access Level9094 api TCP Cluster REST API Restricted |
-```
-````
 
 #### Port 9094 - Cluster REST API
 
@@ -366,14 +362,12 @@ bootstrap:
 
 1. **Clone or download the chart**:
 
-bash
-
 ```bash
 git clone <repository-url>
 cd helm-ipfs-cluster
 ```
 
-2. **Generate a cluster secret**
+1. **Generate a cluster secret**
 
 ```bash
 od -vN 32 -An -tx1 /dev/urandom | tr -d ' \n'
@@ -482,7 +476,6 @@ cluster.storage.volumeSize Cluster data volume size "1Gi"
 ipfs.storage.volumeSize IPFS data volume size "10Gi"
 istio.enabled Enable Istio VirtualServices false
 
-````markdown
 ### Storage Configuration
 
 Configure persistent storage for production:
@@ -498,7 +491,6 @@ ipfs:
     storageClassName: "fast-ssd"
     volumeSize: "500Gi"
 ```
-````
 
 ### Resource Limits
 
@@ -593,8 +585,6 @@ istio:
 ### Option 2: Kubernetes Ingress
 
 Create an Ingress resource:
-
-yaml
 
 ```yaml
 apiVersion: networking.k8s.io/v1
@@ -753,8 +743,6 @@ Users can retrieve content at:
 
 Enable metrics in your values:
 
-yaml
-
 ```yaml
 metrics:
   enabled: true
@@ -765,8 +753,6 @@ This exposes metrics on port 8888 at `/metrics`.
 ### ServiceMonitor (Prometheus Operator)
 
 The chart includes an optional ServiceMonitor resource. Deploy Prometheus Operator and it will automatically discover and scrape metrics:
-
-bash
 
 ```bash
 helm install my-ipfs-cluster . -f my-values.yaml \
@@ -821,8 +807,6 @@ rate(cluster_pins_pin_duration_seconds_count[5m])
 
 Example Prometheus alerting rules:
 
-yaml
-
 ```yaml
 groups:
   - name: ipfs-cluster
@@ -860,8 +844,6 @@ groups:
 
 Check cluster health:
 
-bash
-
 ```bash
 # Via kubectl exec
 kubectl exec -it ipfs-cluster-cluster-0 -n ipfs -c cluster -- \
@@ -878,8 +860,6 @@ kubectl exec -it ipfs-cluster-cluster-0 -n ipfs -c cluster -- \
 ### Logs
 
 View logs for troubleshooting:
-
-bash
 
 ```bash
 # Cluster logs
@@ -905,8 +885,6 @@ kubectl logs -n ipfs ipfs-cluster-cluster-0 -c configure-bootstrap
 
 **Solutions**:
 
-bash
-
 ```bash
 # Check if bootstrap is enabled
 kubectl get pods -n ipfs -o yaml | grep BOOTSTRAP
@@ -926,8 +904,6 @@ kubectl exec -it ipfs-cluster-cluster-0 -n ipfs -c cluster -- \
 **Symptoms**: Cluster shows IPFS connection errors
 
 **Solutions**:
-
-bash
 
 ```bash
 # Check IPFS is running
@@ -951,8 +927,6 @@ kubectl exec -it ipfs-cluster-cluster-0 -n ipfs -c cluster -- \
 **Symptoms**: Pins stuck in "pinning" state
 
 **Solutions**:
-
-bash
 
 ```bash
 # Check pin status
@@ -978,8 +952,6 @@ kubectl exec -it ipfs-test-0 -n ipfs -c ipfs -- \
 
 **Solutions**:
 
-bash
-
 ```bash
 # Verify metrics are enabled
 kubectl get pods -n ipfs -o yaml | grep CLUSTER_METRICS_ENABLESTATS
@@ -998,8 +970,6 @@ curl http://localhost:8888/metrics
 **Symptoms**: Pods restarting, OOMKilled status
 
 **Solutions**:
-
-bash
 
 ```bash
 # Check resource usage
@@ -1021,8 +991,6 @@ kubectl exec -it ipfs-test-0 -n ipfs -c ipfs -- \
 
 **Solutions**:
 
-bash
-
 ```bash
 # Verify VirtualService created
 kubectl get virtualservice -n ipfs
@@ -1039,8 +1007,6 @@ kubectl get pods -n ipfs -o jsonpath='{.items[*].spec.containers[*].name}'
 ```
 
 ### Debug Commands
-
-bash
 
 ```bash
 # Get all resources
@@ -1076,8 +1042,6 @@ helm template my-ipfs-cluster . -f my-values.yaml --debug
 #### Horizontal Scaling
 
 To scale the cluster:
-
-bash
 
 ```bash
 # Scale up
@@ -1171,8 +1135,6 @@ kubectl exec -it ipfs-cluster-cluster-0 -n ipfs -c cluster -- \
 ### Security Hardening
 
 #### Pod Security
-
-yaml
 
 ```yaml
 cluster:
@@ -1290,8 +1252,6 @@ spec:
 #### IPFS Configuration
 
 Tune IPFS for performance:
-
-yaml
 
 ```yaml
 ipfs:
