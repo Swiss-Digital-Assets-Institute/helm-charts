@@ -1,52 +1,45 @@
 # IPFS
+
 ## Table of Contents
 
-* [What is IPFS?](#what-is-ipfs)
-* [What is IPFS Cluster?](#what-is-ipfs-cluster)
-* [Architecture Overview](#architecture-overview)
-* [Components](#components)
-* [Port Reference](#port-reference)
-* [API Endpoints](#api-endpoints)
-* [Installation](#installation)
-* [Configuration](#configuration)
-* [Exposing Services](#exposing-services)
-* [Monitoring](#monitoring)
-* [Troubleshooting](#troubleshooting)
-* [Production Considerations](#production-considerations)
+- [What is IPFS?](#what-is-ipfs)
+- [What is IPFS Cluster?](#what-is-ipfs-cluster)
+- [Architecture Overview](#architecture-overview)
+- [Components](#components)
+- [Port Reference](#port-reference)
+- [API Endpoints](#api-endpoints)
+- [Installation](#installation)
+- [Configuration](#configuration)
+- [Exposing Services](#exposing-services)
+- [Monitoring](#monitoring)
+- [Troubleshooting](#troubleshooting)
+- [Production Considerations](#production-considerations)
 
 ## What is IPFS?
 
 **IPFS (InterPlanetary File System)** is a peer-to-peer hypermedia protocol designed to make the web faster, safer, and more open. Unlike traditional HTTP, which fetches content from specific servers, IPFS retrieves content based on what it is, not where it is.
 
-### Key Features:
-
-* **Content-addressed storage**: Files are identified by their cryptographic hash (CID - Content Identifier)
-* **Decentralized**: No single point of failure; content is distributed across multiple nodes
-* **Deduplication**: Identical files are stored only once across the network
-* **Versioning**: Built-in support for versioning and historic preservation
-* **Permanent web**: Content remains accessible as long as at least one node has it
-
 ### Use Cases:
 
-* Decentralized file storage and distribution
-* Website hosting with resilience
-* Large dataset distribution (scientific data, media files)
-* Blockchain and NFT storage
-* Content delivery networks (CDN alternatives)
+- Decentralized file storage and distribution
+- Website hosting with resilience
+- Large dataset distribution (scientific data, media files)
+- Blockchain and NFT storage
+- Content delivery networks (CDN alternatives)
 
 ## What is IPFS Cluster?
 
 **IPFS Cluster** provides data orchestration across a swarm of IPFS nodes by allocating, replicating, and tracking a global pinset distributed among multiple peers.
 
-### Key Features:
+### Key Features
 
-* **Coordinated pinning**: Ensures content is replicated across multiple IPFS nodes
-* **High availability**: Content remains available even if some nodes go down
-* **Load balancing**: Distributes storage and retrieval load across nodes
-* **Automatic replication**: Monitors and maintains replication factors
-* **RESTful API**: Easy integration with applications
+- **Coordinated pinning**: Ensures content is replicated across multiple IPFS nodes
+- **High availability**: Content remains available even if some nodes go down
+- **Load balancing**: Distributes storage and retrieval load across nodes
+- **Automatic replication**: Monitors and maintains replication factors
+- **RESTful API**: Easy integration with applications
 
-### How It Works:
+### How It Works
 
 1. You submit content to the cluster via the Cluster API
 2. The cluster decides which IPFS nodes should store the content
@@ -54,7 +47,8 @@
 4. The cluster continuously monitors replication status
 5. If a node goes down, the cluster automatically re-replicates content
 
-### Key Features
+### Additional Cluster Features
+
 - Automatic data replication across nodes
 - CRDT-based consensus (no leader election required)
 - Persistent storage using StatefulSets
@@ -63,16 +57,15 @@
 
 ### System Requirements
 
-| Component | Minimum | Recommended |
+| Component                | Minimum | Recommended |
 | ------------------------ | ------- | ----------- |
-| Kubernetes Nodes | 1 | 3+ |
-| CPU per IPFS pod | 500m | 2000m |
-| Memory per IPFS pod | 512Mi | 4Gi |
-| CPU per Cluster pod | 100m | 500m |
-| Memory per Cluster pod | 128Mi | 512Mi |
-| Storage per IPFS node | 1Gi | 50Gi+ |
-| Storage per Cluster node | 500Mi | 2Gi |
-
+| Kubernetes Nodes         | 1       | 3+          |
+| CPU per IPFS pod         | 500m    | 2000m       |
+| Memory per IPFS pod      | 512Mi   | 4Gi         |
+| CPU per Cluster pod      | 100m    | 500m        |
+| Memory per Cluster pod   | 128Mi   | 512Mi       |
+| Storage per IPFS node    | 1Gi     | 50Gi+       |
+| Storage per Cluster node | 500Mi   | 2Gi         |
 
 ## Architecture Overview
 
@@ -107,7 +100,7 @@ This Helm chart deploys a paired architecture where each IPFS Cluster node manag
 └─────────────────────────────────────────────────────────────┘
 ```
 
-***
+---
 
 ## Components
 
@@ -119,16 +112,16 @@ This chart deploys two main StatefulSets:
 
 **Key Characteristics**:
 
-* Deployed as a StatefulSet for stable network identities and persistent storage
-* Each pod gets its own PersistentVolumeClaim for data storage
-* Uses headless service for stable DNS names per pod
-* Manages the actual content storage and P2P networking
+- Deployed as a StatefulSet for stable network identities and persistent storage
+- Each pod gets its own PersistentVolumeClaim for data storage
+- Uses headless service for stable DNS names per pod
+- Manages the actual content storage and P2P networking
 
 **Pod Components**:
 
-* **Container**: `ipfs` - The go-ipfs daemon
-* **Data**: Stored in `/data/ipfs`
-* **Initialization**: Automatic on first start
+- **Container**: `ipfs` - The go-ipfs daemon
+- **Data**: Stored in `/data/ipfs`
+- **Initialization**: Automatic on first start
 
 ### 2. IPFS Cluster StatefulSet (`cluster.statefulset.yaml`)
 
@@ -136,115 +129,119 @@ This chart deploys two main StatefulSets:
 
 **Key Characteristics**:
 
-* Deployed as a StatefulSet with the same replica count as IPFS
-* Each cluster node pairs with a corresponding IPFS node
-* Bootstrap mechanism for peer discovery
-* Manages cluster consensus and replication
+- Deployed as a StatefulSet with the same replica count as IPFS
+- Each cluster node pairs with a corresponding IPFS node
+- Bootstrap mechanism for peer discovery
+- Manages cluster consensus and replication
 
 **Pod Components**:
 
-* **Init Container 1**: `init-cluster` - Initializes cluster configuration
-* **Init Container 2**: `configure-bootstrap` - Sets up peer discovery (for non-zero pods)
-* **Main Container**: `cluster` - The ipfs-cluster-service daemon
-* **Data**: Stored in `/data/ipfs-cluster`
+- **Init Container 1**: `init-cluster` - Initializes cluster configuration
+- **Init Container 2**: `configure-bootstrap` - Sets up peer discovery (for non-zero pods)
+- **Main Container**: `cluster` - The ipfs-cluster-service daemon
+- **Data**: Stored in `/data/ipfs-cluster`
 
 ## Port Reference
 
 ### IPFS Node Ports
 
-```
-Port	Name	Protocol	Purpose	Access Level4001	swarm	TCP	P2P communication between IPFS nodes	Internal/P2P
-5001	api	TCP	IPFS HTTP API (full control)	Restricted
-8080	gateway	TCP	HTTP Gateway (read-only content delivery)	Public-safe
-5353	zeroconf	UDP	mDNS peer discovery	Internal
-```
+````markdown
+| Port | Name     | Protocol | Purpose                                   | Access Level |
+| ---- | -------- | -------- | ----------------------------------------- | ------------ |
+| 4001 | swarm    | TCP      | P2P communication between IPFS nodes      | Internal/P2P |
+| 5001 | api      | TCP      | IPFS HTTP API (full control)              | Restricted   |
+| 8080 | gateway  | TCP      | HTTP Gateway (read-only content delivery) | Public-safe  |
+| 5353 | zeroconf | UDP      | mDNS peer discovery                       | Internal     |
 
 #### Port 4001 - Swarm
 
-* **Purpose**: Peer-to-peer communication with other IPFS nodes
-* **Protocol**: libp2p over TCP
-* **Use**: Content exchange, DHT queries, bitswap protocol
-* **Exposure**: Should be accessible to other IPFS nodes in the network
+- **Purpose**: Peer-to-peer communication with other IPFS nodes
+- **Protocol**: libp2p over TCP
+- **Use**: Content exchange, DHT queries, bitswap protocol
+- **Exposure**: Should be accessible to other IPFS nodes in the network
 
 #### Port 5001 - IPFS HTTP API
 
-* **Purpose**: Full control API for the IPFS node
+- **Purpose**: Full control API for the IPFS node
 
-* **Capabilities**:
+- **Capabilities**:
 
-  * ✅ Upload/add files (`/api/v0/add`)
-  * ✅ Pin/unpin content (`/api/v0/pin/*`)
-  * ✅ Retrieve content (`/api/v0/cat`, `/api/v0/get`)
-  * ✅ Manage configuration (`/api/v0/config/*`)
-  * ✅ Query node information (`/api/v0/id`, `/api/v0/version`)
-  * ✅ Manage peers (`/api/v0/swarm/*`)
+  - ✅ Upload/add files (`/api/v0/add`)
+  - ✅ Pin/unpin content (`/api/v0/pin/*`)
+  - ✅ Retrieve content (`/api/v0/cat`, `/api/v0/get`)
+  - ✅ Manage configuration (`/api/v0/config/*`)
+  - ✅ Query node information (`/api/v0/id`, `/api/v0/version`)
+  - ✅ Manage peers (`/api/v0/swarm/*`)
 
-* **Security**: ⚠️ **MUST BE PROTECTED** - Allows full node control
+- **Security**: ⚠️ **MUST BE PROTECTED** - Allows full node control
 
-* **Exposure**: Should only be accessible to authenticated users/services
+- **Exposure**: Should only be accessible to authenticated users/services
 
 #### Port 8080 - Gateway
 
-* **Purpose**: HTTP gateway for read-only content retrieval
+- **Purpose**: HTTP gateway for read-only content retrieval
 
-* **Capabilities**:
+- **Capabilities**:
 
-  * ✅ Retrieve content via `/ipfs/{CID}/path`
-  * ✅ Resolve IPNS names via `/ipns/{name}/path`
-  * ✅ Browser-friendly content serving
-  * ❌ Cannot upload or modify content
-  * ❌ No administrative capabilities
+  - ✅ Retrieve content via `/ipfs/{CID}/path`
+  - ✅ Resolve IPNS names via `/ipns/{name}/path`
+  - ✅ Browser-friendly content serving
+  - ❌ Cannot upload or modify content
+  - ❌ No administrative capabilities
 
-* **Security**: ✅ Safe for public exposure
+- **Security**: ✅ Safe for public exposure
 
-* **Exposure**: Can be publicly accessible for content delivery
+- **Exposure**: Can be publicly accessible for content delivery
 
 ### IPFS Cluster Ports
 
+```markdown
+| Port | Name    | Protocol | Purpose                            | Access Level |
+| ---- | ------- | -------- | ---------------------------------- | ------------ | -------------------------------------------------------------------------- |
+| 9094 | api     | TCP      | Cluster REST API                   | Restricted   |
+| 9096 | p2p     | TCP      | Cluster peer-to-peer communication | Internal     |
+| 8888 | metrics | TCP      | Prometheus metrics (optional)      | Monitoring   | Name Protocol Purpose Access Level9094 api TCP Cluster REST API Restricted |
 ```
-Port	Name	Protocol	Purpose	Access Level9094	api	TCP	Cluster REST API	Restricted
-9096	p2p	TCP	Cluster peer-to-peer communication	Internal
-8888	metrics	TCP	Prometheus metrics (optional)	Monitoring
-```
+````
 
 #### Port 9094 - Cluster REST API
 
-* **Purpose**: Cluster management and orchestration API
+- **Purpose**: Cluster management and orchestration API
 
-* **Capabilities**:
+- **Capabilities**:
 
-  * ✅ Add content to cluster (`POST /pins/{cid}`)
-  * ✅ Remove content from cluster (`DELETE /pins/{cid}`)
-  * ✅ List cluster peers (`GET /peers`)
-  * ✅ Query pin status (`GET /pins`, `GET /pins/{cid}`)
-  * ✅ Cluster health (`GET /health/graph`)
-  * ✅ Node information (`GET /id`)
+  - ✅ Add content to cluster (`POST /pins/{cid}`)
+  - ✅ Remove content from cluster (`DELETE /pins/{cid}`)
+  - ✅ List cluster peers (`GET /peers`)
+  - ✅ Query pin status (`GET /pins`, `GET /pins/{cid}`)
+  - ✅ Cluster health (`GET /health/graph`)
+  - ✅ Node information (`GET /id`)
 
-* **Security**: ⚠️ **MUST BE PROTECTED** - Allows cluster-wide operations
+- **Security**: ⚠️ **MUST BE PROTECTED** - Allows cluster-wide operations
 
-* **Exposure**: Should only be accessible to authenticated administrators
+- **Exposure**: Should only be accessible to authenticated administrators
 
 #### Port 9096 - Cluster P2P
 
-* **Purpose**: Internal cluster consensus and communication
-* **Protocol**: libp2p
-* **Use**: CRDT consensus, cluster state synchronization
-* **Exposure**: Only needs to be accessible between cluster nodes
+- **Purpose**: Internal cluster consensus and communication
+- **Protocol**: libp2p
+- **Use**: CRDT consensus, cluster state synchronization
+- **Exposure**: Only needs to be accessible between cluster nodes
 
 #### Port 8888 - Metrics (Optional)
 
-* **Purpose**: Prometheus-formatted metrics
+- **Purpose**: Prometheus-formatted metrics
 
-* **Metrics Include**:
+- **Metrics Include**:
 
-  * Cluster peer count
-  * Pin counts and status
-  * IPFS repo size
-  * System resources (memory, goroutines)
+  - Cluster peer count
+  - Pin counts and status
+  - IPFS repo size
+  - System resources (memory, goroutines)
 
-* **Exposure**: Should be accessible to your monitoring stack
+- **Exposure**: Should be accessible to your monitoring stack
 
-***
+---
 
 ## API Endpoints
 
@@ -254,27 +251,27 @@ Base URL: `http://ipfs-node:5001/api/v0/`
 
 #### File Operations
 
-```
-Endpoint	Method	Purpose	Example/add	POST	Upload file(s) to IPFS	curl -F file=@photo.jpg http://localhost:5001/api/v0/add
-/cat	POST	Retrieve file content	curl "http://localhost:5001/api/v0/cat?arg=QmHash..."
-/get	POST	Download file(s)	curl "http://localhost:5001/api/v0/get?arg=QmHash..."
-/ls	POST	List directory contents	curl "http://localhost:5001/api/v0/ls?arg=QmHash..."
+```markdown
+Endpoint Method Purpose Example/add POST Upload file(s) to IPFS curl -F file=@photo.jpg http://localhost:5001/api/v0/add
+/cat POST Retrieve file content curl "http://localhost:5001/api/v0/cat?arg=QmHash..."
+/get POST Download file(s) curl "http://localhost:5001/api/v0/get?arg=QmHash..."
+/ls POST List directory contents curl "http://localhost:5001/api/v0/ls?arg=QmHash..."
 ```
 
 #### Pin Management
 
-```
-Endpoint	Method	Purpose	Example/pin/add	POST	Pin content locally	curl -X POST "http://localhost:5001/api/v0/pin/add?arg=QmHash..."
-/pin/rm	POST	Unpin content	curl -X POST "http://localhost:5001/api/v0/pin/rm?arg=QmHash..."
-/pin/ls	POST	List pinned content	curl "http://localhost:5001/api/v0/pin/ls"
+```markdown
+Endpoint Method Purpose Example/pin/add POST Pin content locally curl -X POST "http://localhost:5001/api/v0/pin/add?arg=QmHash..."
+/pin/rm POST Unpin content curl -X POST "http://localhost:5001/api/v0/pin/rm?arg=QmHash..."
+/pin/ls POST List pinned content curl "http://localhost:5001/api/v0/pin/ls"
 ```
 
 #### Node Information
 
-```
-Endpoint	Method	Purpose	Example/id	POST	Get node identity	curl "http://localhost:5001/api/v0/id"
-/version	POST	Get IPFS version	curl "http://localhost:5001/api/v0/version"
-/repo/stat	POST	Get repository statistics	curl "http://localhost:5001/api/v0/repo/stat"
+```markdown
+Endpoint Method Purpose Example/id POST Get node identity curl "http://localhost:5001/api/v0/id"
+/version POST Get IPFS version curl "http://localhost:5001/api/v0/version"
+/repo/stat POST Get repository statistics curl "http://localhost:5001/api/v0/repo/stat"
 ```
 
 ### IPFS Gateway (Port 8080)
@@ -283,10 +280,10 @@ Base URL: `http://ipfs-node:8080/`
 
 #### Content Retrieval
 
-```
-Path Pattern	Purpose	Example/ipfs/{CID}	Retrieve content by CID	http://localhost:8080/ipfs/QmHash.../file.txt
-/ipfs/{CID}/{path}	Retrieve file from directory	http://localhost:8080/ipfs/QmHash.../folder/file.jpg
-/ipns/{name}	Resolve and retrieve IPNS content	http://localhost:8080/ipns/example.com/
+```markdown
+Path Pattern Purpose Example/ipfs/{CID} Retrieve content by CID http://localhost:8080/ipfs/QmHash.../file.txt
+/ipfs/{CID}/{path} Retrieve file from directory http://localhost:8080/ipfs/QmHash.../folder/file.jpg
+/ipns/{name} Resolve and retrieve IPNS content http://localhost:8080/ipns/example.com/
 ```
 
 **Note**: Gateway is read-only. Use the API (port 5001) for uploads.
@@ -297,74 +294,73 @@ Base URL: `http://cluster-node:9094/`
 
 #### Cluster Management
 
-```
-Endpoint	Method	Purpose	Example/id	GET	Get cluster node info	curl http://localhost:9094/id
-/peers	GET	List all cluster peers	curl http://localhost:9094/peers
-/health/graph	GET	Get cluster health status	curl http://localhost:9094/health/graph
+```markdown
+Endpoint Method Purpose Example/id GET Get cluster node info curl http://localhost:9094/id
+/peers GET List all cluster peers curl http://localhost:9094/peers
+/health/graph GET Get cluster health status curl http://localhost:9094/health/graph
 ```
 
 #### Pin Operations
 
-```
-Endpoint	Method	Purpose	Example/pins	GET	List all pins in cluster	curl http://localhost:9094/pins
-/pins/{cid}	GET	Get pin status	curl http://localhost:9094/pins/QmHash...
-/pins/{cid}	POST	Add pin to cluster	curl -X POST http://localhost:9094/pins/QmHash...
-/pins/{cid}	DELETE	Remove pin from cluster	curl -X DELETE http://localhost:9094/pins/QmHash...
-/allocations	GET	Show pin allocations	curl http://localhost:9094/allocations
+```markdown
+Endpoint Method Purpose Example/pins GET List all pins in cluster curl http://localhost:9094/pins
+/pins/{cid} GET Get pin status curl http://localhost:9094/pins/QmHash...
+/pins/{cid} POST Add pin to cluster curl -X POST http://localhost:9094/pins/QmHash...
+/pins/{cid} DELETE Remove pin from cluster curl -X DELETE http://localhost:9094/pins/QmHash...
+/allocations GET Show pin allocations curl http://localhost:9094/allocations
 ```
 
 #### Advanced Operations
 
-```
-Endpoint	Method	Purpose	Example/pins/{cid}/recover	POST	Recover failed pin	curl -X POST http://localhost:9094/pins/QmHash.../recover
-/add	POST	Add and pin file	curl -X POST -F file=@data.txt http://localhost:9094/add
+```markdown
+Endpoint Method Purpose Example/pins/{cid}/recover POST Recover failed pin curl -X POST http://localhost:9094/pins/QmHash.../recover
+/add POST Add and pin file curl -X POST -F file=@data.txt http://localhost:9094/add
 ```
 
 ### Prometheus Metrics (Port 8888)
 
 Base URL: `http://cluster-node:8888/`
 
-```
-Endpoint	Method	Purpose/metrics	GET	Prometheus metrics in text format
+```markdown
+Endpoint Method Purpose/metrics GET Prometheus metrics in text format
 ```
 
 **Key Metrics**:
 
-* `cluster_peers_total` - Number of cluster peers
-* `cluster_pins_total` - Total pins in cluster
-* `cluster_pins_pinned` - Successfully pinned items
-* `cluster_pins_pin_error` - Failed pins
-* `ipfs_repo_size_bytes` - IPFS repository size
-* `go_memstats_alloc_bytes` - Memory usage
+- `cluster_peers_total` - Number of cluster peers
+- `cluster_pins_total` - Total pins in cluster
+- `cluster_pins_pinned` - Successfully pinned items
+- `cluster_pins_pin_error` - Failed pins
+- `ipfs_repo_size_bytes` - IPFS repository size
+- `go_memstats_alloc_bytes` - Memory usage
 
 ### Bootstrap Configuration (`bootstrap.*`)
 
 Configures bootstrap mode for joining an existing IPFS Cluster.
 | Parameter | Description | Default |
 | ------------------- | ---------------------------------------------- | ------- |
-| \`bootstrap.enabled\` | Enable bootstrap mode to join existing cluster | \`false\` |
-| \`bootstrap.peers\` | List of bootstrap peer multiaddresses | \`\[]\` |
+| `bootstrap.enabled` | Enable bootstrap mode to join existing cluster | `false` |
+| `bootstrap.peers` | List of bootstrap peer multiaddresses | `[ ]` |
 
 **Example**:
-```yaml
 
+```yaml
 bootstrap:
   enabled: true
   peers:
     - /ip4/10.0.1.100/tcp/9096/p2p/12D3KooWPeer1ABC
     - /dns4/cluster.example.com/tcp/9096/p2p/12D3KooWPeer2DEF
-
 ```
 
 ## Installation
 
 ### Prerequisites
 
-* Kubernetes cluster 1.19+
-* Helm 3.0+
-* kubectl configured to access your cluster
-* (Optional) Istio for ingress management
-* (Optional) Prometheus Operator for metrics
+- Kubernetes cluster 1.19+
+- Helm 3.0+
+- kubectl configured to access your cluster
+- (Optional) Istio for ingress management
+- (Optional) Prometheus Operator for metrics
 
 ### Quick Start
 
@@ -377,17 +373,13 @@ git clone <repository-url>
 cd helm-ipfs-cluster
 ```
 
-2. **Generate a cluster secret**:
-
-bash
+2. **Generate a cluster secret**
 
 ```bash
 od -vN 32 -An -tx1 /dev/urandom | tr -d ' \n'
 ```
 
-3. **Create a values file** (`my-values.yaml`):
-
-yaml
+1. **Create a values file** (`my-values.yaml`)
 
 ```yaml
 replicaCount: 3
@@ -425,17 +417,13 @@ ipfs:
     volumeSize: "100Gi"
 ```
 
-4. **Install the chart**:
-
-bash
+1. **Install the chart**:
 
 ```bash
 helm install my-ipfs-cluster . -f my-values.yaml --namespace ipfs --create-namespace
 ```
 
-5. **Verify the installation**:
-
-bash
+1. **Verify the installation**:
 
 ```bash
 # Check pods
@@ -447,15 +435,11 @@ kubectl exec -it ipfs-cluster-cluster-0 -n ipfs -c cluster -- ipfs-cluster-ctl p
 
 ### Upgrading
 
-bash
-
 ```bash
 helm upgrade my-ipfs-cluster . -f my-values.yaml --namespace ipfs
 ```
 
 ### Uninstalling
-
-bash
 
 ```bash
 helm uninstall my-ipfs-cluster --namespace ipfs
@@ -464,12 +448,14 @@ helm uninstall my-ipfs-cluster --namespace ipfs
 kubectl delete pvc -n ipfs -l app.kubernetes.io/instance=my-ipfs-cluster
 ```
 
-***
+---
 
 ## Configuration
 
 ### Generate Cluster Secret
+
 The cluster secret is a 32-byte hexadecimal string that encrypts communication between cluster nodes. All nodes must share the same secret.
+
 ```bash
 
 # Method 1: Using openssl (recommended)
@@ -483,24 +469,23 @@ export CLUSTER_SECRET=$(xxd -l 32 -p /dev/urandom | tr -d '\n')
 
 # Example output:
 e7f3a4b2c8d1e9f6a3b5c7d2e8f1a4b6c9d3e7f2a5b8c1d4e6f9a2b7c3d5e8f1
+
 ```
 
-Parameter	Description	DefaultreplicaCount	Number of IPFS and Cluster nodes	3
-sharedSecret	Cluster authentication secret	""
-bootstrap.enabled	Enable automatic peer discovery	true
-bootstrap.peers	External bootstrap peers	[]
-metrics.enabled	Enable Prometheus metrics	false
-cluster.image.tag	IPFS Cluster version	"" (uses appVersion)
-cluster.storage.volumeSize	Cluster data volume size	"1Gi"
-ipfs.storage.volumeSize	IPFS data volume size	"10Gi"
-istio.enabled	Enable Istio VirtualServices	false
-```
+Parameter Description DefaultreplicaCount Number of IPFS and Cluster nodes 3
+sharedSecret Cluster authentication secret ""
+bootstrap.enabled Enable automatic peer discovery true
+bootstrap.peers External bootstrap peers []
+metrics.enabled Enable Prometheus metrics false
+cluster.image.tag IPFS Cluster version "" (uses appVersion)
+cluster.storage.volumeSize Cluster data volume size "1Gi"
+ipfs.storage.volumeSize IPFS data volume size "10Gi"
+istio.enabled Enable Istio VirtualServices false
 
+````markdown
 ### Storage Configuration
 
 Configure persistent storage for production:
-
-yaml
 
 ```yaml
 cluster:
@@ -513,12 +498,11 @@ ipfs:
     storageClassName: "fast-ssd"
     volumeSize: "500Gi"
 ```
+````
 
 ### Resource Limits
 
 Set appropriate resource limits:
-
-yaml
 
 ```yaml
 cluster:
@@ -543,8 +527,6 @@ ipfs:
 ### High Availability
 
 Enable pod anti-affinity for HA:
-
-yaml
 
 ```yaml
 cluster:
@@ -572,7 +554,7 @@ ipfs:
           topologyKey: kubernetes.io/hostname
 ```
 
-***
+---
 
 ## Exposing Services
 
@@ -580,18 +562,16 @@ ipfs:
 
 Enable Istio integration in your values:
 
-yaml
-
 ```yaml
 istio:
   enabled: true
-  
+
   # Public gateway for content retrieval
   gateways:
     - istio-ingress/ingressgateway-public
   hosts:
     - ipfs.example.com
-  
+
   # Admin gateway for management
   adminEnabled: true
   adminGateways:
@@ -602,13 +582,13 @@ istio:
 
 **Public URLs**:
 
-* Content retrieval: `https://ipfs.example.com/ipfs/{CID}`
-* IPFS API: `https://ipfs.example.com/api/v0/*`
+- Content retrieval: `https://ipfs.example.com/ipfs/{CID}`
+- IPFS API: `https://ipfs.example.com/api/v0/*`
 
 **Admin URLs**:
 
-* Cluster API: `https://ipfs-admin.example.com/*`
-* Metrics: `https://ipfs-admin.example.com/metrics`
+- Cluster API: `https://ipfs-admin.example.com/*`
+- Metrics: `https://ipfs-admin.example.com/metrics`
 
 ### Option 2: Kubernetes Ingress
 
@@ -642,28 +622,18 @@ spec:
           - path: /api/v0
 ```
 
-Retry
-
-MJ
-
-Continue
-
-markdown
-
-```markdown
-            pathType: Prefix
-            backend:
-              service:
-                name: ipfs-test
-                port:
-                  number: 5001
+```yaml
+pathType: Prefix
+backend:
+  service:
+    name: ipfs-test
+    port:
+      number: 5001
 ```
 
 ### Option 3: NodePort Service
 
 Expose services via NodePort:
-
-yaml
 
 ```yaml
 service:
@@ -683,8 +653,6 @@ Access services at `<node-ip>:<node-port>`.
 ### Option 4: LoadBalancer
 
 For cloud environments:
-
-yaml
 
 ```yaml
 service:
@@ -707,14 +675,12 @@ cluster:
 
 **Always protect these endpoints**:
 
-* IPFS API (port 5001) - Full node control
-* Cluster API (port 9094) - Cluster-wide operations
+- IPFS API (port 5001) - Full node control
+- Cluster API (port 9094) - Cluster-wide operations
 
 **Protection methods**:
 
 1. **Network Policies**:
-
-yaml
 
 ```yaml
 apiVersion: networking.k8s.io/v1
@@ -738,9 +704,7 @@ spec:
           port: 5001
 ```
 
-2. **Istio Authorization**:
-
-yaml
+1. **Istio Authorization**:
 
 ```yaml
 apiVersion: security.istio.io/v1beta1
@@ -761,13 +725,11 @@ spec:
             ports: ["5001", "9094"]
 ```
 
-3. **API Keys/JWT** (application level)
+1. **API Keys/JWT** (application level)
 
 #### Public Gateway Configuration
 
 The IPFS Gateway (port 8080) is safe for public exposure:
-
-yaml
 
 ```yaml
 istio:
@@ -780,10 +742,10 @@ istio:
 
 Users can retrieve content at:
 
-* `https://ipfs.example.com/ipfs/QmHash.../file.jpg`
-* `https://ipfs.example.com/ipns/example.com/`
+- `https://ipfs.example.com/ipfs/QmHash.../file.jpg`
+- `https://ipfs.example.com/ipns/example.com/`
 
-***
+---
 
 ## Monitoring
 
@@ -815,21 +777,21 @@ helm install my-ipfs-cluster . -f my-values.yaml \
 
 #### Cluster Health
 
-* `cluster_peers_total` - Should equal your replica count
-* `cluster_pins_pinned` - Successfully replicated content
-* `cluster_pins_pin_error` - Failed replications (should be 0)
-* `cluster_pins_queued` - Pending operations
+- `cluster_peers_total` - Should equal your replica count
+- `cluster_pins_pinned` - Successfully replicated content
+- `cluster_pins_pin_error` - Failed replications (should be 0)
+- `cluster_pins_queued` - Pending operations
 
 #### Storage
 
-* `ipfs_repo_size_bytes` - IPFS storage usage
-* `ipfs_repo_objects_total` - Number of objects stored
+- `ipfs_repo_size_bytes` - IPFS storage usage
+- `ipfs_repo_objects_total` - Number of objects stored
 
 #### Performance
 
-* `go_goroutines` - Concurrent operations
-* `go_memstats_alloc_bytes` - Memory usage
-* `process_cpu_seconds_total` - CPU usage
+- `go_goroutines` - Concurrent operations
+- `go_memstats_alloc_bytes` - Memory usage
+- `process_cpu_seconds_total` - CPU usage
 
 ### Grafana Dashboard
 
@@ -851,7 +813,7 @@ sum(cluster_pins_pinned) / sum(cluster_pins_total) * 100
 ipfs_repo_size_bytes
 
 # Pin operation latency
-rate(cluster_pins_pin_duration_seconds_sum[5m]) / 
+rate(cluster_pins_pin_duration_seconds_sum[5m]) /
 rate(cluster_pins_pin_duration_seconds_count[5m])
 ```
 
@@ -874,7 +836,7 @@ groups:
         annotations:
           summary: "IPFS Cluster peer count low"
           description: "Cluster has {{ $value }} peers, expected 3"
-      
+
       - alert: PinReplicationFailed
         expr: cluster_pins_pin_error > 0
         for: 10m
@@ -883,9 +845,9 @@ groups:
         annotations:
           summary: "Pin replication failures detected"
           description: "{{ $value }} pins failed to replicate"
-      
+
       - alert: IPFSStorageHigh
-        expr: ipfs_repo_size_bytes > 450e9  # 450GB
+        expr: ipfs_repo_size_bytes > 450e9 # 450GB
         for: 1h
         labels:
           severity: warning
@@ -931,7 +893,7 @@ kubectl logs -n ipfs ipfs-cluster-cluster-0 -c init-cluster
 kubectl logs -n ipfs ipfs-cluster-cluster-0 -c configure-bootstrap
 ```
 
-***
+---
 
 ## Troubleshooting
 
@@ -1105,7 +1067,7 @@ helm lint .
 helm template my-ipfs-cluster . -f my-values.yaml --debug
 ```
 
-***
+---
 
 ## Production Considerations
 
@@ -1129,15 +1091,13 @@ helm upgrade my-ipfs-cluster . -f my-values.yaml \
 
 **Notes**:
 
-* Scaling up adds more storage and availability
-* Scaling down requires careful consideration of replication factor
-* Content may need to be re-replicated after scaling
+- Scaling up adds more storage and availability
+- Scaling down requires careful consideration of replication factor
+- Content may need to be re-replicated after scaling
 
 #### Vertical Scaling
 
 Increase resources for existing pods:
-
-yaml
 
 ```yaml
 cluster:
@@ -1163,8 +1123,6 @@ ipfs:
 
 #### Backing Up Cluster State
 
-bash
-
 ```bash
 # Backup cluster configuration
 kubectl exec -it ipfs-cluster-cluster-0 -n ipfs -c cluster -- \
@@ -1183,8 +1141,6 @@ kubectl cp ipfs/ipfs-test-0:/tmp/ipfs-backup.tar.gz \
 
 #### Automated Backups with Velero
 
-bash
-
 ```bash
 # Install Velero
 velero install --provider aws --bucket my-backups
@@ -1199,8 +1155,6 @@ velero schedule create ipfs-daily \
 ```
 
 #### Disaster Recovery
-
-bash
 
 ```bash
 # Restore from Velero backup
@@ -1228,7 +1182,7 @@ cluster:
     fsGroup: 1000
     seccompProfile:
       type: RuntimeDefault
-  
+
   securityContext:
     allowPrivilegeEscalation: false
     readOnlyRootFilesystem: true
@@ -1241,7 +1195,7 @@ ipfs:
     runAsNonRoot: true
     runAsUser: 1000
     fsGroup: 1000
-  
+
   securityContext:
     allowPrivilegeEscalation: false
     capabilities:
@@ -1250,8 +1204,6 @@ ipfs:
 ```
 
 #### Network Policies
-
-yaml
 
 ```yaml
 apiVersion: networking.k8s.io/v1
@@ -1308,8 +1260,6 @@ spec:
 
 Use sealed secrets or external secret management:
 
-bash
-
 ```bash
 # Using Sealed Secrets
 kubectl create secret generic ipfs-cluster-secret \
@@ -1358,8 +1308,6 @@ ipfs:
 
 #### Cluster Configuration
 
-yaml
-
 ```yaml
 cluster:
   env:
@@ -1374,8 +1322,6 @@ cluster:
 #### Storage Performance
 
 Use high-performance storage classes:
-
-yaml
 
 ```yaml
 cluster:
@@ -1393,14 +1339,12 @@ ipfs:
 
 Deploy across regions for geo-distribution:
 
-yaml
-
 ```yaml
 # Region 1
 cluster:
   nodeSelector:
     topology.kubernetes.io/region: us-east-1
-  
+
 ipfs:
   nodeSelector:
     topology.kubernetes.io/region: us-east-1
@@ -1417,8 +1361,6 @@ bootstrap:
 
 Enable OpenTelemetry:
 
-yaml
-
 ```yaml
 cluster:
   env:
@@ -1431,8 +1373,6 @@ cluster:
 #### Log Aggregation
 
 Configure centralized logging:
-
-yaml
 
 ```yaml
 # Fluentd/Fluent Bit configuration
@@ -1456,8 +1396,6 @@ data:
 
 Use different storage classes:
 
-yaml
-
 ```yaml
 # Hot data - SSD
 cluster:
@@ -1474,24 +1412,20 @@ ipfs:
 
 Set appropriate requests to avoid over-provisioning:
 
-yaml
-
 ```yaml
 cluster:
   resources:
     requests:
-      cpu: 500m      # Actual average usage
+      cpu: 500m # Actual average usage
       memory: 1Gi
     limits:
-      cpu: 2000m     # Peak usage
+      cpu: 2000m # Peak usage
       memory: 4Gi
 ```
 
 #### Autoscaling (Future Enhancement)
 
 Consider implementing HPA for dynamic scaling:
-
-yaml
 
 ````yaml
 apiVersion: autoscaling/v2
@@ -1590,32 +1524,33 @@ spec:
 7. Returns success when replicated
 ````
 
-***
+---
 
 ## Additional Resources
-* **IPFS DEPLOYMENT STRATEGY**: <https://hashgraph.atlassian.net/wiki/spaces/~712020edf5cdba061e4a81b741d486c2525a37/pages/470024205/IPFS+Cluster+Deployment+Strategy+Based+on+Kubo>
-*  **IPFS AS SERVICE PLATFORM**: <https://hashgraph.atlassian.net/wiki/spaces/~712020706bc044f8f0489a86f1ceda97595a3a/pages/409534465/IAAS+-+IPFS+as+a+Service+Platform>
+
+- **IPFS DEPLOYMENT STRATEGY**: <https://hashgraph.atlassian.net/wiki/spaces/~712020edf5cdba061e4a81b741d486c2525a37/pages/470024205/IPFS+Cluster+Deployment+Strategy+Based+on+Kubo>
+- **IPFS AS SERVICE PLATFORM**: <https://hashgraph.atlassian.net/wiki/spaces/~712020706bc044f8f0489a86f1ceda97595a3a/pages/409534465/IAAS+-+IPFS+as+a+Service+Platform>
 
 ### Official Documentation
 
-* **IPFS**: <https://docs.ipfs.tech/>
-* **IPFS Cluster**: <https://cluster.ipfs.io/documentation/>
-* **go-ipfs GitHub**: <https://github.com/ipfs/go-ipfs>
-* **ipfs-cluster GitHub**: <https://github.com/ipfs-cluster/ipfs-cluster>
+- **IPFS**: <https://docs.ipfs.tech/>
+- **IPFS Cluster**: <https://cluster.ipfs.io/documentation/>
+- **go-ipfs GitHub**: <https://github.com/ipfs/go-ipfs>
+- **ipfs-cluster GitHub**: <https://github.com/ipfs-cluster/ipfs-cluster>
 
 ### API References
 
-* **IPFS HTTP API**: <https://docs.ipfs.tech/reference/kubo/rpc/>
-* **IPFS Cluster API**: <https://cluster.ipfs.io/documentation/reference/api/>
+- **IPFS HTTP API**: <https://docs.ipfs.tech/reference/kubo/rpc/>
+- **IPFS Cluster API**: <https://cluster.ipfs.io/documentation/reference/api/>
 
 ### Community
 
-* **IPFS Forums**: <https://discuss.ipfs.tech/>
-* **IPFS Discord**: <https://discord.gg/ipfs>
-* **GitHub Discussions**: <https://github.com/ipfs/ipfs-cluster/discussions>
+- **IPFS Forums**: <https://discuss.ipfs.tech/>
+- **IPFS Discord**: <https://discord.gg/ipfs>
+- **GitHub Discussions**: <https://github.com/ipfs/ipfs-cluster/discussions>
 
 ### Tools
 
-* **IPFS Desktop**: <https://github.com/ipfs/ipfs-desktop>
-* **IPFS Companion**: <https://github.com/ipfs/ipfs-companion>
-* **ipfs-cluster-ctl**: Command-line tool (included in cluster pods)
+- **IPFS Desktop**: <https://github.com/ipfs/ipfs-desktop>
+- **IPFS Companion**: <https://github.com/ipfs/ipfs-companion>
+- **ipfs-cluster-ctl**: Command-line tool (included in cluster pods)
