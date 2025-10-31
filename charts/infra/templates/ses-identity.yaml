@@ -9,7 +9,8 @@
   {{- $networkDomain := required "You must set .Values.global.network.domain" .Values.global.network.domain -}}
 
   {{- $baseName := include "infra.sesIdentityName" . -}}
-  {{- $_ := set $ctx "domainName" (printf "%s.%s.%s" $baseName $env $networkDomain) -}}
+  {{- $_ := set $ctx "domainName" (printf "%s.%s" $baseName $networkDomain) -}}
+
 {{- end -}}
 ---
 apiVersion: mail.hashgraphgroup.com/v1alpha1
