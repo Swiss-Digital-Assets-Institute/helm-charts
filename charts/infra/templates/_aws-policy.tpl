@@ -93,8 +93,10 @@ IAM ROLE LOGIC HERE. Trust policy and the inline policy gets dynamically generat
   {{- $account := required "You must set .Values.aws.account (AWS Account)" .Values.aws.account -}}
   {{- $s3BucketName := include "infra.s3BucketName" . -}}
   {{- $kmsKeyName := include "infra.kmsKeyName" . -}}
+  {{- $sqsQueueName := include "infra.sqsQueueName" . -}}
   {{- $s3Enabled := .Values.aws.s3.enabled -}}
   {{- $kmsEnabled := .Values.aws.kms.enabled -}}
+  {{- $sqsEnabled := .Values.aws.sqs.enabled -}}
 
   {{- $s3Statement := list -}}
   {{- if $s3Enabled }}
@@ -129,7 +131,17 @@ IAM ROLE LOGIC HERE. Trust policy and the inline policy gets dynamically generat
     }` $region $account $kmsKeyName) }}
   {{- end }}
 
-  {{- $allStatements := concat $s3Statement $kmsStatement | join ",\n" -}}
+  {{- $sqsStatement := list -}}
+  {{- if $sqsEnabled }}
+    {{- $sqsStatement = append $sqsStatement (printf `
+    {
+      "Effect": "Allow",
+      "Action": "sqs:*",
+      "Resource": "arn:aws:sqs:%s:%s:%s"
+    }` $region $account $sqsQueueName) }}
+  {{- end }}
+
+  {{- $allStatements := concat (concat $s3Statement $kmsStatement) $sqsStatement | join ",\n" -}}
   {
     "Version": "2012-10-17",
     "Statement": [
