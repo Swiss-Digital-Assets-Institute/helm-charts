@@ -1,3 +1,4 @@
+---
 {{- if and (.Values.aws.enabled | default true) .Values.aws.ses.enabled }}
 {{ include "infra.checkAwsMandates" . }}
 {{- $ses := .Values.aws.ses -}}
@@ -8,7 +9,7 @@
   {{- $env := required "You must set .Values.global.env" .Values.global.env -}}
   {{- $networkDomain := required "You must set .Values.global.network.domain" .Values.global.network.domain -}}
 
-  {{- $baseName := include "infra.sesIdentityName" . -}}
+  {{- $baseName := printf "%s.%s" .Release.Name $env -}}
   {{- $_ := set $ctx "domainName" (printf "%s.%s" $baseName $networkDomain) -}}
 
 {{- end -}}
