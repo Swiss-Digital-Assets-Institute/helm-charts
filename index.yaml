@@ -815,6 +815,22 @@ entries:
   ipfs-cluster:
   - apiVersion: v2
     appVersion: 1.0.0
+    created: "2025-11-04T08:32:03.135762387Z"
+    description: Managing and maintaining IPFS clusters in kubernetes.
+    digest: 540d6d889bc8ba3154b8d4f77a70b08d4a420d03141fd09098d5807961c6f1a3
+    icon: https://en.wikipedia.org/wiki/InterPlanetary_File_System#/media/File:Ipfs-logo-1024-ice-text.png
+    keywords:
+    - IPFS
+    - IPFS Cluster
+    - ipfs-cluster
+    - ipfs
+    name: ipfs-cluster
+    type: application
+    urls:
+    - https://github.com/Swiss-Digital-Assets-Institute/helm-charts/releases/download/ipfs-cluster-1.1.0/ipfs-cluster-1.1.0.tgz
+    version: 1.1.0
+  - apiVersion: v2
+    appVersion: 1.0.0
     created: "2025-11-04T08:24:07.575405298Z"
     description: Managing and maintaining IPFS clusters in kubernetes.
     digest: 11585e3fbc4b84c2f38536e1a7d3ede50d58513bb156261e2e18b3db70e2b3dd
@@ -1602,4 +1618,4 @@ entries:
     urls:
     - https://raw.githubusercontent.com/Swiss-Digital-Assets-Institute/helm-charts/artifacts/webapp-0.0.2.tgz
     version: 0.0.2
-generated: "2025-11-04T08:24:07.529419577Z"
+generated: "2025-11-04T08:32:03.136370685Z"
