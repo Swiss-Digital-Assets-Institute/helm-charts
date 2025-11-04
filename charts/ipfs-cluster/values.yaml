@@ -205,6 +205,9 @@ ipfs:
 istio:
   # Enable Istio VirtualService resources
   enabled: false
+
+  # Expose IPFS Cluster API publicly
+  exposeClusterApiPublicly: false
   
   # Public gateway configuration (for content retrieval)
   # List of Istio Gateway resources to attach to
