@@ -74,6 +74,7 @@ Managing and maintaining IPFS clusters in kubernetes.
 | istio.adminGateways | list | `[]` |  |
 | istio.adminHosts | list | `[]` |  |
 | istio.enabled | bool | `false` |  |
+| istio.exposeClusterApiPublicly | bool | `false` |  |
 | istio.gateways | list | `[]` |  |
 | istio.hosts | list | `[]` |  |
 | metrics.enabled | bool | `false` |  |
