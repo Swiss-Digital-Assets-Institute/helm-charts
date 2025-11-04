@@ -466,16 +466,6 @@ e7f3a4b2c8d1e9f6a3b5c7d2e8f1a4b6c9d3e7f2a5b8c1d4e6f9a2b7c3d5e8f1
 
 ```
 
-Parameter Description DefaultreplicaCount Number of IPFS and Cluster nodes 3
-sharedSecret Cluster authentication secret ""
-bootstrap.enabled Enable automatic peer discovery true
-bootstrap.peers External bootstrap peers []
-metrics.enabled Enable Prometheus metrics false
-cluster.image.tag IPFS Cluster version "" (uses appVersion)
-cluster.storage.volumeSize Cluster data volume size "1Gi"
-ipfs.storage.volumeSize IPFS data volume size "10Gi"
-istio.enabled Enable Istio VirtualServices false
-
 ### Storage Configuration
 
 Configure persistent storage for production:
