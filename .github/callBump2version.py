@@ -27,7 +27,7 @@ class ProductType(Enum, metaclass=MyEnumMeta):
     WEBAPP = 'webapp'
     INFRA = 'infra'
     UNIVERSAL_CHART = 'universal_chart'
-    IPFS_CLUSTER = 'ipfs_cluster'
+    IPFS_CLUSTER = 'ipfs-cluster'
 
 
 def handle_subprocess_error(subprocess_result, error_message):
