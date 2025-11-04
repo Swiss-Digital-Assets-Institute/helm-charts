@@ -16,7 +16,6 @@ spec:
     - {{ . | quote }}
   {{- end }}
   http:
-    # IPFS Gateway - content retrieval
     - match:
         - uri:
             prefix: /ipfs/
@@ -33,8 +32,6 @@ spec:
             host: {{ include "helm-ipfs-cluster.ipfs-name" . }}.{{ .Release.Namespace }}.svc.cluster.local
             port:
               number: 8080
-    
-    # IPFS HTTP API - for uploads and management
     - match:
         - uri:
             prefix: /api/v0/
@@ -43,8 +40,6 @@ spec:
             host: {{ include "helm-ipfs-cluster.ipfs-name" . }}.{{ .Release.Namespace }}.svc.cluster.local
             port:
               number: 5001
-    
-    # WebUI (if enabled on 5001)
     - match:
         - uri:
             prefix: /webui
@@ -53,8 +48,17 @@ spec:
             host: {{ include "helm-ipfs-cluster.ipfs-name" . }}.{{ .Release.Namespace }}.svc.cluster.local
             port:
               number: 5001
-    
-    # Default - gateway root
+
+    {{- if .Values.istio.exposeClusterApiPublicly }}
+    - match:
+        - uri:
+            prefix: /
+      route:
+        - destination:
+            host: {{ include "helm-ipfs-cluster.name" . }}-cluster.{{ .Release.Namespace }}.svc.cluster.local
+            port:
+              number: 9094
+    {{- else }}
     - match:
         - uri:
             prefix: /
@@ -63,10 +67,12 @@ spec:
             host: {{ include "helm-ipfs-cluster.ipfs-name" . }}.{{ .Release.Namespace }}.svc.cluster.local
             port:
               number: 8080
+    {{- end }}
 {{- end }}
 
+
 ---
-{{- if and .Values.istio.enabled .Values.istio.adminEnabled }}
+{{- if and .Values.istio.enabled .Values.istio.adminEnabled (not .Values.istio.exposeClusterApiPublicly) }}
 apiVersion: networking.istio.io/v1alpha3
 kind: VirtualService
 metadata:
@@ -83,13 +89,11 @@ spec:
     - {{ . | quote }}
   {{- end }}
   http:
-    # Redirect root to cluster info
     - match:
         - uri:
             exact: /
       redirect:
         uri: /id
-    # All cluster API endpoints
     - match:
         - uri:
             prefix: /
