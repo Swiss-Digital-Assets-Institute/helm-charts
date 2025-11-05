@@ -1,4 +1,4 @@
-{{- if or (and (.Values.aws.enabled | default true) .Values.aws.s3.enabled) (and (.Values.aws.enabled | default true) .Values.aws.kms.enabled) }}
+{{- if or (and (.Values.aws.enabled | default true) .Values.aws.s3.enabled) (and (.Values.aws.enabled | default true) .Values.aws.kms.enabled) (and (.Values.aws.enabled | default true) .Values.aws.sqs.enabled) }}
 {{ include "infra.checkAwsMandates" . }}
 ---
 apiVersion: {{ include "infra.iamApiVersion" . }}
