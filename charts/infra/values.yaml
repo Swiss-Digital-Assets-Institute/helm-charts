@@ -39,18 +39,26 @@ aws:
     objectOwnership: "BucketOwnerEnforced"
     lifeCycleConfiguration:
       enabled: false
-      rule: []
+      rules: []
     versioning:
       enabled: false
-    corsPolicy:
-      allowedHeaders:
-        - "*"
-      allowedMethods:
-        - GET
-        - HEAD
-      allowedOrigins:
-        - "*"
-      maxAgeSeconds: 3600
+    corsConfiguration:
+      enabled: false
+      corsRules: []
+    bucketWebsiteConfiguration:
+      enabled: false
+      errorDocument:
+        key: error.html
+      indexDocument:
+        suffix: index.html
+      routingRules: []
+    bucketPublicAccessBlock:
+      enabled: false
+      blockPublicAcls: false
+      blockPublicPolicy: false
+      ignorePublicAcls: false
+      restrictPublicBuckets: false
+
     additional_tags: {}
 
   kms:
