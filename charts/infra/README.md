@@ -1,6 +1,6 @@
 # infra
 
-![Version: 1.7.47](https://img.shields.io/badge/Version-1.7.47-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 1.0.0](https://img.shields.io/badge/AppVersion-1.0.0-informational?style=flat-square)
+![Version: 1.7.48](https://img.shields.io/badge/Version-1.7.48-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 1.0.0](https://img.shields.io/badge/AppVersion-1.0.0-informational?style=flat-square)
 
 Managing and maintaining cloud resources using crossplane
 
@@ -108,14 +108,20 @@ Managing and maintaining cloud resources using crossplane
 | aws.region | string | `"eu-central-2"` |  |
 | aws.s3.additional_tags | object | `{}` |  |
 | aws.s3.bucketNameOverride | string | `""` |  |
-| aws.s3.corsPolicy.allowedHeaders[0] | string | `"*"` |  |
-| aws.s3.corsPolicy.allowedMethods[0] | string | `"GET"` |  |
-| aws.s3.corsPolicy.allowedMethods[1] | string | `"HEAD"` |  |
-| aws.s3.corsPolicy.allowedOrigins[0] | string | `"*"` |  |
-| aws.s3.corsPolicy.maxAgeSeconds | int | `3600` |  |
+| aws.s3.bucketPublicAccessBlock.blockPublicAcls | bool | `false` |  |
+| aws.s3.bucketPublicAccessBlock.blockPublicPolicy | bool | `false` |  |
+| aws.s3.bucketPublicAccessBlock.enabled | bool | `false` |  |
+| aws.s3.bucketPublicAccessBlock.ignorePublicAcls | bool | `false` |  |
+| aws.s3.bucketPublicAccessBlock.restrictPublicBuckets | bool | `false` |  |
+| aws.s3.bucketWebsiteConfiguration.enabled | bool | `false` |  |
+| aws.s3.bucketWebsiteConfiguration.errorDocument.key | string | `"error.html"` |  |
+| aws.s3.bucketWebsiteConfiguration.indexDocument.suffix | string | `"index.html"` |  |
+| aws.s3.bucketWebsiteConfiguration.routingRules | list | `[]` |  |
+| aws.s3.corsConfiguration.corsRules | list | `[]` |  |
+| aws.s3.corsConfiguration.enabled | bool | `false` |  |
 | aws.s3.enabled | bool | `false` |  |
 | aws.s3.lifeCycleConfiguration.enabled | bool | `false` |  |
-| aws.s3.lifeCycleConfiguration.rule | list | `[]` |  |
+| aws.s3.lifeCycleConfiguration.rules | list | `[]` |  |
 | aws.s3.objectOwnership | string | `"BucketOwnerEnforced"` |  |
 | aws.s3.versioning.enabled | bool | `false` |  |
 | aws.ses.additional_tags | object | `{}` |  |
