@@ -70,7 +70,7 @@ spec:
         app.kubernetes.io/managed-by: {{ .Release.Service | quote }}
         helm.sh/chart: {{ printf "%s-%s" .Chart.Name (.Chart.Version | replace "+" "_") }}
     rule:
-{{ toYaml .Values.aws.s3.lifeCycleConfiguration.rule | indent 6 }}
+{{ toYaml .Values.aws.s3.lifeCycleConfiguration.rules | indent 6 }}
   providerConfigRef:
     name: {{ .Values.aws.providerConfigRef.name | quote }}
 {{- end }}
@@ -94,5 +94,98 @@ spec:
     region: {{ .Values.aws.region | quote }}
     versioningConfiguration:
     - status: Enabled
+{{- end }}
+
+{{- if and .Values.aws.s3.enabled .Values.aws.s3.corsConfiguration.enabled }}
+---
+apiVersion: s3.aws.upbound.io/v1beta1
+kind: BucketCorsConfiguration
+metadata:
+  name: {{ include "infra.s3BucketName" . }}
+  namespace: {{ .Release.Namespace }}
+  annotations:
+    crossplane.io/external-name: {{ include "infra.s3BucketName" . }}
+  labels:
+{{ include "infra.labels" . | indent 4 }}
+spec:
+  forProvider:
+    region: {{ .Values.aws.region | quote }}
+    bucketSelector:
+      matchLabels:
+        app.kubernetes.io/name: {{ include "infra.releaseName" . }}
+        app.kubernetes.io/instance: {{ include "infra.releaseName" . }}
+        app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
+        app.kubernetes.io/managed-by: {{ .Release.Service | quote }}
+        helm.sh/chart: {{ printf "%s-%s" .Chart.Name (.Chart.Version | replace "+" "_") }}
+    corsRule:
+{{ toYaml .Values.aws.s3.corsConfiguration.corsRules | indent 6 }}
+  providerConfigRef:
+    name: {{ .Values.aws.providerConfigRef.name | quote }}
+{{- end }}
+
+{{- if and .Values.aws.s3.enabled .Values.aws.s3.bucketWebsiteConfiguration.enabled }}
+---
+apiVersion: s3.aws.upbound.io/v1beta2
+kind: BucketWebsiteConfiguration
+metadata:
+  name: {{ include "infra.s3BucketName" . }}
+  namespace: {{ .Release.Namespace }}
+  annotations:
+    crossplane.io/external-name: {{ include "infra.s3BucketName" . }}
+  labels:
+{{ include "infra.labels" . | indent 4 }}
+spec:
+  forProvider:
+    region: {{ .Values.aws.region | quote }}
+    bucketSelector:
+      matchLabels:
+        app.kubernetes.io/name: {{ include "infra.releaseName" . }}
+        app.kubernetes.io/instance: {{ include "infra.releaseName" . }}
+        app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
+        app.kubernetes.io/managed-by: {{ .Release.Service | quote }}
+        helm.sh/chart: {{ printf "%s-%s" .Chart.Name (.Chart.Version | replace "+" "_") }}
+{{- if .Values.aws.s3.bucketWebsiteConfiguration.errorDocument }}
+    errorDocument:
+{{ toYaml .Values.aws.s3.bucketWebsiteConfiguration.errorDocument | indent 6 }}
+{{- end }}
+{{- if .Values.aws.s3.bucketWebsiteConfiguration.indexDocument }}
+    indexDocument:
+{{ toYaml .Values.aws.s3.bucketWebsiteConfiguration.indexDocument | indent 6 }}
+{{- end }}
+{{- if .Values.aws.s3.bucketWebsiteConfiguration.routingRules }}
+    routingRule:
+{{ toYaml .Values.aws.s3.bucketWebsiteConfiguration.routingRules | indent 6 }}
+{{- end }}
+  providerConfigRef:
+    name: {{ .Values.aws.providerConfigRef.name | quote }}
+{{- end }}
+
+{{- if and .Values.aws.s3.enabled .Values.aws.s3.bucketPublicAccessBlock.enabled }}
+---
+apiVersion: s3.aws.upbound.io/v1beta1
+kind: BucketPublicAccessBlock
+metadata:
+  name: {{ include "infra.s3BucketName" . }}
+  namespace: {{ .Release.Namespace }}
+  annotations:
+    crossplane.io/external-name: {{ include "infra.s3BucketName" . }}
+  labels:
+{{ include "infra.labels" . | indent 4 }}
+spec:
+  forProvider:
+    region: {{ .Values.aws.region | quote }}
+    bucketSelector:
+      matchLabels:
+        app.kubernetes.io/name: {{ include "infra.releaseName" . }}
+        app.kubernetes.io/instance: {{ include "infra.releaseName" . }}
+        app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
+        app.kubernetes.io/managed-by: {{ .Release.Service | quote }}
+        helm.sh/chart: {{ printf "%s-%s" .Chart.Name (.Chart.Version | replace "+" "_") }}
+    blockPublicAcls: {{ .Values.aws.s3.bucketPublicAccessBlock.blockPublicAcls }}
+    blockPublicPolicy: {{ .Values.aws.s3.bucketPublicAccessBlock.blockPublicPolicy }}
+    ignorePublicAcls: {{ .Values.aws.s3.bucketPublicAccessBlock.ignorePublicAcls }}
+    restrictPublicBuckets: {{ .Values.aws.s3.bucketPublicAccessBlock.restrictPublicBuckets }}
+  providerConfigRef:
+    name: {{ .Values.aws.providerConfigRef.name | quote }}
 {{- end }}
 {{- end }}

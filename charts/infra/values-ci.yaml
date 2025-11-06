@@ -29,6 +29,12 @@ aws:
       enabled: false
     versioning:
       enabled: false
+    corsConfiguration:
+      enabled: false
+    bucketWebsiteConfiguration:
+      enabled: false
+    bucketPublicAccessBlock:
+      enabled: false
 
   kms:
     enabled: false
