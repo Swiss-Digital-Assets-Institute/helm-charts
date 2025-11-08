@@ -116,7 +116,7 @@ IAM ROLE LOGIC HERE. Trust policy and the inline policy gets dynamically generat
     {{- $kmsStatement = append $kmsStatement (printf `
     {
       "Effect": "Allow",
-      "Action": ["kms:DescribeKey", "kms:ListAliases", "kms:ListKeys", "kms:Encrypt", "kms:Decrypt"],
+      "Action": ["kms:Encrypt", "kms:Decrypt", "kms:DescribeKey", "kms:ListAliases", "kms:ListKeys"],
       "Resource": "*"
     },
     {
