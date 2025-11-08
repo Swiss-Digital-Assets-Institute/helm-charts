@@ -1,6 +1,6 @@
 # infra
 
-![Version: 1.7.49](https://img.shields.io/badge/Version-1.7.49-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 1.0.0](https://img.shields.io/badge/AppVersion-1.0.0-informational?style=flat-square)
+![Version: 1.7.50](https://img.shields.io/badge/Version-1.7.50-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 1.0.0](https://img.shields.io/badge/AppVersion-1.0.0-informational?style=flat-square)
 
 Managing and maintaining cloud resources using crossplane
 
@@ -65,6 +65,7 @@ Managing and maintaining cloud resources using crossplane
 | aws.iam.roleNameOverride | string | `""` |  |
 | aws.irsa.serviceAccountNameOverride | string | `""` |  |
 | aws.kms.additional_tags | object | `{}` |  |
+| aws.kms.alias.enabled | bool | `false` |  |
 | aws.kms.deletionWindowInDays | int | `365` |  |
 | aws.kms.enabled | bool | `false` |  |
 | aws.kms.keyNameOverride | string | `""` |  |
