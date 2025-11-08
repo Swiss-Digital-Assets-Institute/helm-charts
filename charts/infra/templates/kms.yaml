@@ -18,4 +18,19 @@ spec:
     enableKeyRotation: {{ .Values.aws.kms.rotateKey | default false }}
   providerConfigRef:
     name: {{ .Values.aws.providerConfigRef.name | quote }}
+{{- if .Values.aws.kms.alias.enabled }}
+---
+apiVersion: kms.aws.upbound.io/v1beta1
+kind: Alias
+metadata:
+  name: {{ .Values.aws.kms.alias.name | default (include "infra.kmsKeyName" .) }}
+  namespace: {{ .Release.Namespace }}
+spec:
+  providerConfigRef:
+    name: {{ .Values.aws.providerConfigRef.name | quote }}
+  forProvider:
+    region: {{ .Values.aws.region | quote }}
+    targetKeyIdRef:
+      name: {{ include "infra.kmsKeyName" . }}
+{{- end }}
 {{- end }}

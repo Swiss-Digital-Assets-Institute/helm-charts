@@ -67,6 +67,8 @@ aws:
     deletionWindowInDays: 365
     rotateKey: false
     additional_tags: {}
+    alias:
+      enabled: false
 
   ecr:
     enabled: false
