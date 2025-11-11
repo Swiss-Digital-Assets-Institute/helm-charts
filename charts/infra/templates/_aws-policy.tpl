@@ -1,5 +1,6 @@
 {{/*
-IAM ROLE LOGIC HERE. Trust policy and the inline policy gets dynamically generated.
+IAM ROLE LOGIC HERE.
+Trust policy and inline IAM policies dynamically generated.
 */}}
 
 {{- define "infra.trustRelationship" -}}
@@ -38,7 +39,9 @@ IAM ROLE LOGIC HERE. Trust policy and the inline policy gets dynamically generat
   }
 {{- end -}}
 
-# ECR ACCOUNT SHARING POLICY
+{{/*
+ECR cross-account access policy.
+*/}}
 {{- define "infra.ecrRepositoryPolicy" -}}
   {{- $accounts := .Values.aws.ecr.accountAccessList | default list -}}
   {
@@ -76,6 +79,9 @@ IAM ROLE LOGIC HERE. Trust policy and the inline policy gets dynamically generat
   }
 {{- end -}}
 
+{{/*
+ECR lifecycle rules.
+*/}}
 {{- define "infra.ecrLifecyclePolicyRules" -}}
   {{- $rules := .Values.aws.ecr.lifecyclePolicy.rules | default list -}}
   {{- range $i, $r := $rules }}
@@ -88,15 +94,20 @@ IAM ROLE LOGIC HERE. Trust policy and the inline policy gets dynamically generat
   {{- end }}
 {{- end -}}
 
+{{/*
+Custom IAM inline policy including S3, KMS, SQS, and SNS.
+*/}}
 {{- define "infra.customIamPolicy" -}}
   {{- $region := .Values.aws.region | default "us-east-1" -}}
   {{- $account := required "You must set .Values.aws.account (AWS Account)" .Values.aws.account -}}
   {{- $s3BucketName := include "infra.s3BucketName" . -}}
   {{- $kmsKeyName := include "infra.kmsKeyName" . -}}
   {{- $sqsQueueName := include "infra.sqsQueueName" . -}}
+  {{- $snsTopicName := include "infra.snsTopicName" . | default "" -}}
   {{- $s3Enabled := .Values.aws.s3.enabled -}}
   {{- $kmsEnabled := .Values.aws.kms.enabled -}}
   {{- $sqsEnabled := .Values.aws.sqs.enabled -}}
+  {{- $snsEnabled := .Values.aws.sns.enabled -}}
 
   {{- $s3Statement := list -}}
   {{- if $s3Enabled }}
@@ -141,7 +152,17 @@ IAM ROLE LOGIC HERE. Trust policy and the inline policy gets dynamically generat
     }` $region $account $sqsQueueName) }}
   {{- end }}
 
-  {{- $allStatements := concat (concat $s3Statement $kmsStatement) $sqsStatement | join ",\n" -}}
+  {{- $snsStatement := list -}}
+  {{- if $snsEnabled }}
+    {{- $snsStatement = append $snsStatement (printf `
+    {
+      "Effect": "Allow",
+      "Action": "sns:*",
+      "Resource": "arn:aws:sns:%s:%s:%s"
+    }` $region $account $snsTopicName) }}
+  {{- end }}
+
+  {{- $allStatements := concat (concat (concat $s3Statement $kmsStatement) $sqsStatement) $snsStatement | join ",\n" -}}
   {
     "Version": "2012-10-17",
     "Statement": [

@@ -16,9 +16,9 @@ spec:
     name: {{ include "infra.sqsQueueName" . }}
     fifoQueue: {{ .Values.aws.sqs.fifo | default false }}
     contentBasedDeduplication: {{ .Values.aws.sqs.contentBasedDeduplication | default false }}
-    delaySeconds: {{ printf "%d" (int (default 0 .Values.aws.sqs.delaySeconds)) }}
-    visibilityTimeoutSeconds: {{ printf "%d" (int (default 30 .Values.aws.sqs.visibilityTimeoutSeconds)) }}
-    messageRetentionSeconds: {{ printf "%d" (int (default 345600 .Values.aws.sqs.messageRetentionSeconds)) }} # 4 days
+    delaySeconds: {{ int .Values.aws.sqs.delaySeconds }}
+    visibilityTimeoutSeconds: {{ int .Values.aws.sqs.visibilityTimeoutSeconds }}
+    messageRetentionSeconds: {{ int .Values.aws.sqs.messageRetentionSeconds }} # 4 days
     tags:
 {{ include "infra.allTags" (dict "Values" .Values "section" .Values.aws.sqs) | indent 6 }}
 {{- end }}
