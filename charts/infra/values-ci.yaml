@@ -12,9 +12,7 @@ global:
     domain: "example.com"
 
 commonLabels:
-  # --commonLabels.env: Environment name, e.g., "ci"
   env: "ci-test"
-  #org: "org"
   team: "devops"
   project: "shared"
 
