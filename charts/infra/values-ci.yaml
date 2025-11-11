@@ -4,7 +4,8 @@
 
 # Global settings
 global:
-  env: "ci-test"
+  org: "org"
+  env: "test"
   cluster:
     name: "cluster-name"
   network:
@@ -13,7 +14,7 @@ global:
 commonLabels:
   # --commonLabels.env: Environment name, e.g., "ci"
   env: "ci-test"
-  org: "ci"
+  #org: "org"
   team: "devops"
   project: "shared"
 
@@ -38,6 +39,9 @@ aws:
 
   kms:
     enabled: false
+
+  sns:
+    enabled: true
 
   ecr:
     enabled: true

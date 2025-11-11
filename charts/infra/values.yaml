@@ -208,6 +208,9 @@ aws:
     visibilityTimeoutSeconds: 60
     messageRetentionSeconds: 1209600 # 14 days
 
+  sns:
+    enabled: false
+
 externalSecrets:
   enabled: false
   nameOverride: ""

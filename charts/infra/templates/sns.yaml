@@ -1,0 +1,18 @@
+{{- if and (.Values.aws.enabled | default true) .Values.aws.sns.enabled }}
+{{ include "infra.checkAwsMandates" . }}
+---
+apiVersion: sns.aws.upbound.io/v1beta1
+kind: Topic
+metadata:
+  name: {{ include "infra.snsTopicName" . }}
+  namespace: {{ .Release.Namespace }}
+  labels:
+    name: {{ include "infra.snsTopicName" . }}
+spec:
+  forProvider:
+    region: {{ .Values.aws.region | quote }}
+    tags:
+{{ include "infra.allTags" (dict "Values" .Values "section" .Values.aws.sns) | indent 6 }}
+  providerConfigRef:
+    name: {{ .Values.aws.providerConfigRef.name | quote }}
+{{- end }}

@@ -91,3 +91,10 @@ Appends ".fifo" automatically if FIFO is enabled.
 {{ $baseName }}
 {{- end -}}
 {{- end -}}
+
+{{/*
+Return the SNS Topic name
+*/}}
+{{- define "infra.snsTopicName" -}}
+{{- printf "%s-sns-topic" .Release.Name | trunc 63 | trimSuffix "-" -}}
+{{- end }}
