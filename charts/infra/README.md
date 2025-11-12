@@ -1,6 +1,6 @@
 # infra
 
-![Version: 1.7.51](https://img.shields.io/badge/Version-1.7.51-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 1.0.0](https://img.shields.io/badge/AppVersion-1.0.0-informational?style=flat-square)
+![Version: 1.7.52](https://img.shields.io/badge/Version-1.7.52-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 1.0.0](https://img.shields.io/badge/AppVersion-1.0.0-informational?style=flat-square)
 
 Managing and maintaining cloud resources using crossplane
 
@@ -38,6 +38,31 @@ Managing and maintaining cloud resources using crossplane
 | aws.cdn.s3.corsPolicy.allowedMethods[1] | string | `"HEAD"` |  |
 | aws.cdn.s3.corsPolicy.allowedOrigins[0] | string | `"*"` |  |
 | aws.cdn.s3.corsPolicy.maxAgeSeconds | int | `3600` |  |
+| aws.cognito.userpool.authentication.email.enabled | bool | `false` |  |
+| aws.cognito.userpool.authentication.email.fromEmailAddress | string | `""` |  |
+| aws.cognito.userpool.authentication.email.fromSenderName | string | `""` |  |
+| aws.cognito.userpool.authentication.email.provider | string | `"COGNITO_DEFAULT"` |  |
+| aws.cognito.userpool.authentication.email.replyToEmailAddress | string | `""` |  |
+| aws.cognito.userpool.authentication.email.sesConfigurationSet | string | `""` |  |
+| aws.cognito.userpool.authentication.email.sesRegion | string | `"eu-central-2"` |  |
+| aws.cognito.userpool.authentication.phoneNumber.enabled | bool | `false` |  |
+| aws.cognito.userpool.authentication.phoneNumber.fromPhoneNumber | string | `""` |  |
+| aws.cognito.userpool.authentication.phoneNumber.snsRegion | string | `"eu-central-2"` |  |
+| aws.cognito.userpool.callbackUrls | list | `[]` |  |
+| aws.cognito.userpool.enableSelfRegistration | bool | `false` |  |
+| aws.cognito.userpool.enabled | bool | `false` |  |
+| aws.cognito.userpool.groups | list | `[]` |  |
+| aws.cognito.userpool.logoutUrls | list | `[]` |  |
+| aws.cognito.userpool.mfaConfiguration | string | `"OFF"` |  |
+| aws.cognito.userpool.passwordPolicy.minimumLength | int | `12` |  |
+| aws.cognito.userpool.passwordPolicy.requireLowercase | bool | `true` |  |
+| aws.cognito.userpool.passwordPolicy.requireNumbers | bool | `true` |  |
+| aws.cognito.userpool.passwordPolicy.requireSymbols | bool | `true` |  |
+| aws.cognito.userpool.passwordPolicy.requireUppercase | bool | `true` |  |
+| aws.cognito.userpool.passwordPolicy.temporaryPasswordValidityDays | int | `7` |  |
+| aws.cognito.userpool.requiredAttributes | list | `[]` |  |
+| aws.cognito.userpool.signInIdentifiers | list | `[]` |  |
+| aws.cognito.userpool.tags | object | `{}` |  |
 | aws.ecr.accountAccessList | list | `[]` |  |
 | aws.ecr.additionalAnnotations | object | `{}` |  |
 | aws.ecr.additional_tags | object | `{}` |  |
