@@ -211,6 +211,37 @@ aws:
   sns:
     enabled: false
 
+  cognito:
+    userpool:
+      enabled: false
+      signInIdentifiers: []
+      enableSelfRegistration: false
+      requiredAttributes: []
+      callbackUrls: []
+      logoutUrls: []
+      authentication:
+        email:
+          enabled: false
+          provider: COGNITO_DEFAULT
+          sesRegion: eu-central-2
+          fromEmailAddress: ""
+          fromSenderName: ""
+          replyToEmailAddress: ""
+          sesConfigurationSet: ""
+        phoneNumber:
+          enabled: false
+          snsRegion: eu-central-2
+          fromPhoneNumber: ""
+      groups: []
+      passwordPolicy:
+        minimumLength: 12
+        requireLowercase: true
+        requireUppercase: true
+        requireNumbers: true
+        requireSymbols: true
+        temporaryPasswordValidityDays: 7
+      mfaConfiguration: "OFF"
+
 externalSecrets:
   enabled: false
   nameOverride: ""
