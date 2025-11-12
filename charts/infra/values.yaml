@@ -241,6 +241,7 @@ aws:
         requireSymbols: true
         temporaryPasswordValidityDays: 7
       mfaConfiguration: "OFF"
+      tags: {}
 
 externalSecrets:
   enabled: false

@@ -11,28 +11,18 @@ metadata:
 spec:
   region: {{ default "eu-central-2" .Values.aws.region | quote }} 
   userPoolName: {{ include "infra.cognitoUserpoolName" . }}-userpool
-
-  # 1. Sign-in identifiers: enable those passed, disable rest
   signInIdentifiers:
     email: {{ if has "email" .Values.aws.cognito.userpool.signInIdentifiers }}enabled{{ else }}disabled{{ end }}
     phoneNumber: {{ if has "phoneNumber" .Values.aws.cognito.userpool.signInIdentifiers }}enabled{{ else }}disabled{{ end }}
     username: {{ if has "username" .Values.aws.cognito.userpool.signInIdentifiers }}enabled{{ else }}disabled{{ end }}
-
-  # 2. Enable self registration flag
   enableSelfRegistration: {{ default false .Values.aws.cognito.userpool.enableSelfRegistration }}
-
-  # 3. Connection secret reference
   connectionSecretRef:
     name: {{ include "infra.cognitoUserpoolName" . }}-infra-cognito-userpool
     namespace: {{ .Release.Namespace }}
-
-  # 4. Required attributes
   requiredAttributes:
     {{- range .Values.aws.cognito.userpool.requiredAttributes }}
     - {{ . }}
     {{- end }}
-
-  # 5. Callback URLs
   callbackUrls:
     {{- if .Values.aws.cognito.userpool.callbackUrls }}
     {{- range .Values.aws.cognito.userpool.callbackUrls }}
@@ -40,8 +30,6 @@ spec:
     {{- end }}
     {{- else }} []
     {{- end }}
-
-  # 6. Logout URLs
   logoutUrls:
     {{- if .Values.aws.cognito.userpool.logoutUrls }}
     {{- range .Values.aws.cognito.userpool.logoutUrls }}
@@ -49,9 +37,7 @@ spec:
     {{- end }}
     {{- else }} []
     {{- end }}
-
   authentication:
-    # 7. Email authentication
     email:
       enabled: {{ default false .Values.aws.cognito.userpool.authentication.email.enabled }}
       {{- if .Values.aws.cognito.userpool.authentication.email.enabled }}
@@ -62,8 +48,6 @@ spec:
       replyToEmailAddress: {{ default "" .Values.aws.cognito.userpool.authentication.email.replyToEmailAddress | quote }}
       sesConfigurationSet: {{ default "" .Values.aws.cognito.userpool.authentication.email.sesConfigurationSet | quote }}
       {{- end }}
-
-    # 8. Phone number authentication
     phoneNumber:
       enabled: {{ default false .Values.aws.cognito.userpool.authentication.phoneNumber.enabled }}
       {{- if .Values.aws.cognito.userpool.authentication.phoneNumber.enabled }}
@@ -71,15 +55,12 @@ spec:
       snsRegion: {{ default "eu-central-2" .Values.aws.cognito.userpool.authentication.phoneNumber.snsRegion }}
       fromPhoneNumber: {{ default "" .Values.aws.cognito.userpool.authentication.phoneNumber.fromPhoneNumber | quote }}
       {{- end }}
-
-  # 9. Groups
   groups:
     {{- if .Values.aws.cognito.userpool.groups }}
     {{- toYaml .Values.aws.cognito.userpool.groups | nindent 4 }}
     {{- else }} []
     {{- end }}
 
-  # 10. Password policy
   passwordPolicy:
     minimumLength: {{ default 8 .Values.aws.cognito.userpool.passwordPolicy.minimumLength }}
     requireLowercase: {{ default true .Values.aws.cognito.userpool.passwordPolicy.requireLowercase }}
@@ -87,11 +68,7 @@ spec:
     requireNumbers: {{ default true .Values.aws.cognito.userpool.passwordPolicy.requireNumbers }}
     requireSymbols: {{ default true .Values.aws.cognito.userpool.passwordPolicy.requireSymbols }}
     temporaryPasswordValidityDays: {{ default 7 .Values.aws.cognito.userpool.passwordPolicy.temporaryPasswordValidityDays }}
-
-  # 11. MFA Configuration
   mfaConfiguration: {{ default "OFF" .Values.aws.cognito.userpool.mfaConfiguration | quote }}
-
-  # 12. Tags
   tags:
     {{- $section := dict "additional_tags" (default dict .Values.aws.cognito.userpool.tags) -}}
     {{- include "infra.allTags" (dict "Values" .Values "section" $section) | nindent 4 }}
