@@ -1,0 +1,75 @@
+{{- if and (.Values.aws.enabled | default true) (.Values.aws.cognito.userpool.enabled | default false) }}
+{{ include "infra.checkAwsMandates" . }}
+---
+apiVersion: {{ include "infra.CognotoUserpoolApiVersion" . }}
+kind: CognitoUserPool
+metadata:
+  name: {{ include "infra.cognitoUserpoolName" . }}-userpool
+  namespace: {{ .Release.Namespace }}
+  labels:
+    name: {{ include "infra.cognitoUserpoolName" . }}-userpool
+spec:
+  region: {{ default "eu-central-2" .Values.aws.region | quote }} 
+  userPoolName: {{ include "infra.cognitoUserpoolName" . }}-userpool
+  signInIdentifiers:
+    email: {{ if has "email" .Values.aws.cognito.userpool.signInIdentifiers }}enabled{{ else }}disabled{{ end }}
+    phoneNumber: {{ if has "phoneNumber" .Values.aws.cognito.userpool.signInIdentifiers }}enabled{{ else }}disabled{{ end }}
+    username: {{ if has "username" .Values.aws.cognito.userpool.signInIdentifiers }}enabled{{ else }}disabled{{ end }}
+  enableSelfRegistration: {{ default false .Values.aws.cognito.userpool.enableSelfRegistration }}
+  connectionSecretRef:
+    name: {{ include "infra.cognitoUserpoolName" . }}-infra-cognito-userpool
+    namespace: {{ .Release.Namespace }}
+  requiredAttributes:
+    {{- range .Values.aws.cognito.userpool.requiredAttributes }}
+    - {{ . }}
+    {{- end }}
+  callbackUrls:
+    {{- if .Values.aws.cognito.userpool.callbackUrls }}
+    {{- range .Values.aws.cognito.userpool.callbackUrls }}
+    - {{ . }}
+    {{- end }}
+    {{- else }} []
+    {{- end }}
+  logoutUrls:
+    {{- if .Values.aws.cognito.userpool.logoutUrls }}
+    {{- range .Values.aws.cognito.userpool.logoutUrls }}
+    - {{ . }}
+    {{- end }}
+    {{- else }} []
+    {{- end }}
+  authentication:
+    email:
+      enabled: {{ default false .Values.aws.cognito.userpool.authentication.email.enabled }}
+      {{- if .Values.aws.cognito.userpool.authentication.email.enabled }}
+      provider: {{ default "COGNITO_DEFAULT" .Values.aws.cognito.userpool.authentication.email.provider }}
+      sesRegion: {{ default "eu-central-2" .Values.aws.cognito.userpool.authentication.email.sesRegion }}
+      fromEmailAddress: {{ default "" .Values.aws.cognito.userpool.authentication.email.fromEmailAddress | quote }}
+      fromSenderName: {{ default "" .Values.aws.cognito.userpool.authentication.email.fromSenderName | quote }}
+      replyToEmailAddress: {{ default "" .Values.aws.cognito.userpool.authentication.email.replyToEmailAddress | quote }}
+      sesConfigurationSet: {{ default "" .Values.aws.cognito.userpool.authentication.email.sesConfigurationSet | quote }}
+      {{- end }}
+    phoneNumber:
+      enabled: {{ default false .Values.aws.cognito.userpool.authentication.phoneNumber.enabled }}
+      {{- if .Values.aws.cognito.userpool.authentication.phoneNumber.enabled }}
+      provider: SNS
+      snsRegion: {{ default "eu-central-2" .Values.aws.cognito.userpool.authentication.phoneNumber.snsRegion }}
+      fromPhoneNumber: {{ default "" .Values.aws.cognito.userpool.authentication.phoneNumber.fromPhoneNumber | quote }}
+      {{- end }}
+  groups:
+    {{- if .Values.aws.cognito.userpool.groups }}
+    {{- toYaml .Values.aws.cognito.userpool.groups | nindent 4 }}
+    {{- else }} []
+    {{- end }}
+
+  passwordPolicy:
+    minimumLength: {{ default 8 .Values.aws.cognito.userpool.passwordPolicy.minimumLength }}
+    requireLowercase: {{ default true .Values.aws.cognito.userpool.passwordPolicy.requireLowercase }}
+    requireUppercase: {{ default true .Values.aws.cognito.userpool.passwordPolicy.requireUppercase }}
+    requireNumbers: {{ default true .Values.aws.cognito.userpool.passwordPolicy.requireNumbers }}
+    requireSymbols: {{ default true .Values.aws.cognito.userpool.passwordPolicy.requireSymbols }}
+    temporaryPasswordValidityDays: {{ default 7 .Values.aws.cognito.userpool.passwordPolicy.temporaryPasswordValidityDays }}
+  mfaConfiguration: {{ default "OFF" .Values.aws.cognito.userpool.mfaConfiguration | quote }}
+  tags:
+    {{- $section := dict "additional_tags" (default dict .Values.aws.cognito.userpool.tags) -}}
+    {{- include "infra.allTags" (dict "Values" .Values "section" $section) | nindent 4 }}
+{{- end }}

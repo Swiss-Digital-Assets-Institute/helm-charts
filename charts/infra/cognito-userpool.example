@@ -1,0 +1,122 @@
+# values.yaml
+
+aws:
+  enabled: true
+  region: eu-central-2
+
+  cognito:
+    userpool:
+      enabled: true
+
+      # ----------------------------------------------------------------------
+      # 1. Sign-In Identifiers
+      # Options: email, phoneNumber, username
+      # Only identifiers listed here will be enabled; all others are disabled.
+      # All options can be found here https://docs.aws.amazon.com/cognito/latest/developerguide/user-pool-settings-attributes.html
+      # ----------------------------------------------------------------------
+      signInIdentifiers:
+        - email
+        - username
+
+      # ----------------------------------------------------------------------
+      # 2. Self Registration
+      # Whether users can self-register.
+      # ----------------------------------------------------------------------
+      enableSelfRegistration: false
+
+      # ----------------------------------------------------------------------
+      # 4. Required Attributes
+      # Define the user attributes that are required.
+      # ----------------------------------------------------------------------
+      requiredAttributes:
+        - email
+        - name
+        - family_name
+
+      # ----------------------------------------------------------------------
+      # 5. Callback URLs
+      # List of callback URLs after authentication.
+      # ----------------------------------------------------------------------
+      callbackUrls: []
+      # Example:
+      # callbackUrls:
+      #   - https://example.com/callback
+      #   - https://app.example.com/auth/callback
+
+      # ----------------------------------------------------------------------
+      # 6. Logout URLs
+      # List of URLs users are redirected to after logout.
+      # ----------------------------------------------------------------------
+      logoutUrls: []
+      # Example:
+      # logoutUrls:
+      #   - https://example.com/logout
+      #   - https://app.example.com/auth/logout
+
+      # ----------------------------------------------------------------------
+      # 7. Authentication Configuration
+      # ----------------------------------------------------------------------
+      authentication:
+
+        # Email authentication block
+        email:
+          enabled: false  # When false, all below values are ignored
+          provider: COGNITO_DEFAULT  # Options: COGNITO_DEFAULT, SES
+          sesRegion: eu-central-2
+          fromEmailAddress: ""
+          fromSenderName: ""
+          replyToEmailAddress: ""
+          sesConfigurationSet: ""
+
+        # Phone number authentication block
+        phoneNumber:
+          enabled: false
+          snsRegion: eu-central-2
+          fromPhoneNumber: "" # Must be in E.164 format (+12345678900)
+
+      # ----------------------------------------------------------------------
+      # 9. Groups
+      # Define user groups and precedence (lower = higher priority)
+      # ----------------------------------------------------------------------
+      groups: []
+      # Example:
+      # groups:
+      #   - name: admins
+      #     description: Administrator group
+      #     precedence: 1
+      #   - name: users
+      #     description: Regular user group
+      #     precedence: 100
+
+      # ----------------------------------------------------------------------
+      # 10. Password Policy
+      # ----------------------------------------------------------------------
+      passwordPolicy:
+        minimumLength: 12
+        requireLowercase: true
+        requireUppercase: true
+        requireNumbers: true
+        requireSymbols: true
+        temporaryPasswordValidityDays: 7
+
+      # ----------------------------------------------------------------------
+      # 11. MFA Configuration
+      # Acceptable values: "ON" or "OFF"
+      # ----------------------------------------------------------------------
+      mfaConfiguration: "OFF"
+
+      # ----------------------------------------------------------------------
+      # 12. Additional Tags (optional)
+      # These are merged into global/common tags via the helper function.
+      # ----------------------------------------------------------------------
+      tags:
+        Application: my-app
+        Owner: platform-team@example.com
+
+global:
+  org: my-org
+  env: production
+
+commonLabels:
+  Team: platform
+  CostCenter: engineering

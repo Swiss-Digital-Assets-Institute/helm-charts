@@ -32,3 +32,7 @@ database.hashgraphgroup.com/v1alpha2
 {{- define "infra.cdnApiVersion" -}}
 edge.hashgraphgroup.com/v1alpha1
 {{- end -}}
+
+{{- define "infra.CognotoUserpoolApiVersion" -}}
+identity.hashgraphgroup.com/v1alpha1
+{{- end -}}

@@ -98,3 +98,11 @@ Return the SNS Topic name
 {{- define "infra.snsTopicName" -}}
 {{- printf "%s-sns-topic" .Release.Name | trunc 63 | trimSuffix "-" -}}
 {{- end }}
+
+{{/*
+infra.cognito.Userpool.Name:
+Defaults to org-env-releaseName unless overridden.
+*/}}
+{{- define "infra.cognitoUserpoolName" -}}
+    {{- default (include "infra.resourceName" .) .Values.aws.cdn.distributionNameOverride -}}
+{{- end -}}
