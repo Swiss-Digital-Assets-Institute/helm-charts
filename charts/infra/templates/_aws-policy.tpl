@@ -127,7 +127,7 @@ Custom IAM inline policy including S3, KMS, SQS, and SNS.
     {{- $kmsStatement = append $kmsStatement (printf `
     {
       "Effect": "Allow",
-      "Action": ["kms:Encrypt", "kms:Decrypt", "kms:DescribeKey", "kms:ListAliases", "kms:ListKeys"],
+      "Action": ["kms:Encrypt", "kms:Decrypt", "kms:DescribeKey", "kms:ListAliases", "kms:ListKeys", "kms:Sign"],
       "Resource": "*"
     },
     {
