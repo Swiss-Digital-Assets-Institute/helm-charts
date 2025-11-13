@@ -34,7 +34,13 @@ spec:
           imagePullPolicy: {{ $root.Values.image.pullPolicy }}
           command: {{ toYaml (default list .command) | nindent 12 }}
           args: {{ toYaml (default list .args) | nindent 12 }}
-          env: {{- (include "merged-envs" (dict "overrides" .envs "envs" $root.Values.envs )) | nindent 12 }}
+          env: {{- (include "merged-envs" (dict
+            "overrides" .envs
+            "envs" $root.Values.envs
+            "tracing" $root.Values.monitoring.tracing
+            "releaseNamespace" $root.Release.Namespace
+            "releaseName" $root.Release.Name
+          )) | nindent 12 }}
           envFrom: {{ include "all-EnvFrom" $root | nindent 12 }}
           {{- include "liveness-probe" (dict "probe" (default $root.Values.livenessProbe .livenessProbe) "port" $root.Values.container.port )  | nindent 10 }}
           resources: {{- default $root.Values.resources .resources | toYaml | nindent 14 }}

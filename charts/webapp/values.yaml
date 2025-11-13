@@ -544,6 +544,15 @@ monitoring:
       # -- The protocol used for the additional port
       protocol: TCP
 
+  # Tracing configuration for OpenTelemetry
+  tracing:
+    # -- If enabled, automatically inject OpenTelemetry environment variables
+    enabled: false
+    # -- OTEL exporter OTLP endpoint
+    exporterEndpoint: "http://alloy.observability.svc.cluster.local:4318/v1/traces"
+    # -- Metrics port for the application
+    metricsPort: 9090
+
 # --logging configuration
 logging:
   # -- If enabled, create a PodLogs resource for logging
