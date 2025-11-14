@@ -1,6 +1,6 @@
 # infra
 
-![Version: 1.7.53](https://img.shields.io/badge/Version-1.7.53-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 1.0.0](https://img.shields.io/badge/AppVersion-1.0.0-informational?style=flat-square)
+![Version: 1.7.54](https://img.shields.io/badge/Version-1.7.54-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 1.0.0](https://img.shields.io/badge/AppVersion-1.0.0-informational?style=flat-square)
 
 Managing and maintaining cloud resources using crossplane
 
@@ -95,6 +95,7 @@ Managing and maintaining cloud resources using crossplane
 | aws.kms.enabled | bool | `false` |  |
 | aws.kms.keyNameOverride | string | `""` |  |
 | aws.kms.rotateKey | bool | `false` |  |
+| aws.kms.signingEnabled | bool | `false` |  |
 | aws.providerConfigRef.name | string | `"crossplane-service-user"` |  |
 | aws.rds.additional_tags | object | `{}` |  |
 | aws.rds.allocatedStorage | int | `20` |  |
