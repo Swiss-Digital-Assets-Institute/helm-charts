@@ -64,6 +64,7 @@ aws:
   kms:
     enabled: false
     keyNameOverride: ""
+    signingEnabled: false
     deletionWindowInDays: 365
     rotateKey: false
     additional_tags: {}
