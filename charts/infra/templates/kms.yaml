@@ -14,22 +14,22 @@ spec:
 
     {{- if .Values.aws.kms.signingEnabled }}
 
-    # --- SIGNING MODE ---
+    # ---------- SIGNING MODE ----------
     keyUsage: {{ .Values.aws.kms.keyUsage | default "SIGN_VERIFY" }}
-    keySpec: {{ .Values.aws.kms.keySpec | default "ECC_NIST_P256" }}
+    customerMasterKeySpec: {{ .Values.aws.kms.keySpec | default "ECC_NIST_P256" }}
     enableKeyRotation: false
 
     {{- else }}
 
-    # --- ENCRYPTION MODE ---
+    # ---------- ENCRYPTION MODE ----------
     keyUsage: {{ .Values.aws.kms.keyUsage | default "ENCRYPT_DECRYPT" }}
-    keySpec: {{ .Values.aws.kms.keySpec | default "SYMMETRIC_DEFAULT" }}
+    customerMasterKeySpec: {{ .Values.aws.kms.keySpec | default "SYMMETRIC_DEFAULT" }}
     enableKeyRotation: {{ .Values.aws.kms.enableKeyRotation | default true }}
 
     {{- end }}
 
     description: {{ include "infra.kmsKeyName" . }}
-    deletionWindowInDays: {{ .Values.aws.kms.deletionWindowInDays | default 365 }}
+    deletionWindowInDays: {{ .Values.aws.kms.deletionWindowInDays | default 30 }}
 
     tags:
 {{ include "infra.allTags" (dict "Values" .Values "section" .Values.aws.kms) | indent 6 }}
