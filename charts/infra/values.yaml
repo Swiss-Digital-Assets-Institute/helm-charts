@@ -63,6 +63,7 @@ aws:
 
   kms:
     enabled: false
+    signingEnabled: false
     keyNameOverride: ""
     deletionWindowInDays: 365
     rotateKey: false
