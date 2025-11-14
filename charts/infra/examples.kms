@@ -1,0 +1,83 @@
+aws:
+  enabled: true
+  region: "eu-central-2"
+  providerConfigRef:
+    name: "aws-provider"   # Crossplane ProviderConfig name
+  kms:
+    enabled: true          # Enable/disable KMS resource creation
+    keyNameOverride: ""
+
+    # ------------------------------------------------------
+    # SIGNING or ENCRYPTION MODE
+    # ------------------------------------------------------
+    # true  = Create asymmetric SIGN_VERIFY key for signing
+    # false = Create symmetric ENCRYPT_DECRYPT key for encryption
+    signingEnabled: false
+
+    # ------------------------------------------------------
+    # Key Usage — what the key is used for
+    # If signingEnabled=true, default = SIGN_VERIFY
+    # If signingEnabled=false, default = ENCRYPT_DECRYPT
+    # Valid values:
+    #   ENCRYPT_DECRYPT
+    #   SIGN_VERIFY
+    #   GENERATE_VERIFY_MAC
+    keyUsage: ""
+
+    # ------------------------------------------------------
+    # Key Spec — type of cryptographic backend
+    #
+    # ENCRYPT_DECRYPT:
+    #   SYMMETRIC_DEFAULT
+    #
+    # SIGN_VERIFY (RSA):
+    #   RSA_2048
+    #   RSA_3072
+    #   RSA_4096
+    #
+    # SIGN_VERIFY (ECC):
+    #   ECC_NIST_P256
+    #   ECC_NIST_P384
+    #   ECC_NIST_P521
+    #   ECC_SECG_P256K1 (Blockchain curve)
+    #
+    # MAC keys:
+    #   HMAC_224
+    #   HMAC_256
+    #   HMAC_384
+    #   HMAC_512
+    #
+    # Defaults:
+    #   signingEnabled=true  -> ECC_NIST_P256
+    #   signingEnabled=false -> SYMMETRIC_DEFAULT
+    keySpec: ""
+
+    # ------------------------------------------------------
+    # Key Rotation
+    # ------------------------------------------------------
+    # SYMMETRIC keys: can rotate (true/false)
+    # ASYMMETRIC keys: rotation is NOT allowed → false
+    #
+    # Default: false
+    enableKeyRotation: ""
+
+    # ------------------------------------------------------
+    # Key deletion window
+    # ------------------------------------------------------
+    # Allowed 7–365 days
+    deletionWindowInDays: 30
+
+    # ------------------------------------------------------
+    # Tags applied to the KMS key
+    # ------------------------------------------------------
+    tags:
+      environment: "dev"
+      owner: "platform-team"
+      project: "infra-core"
+
+    # ------------------------------------------------------
+    # ALIAS CONFIG
+    # ------------------------------------------------------
+    alias:
+      enabled: true
+      name: ""   # Default from template: <kmsKeyName>
