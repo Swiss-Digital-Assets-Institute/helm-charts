@@ -31,10 +31,9 @@ metadata:
 spec:
   forProvider:
     region: {{ .Values.aws.region | default "eu-central-2" | quote }}
-    attributes:
-      DefaultSMSType: {{ .Values.aws.sns.sms.defaultSMSType | default "Transactional" | quote }}
-      DefaultSenderID: {{ .Values.aws.sns.sms.defaultSenderID | default "MTGATEWAY" | quote }}
-      MonthlySpendLimit: {{ .Values.aws.sns.sms.monthlySpendLimit | default "50" | quote }}
+    defaultSmsType: {{ .Values.aws.sns.sms.defaultSMSType | default "Transactional" | quote }}
+    defaultSenderId: {{ .Values.aws.sns.sms.defaultSenderID | default "MTGATEWAY" | quote }}
+    monthlySpendLimit: {{ .Values.aws.sns.sms.monthlySpendLimit | default "50" | quote }}
   providerConfigRef:
     name: {{ .Values.aws.providerConfigRef.name | quote }}
 {{- end }}
