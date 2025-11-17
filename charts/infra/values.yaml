@@ -215,7 +215,7 @@ aws:
       enabled: false
       defaultSMSType: Transactional
       defaultSenderID: MTGATEWAY
-      monthlySpendLimit: "50"
+      monthlySpendLimit: 50
 
   cognito:
     userpool:
