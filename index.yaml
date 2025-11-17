@@ -3,7 +3,7 @@ entries:
   australian-payments-plus:
   - apiVersion: v2
     appVersion: 1.0.0
-    created: "2025-11-17T10:34:19.614939255Z"
+    created: "2025-11-17T10:47:46.050546488Z"
     description: Helm Charts for Australian Payments Plus
     digest: 2c6369a2f3e057219435ace309ac9bebc6734bb45b69fa1422096d7736eeb521
     icon: https://github.com/Swiss-Digital-Assets-Institute/helm-charts/blob/main/charts/tooling/helm-icon.png
@@ -19,7 +19,7 @@ entries:
   infra:
   - apiVersion: v2
     appVersion: 1.0.0
-    created: "2025-11-17T10:47:28.305530385Z"
+    created: "2025-11-17T10:47:46.105099488Z"
     description: Managing and maintaining cloud resources using crossplane
     digest: 1b4b037d69318b9b15d760bf6312a4f8d2a7449ed04b670f72bb9ef71d8b38a5
     icon: https://avatars.githubusercontent.com/u/45158470?s=200&v=4
@@ -30,11 +30,11 @@ entries:
     name: infra
     type: application
     urls:
-    - https://github.com/Swiss-Digital-Assets-Institute/helm-charts/releases/download/infra-1.7.57/infra-1.7.57.tgz
+    - https://raw.githubusercontent.com/Swiss-Digital-Assets-Institute/helm-charts/artifacts/infra-1.7.57.tgz
     version: 1.7.57
   - apiVersion: v2
     appVersion: 1.0.0
-    created: "2025-11-17T10:34:19.667139787Z"
+    created: "2025-11-17T10:47:46.103964624Z"
     description: Managing and maintaining cloud resources using crossplane
     digest: eccb46a9f19059ac33f645dde5f21da87d22603153796fe608b51ab08194eb69
     icon: https://avatars.githubusercontent.com/u/45158470?s=200&v=4
@@ -49,7 +49,7 @@ entries:
     version: 1.7.56
   - apiVersion: v2
     appVersion: 1.0.0
-    created: "2025-11-17T10:34:19.666019494Z"
+    created: "2025-11-17T10:47:46.102824921Z"
     description: Managing and maintaining cloud resources using crossplane
     digest: 2e5c391b45b86949c1211cc7ea329bdf59c30b5c8f9ed9f63356f686f4e3dafe
     icon: https://avatars.githubusercontent.com/u/45158470?s=200&v=4
@@ -64,7 +64,7 @@ entries:
     version: 1.7.55
   - apiVersion: v2
     appVersion: 1.0.0
-    created: "2025-11-17T10:34:19.664895975Z"
+    created: "2025-11-17T10:47:46.101716677Z"
     description: Managing and maintaining cloud resources using crossplane
     digest: 5b0af356588be9cfeeb9d99d39985ba2142882350c302eced2fc5e435b21f3e9
     icon: https://avatars.githubusercontent.com/u/45158470?s=200&v=4
@@ -79,7 +79,7 @@ entries:
     version: 1.7.54
   - apiVersion: v2
     appVersion: 1.0.0
-    created: "2025-11-17T10:34:19.663028975Z"
+    created: "2025-11-17T10:47:46.100625615Z"
     description: Managing and maintaining cloud resources using crossplane
     digest: 4bbec265d8105ce21e75c0d9947ddbaffd87a0f210a3245332408a828805826b
     icon: https://avatars.githubusercontent.com/u/45158470?s=200&v=4
@@ -94,7 +94,7 @@ entries:
     version: 1.7.53
   - apiVersion: v2
     appVersion: 1.0.0
-    created: "2025-11-17T10:34:19.661931434Z"
+    created: "2025-11-17T10:47:46.09951714Z"
     description: Managing and maintaining cloud resources using crossplane
     digest: 0704ff1296a52fbdbfbed01c8c8c87a18e2948f0cc329e5369030e0e9010f5a3
     icon: https://avatars.githubusercontent.com/u/45158470?s=200&v=4
@@ -109,7 +109,7 @@ entries:
     version: 1.7.52
   - apiVersion: v2
     appVersion: 1.0.0
-    created: "2025-11-17T10:34:19.660839114Z"
+    created: "2025-11-17T10:47:46.097612097Z"
     description: Managing and maintaining cloud resources using crossplane
     digest: 2d80ed9ff02bc66eaa2ac18643e3086d3ca160e409caf169cd2bf42776493459
     icon: https://avatars.githubusercontent.com/u/45158470?s=200&v=4
@@ -124,7 +124,7 @@ entries:
     version: 1.7.51
   - apiVersion: v2
     appVersion: 1.0.0
-    created: "2025-11-17T10:34:19.659895842Z"
+    created: "2025-11-17T10:47:46.096650086Z"
     description: Managing and maintaining cloud resources using crossplane
     digest: 3c39d01b70b3111e72e5d7d1bf657c0b27b8ae0b151adfd7ab0d3c9cbbbd74ef
     icon: https://avatars.githubusercontent.com/u/45158470?s=200&v=4
@@ -139,7 +139,7 @@ entries:
     version: 1.7.50
   - apiVersion: v2
     appVersion: 1.0.0
-    created: "2025-11-17T10:34:19.658293378Z"
+    created: "2025-11-17T10:47:46.095047006Z"
     description: Managing and maintaining cloud resources using crossplane
     digest: f38860ee233debdd4246cb1c717a7f3dd78a1c650f31e94d67a3e3cbe1af6bc6
     icon: https://avatars.githubusercontent.com/u/45158470?s=200&v=4
@@ -154,7 +154,7 @@ entries:
     version: 1.7.49
   - apiVersion: v2
     appVersion: 1.0.0
-    created: "2025-11-17T10:34:19.657346479Z"
+    created: "2025-11-17T10:47:46.094105053Z"
     description: Managing and maintaining cloud resources using crossplane
     digest: cc00513c9e4be29879deabcc2c6bd2f1222474ed1ce4151b2fe4501b21ef2872
     icon: https://avatars.githubusercontent.com/u/45158470?s=200&v=4
@@ -169,7 +169,7 @@ entries:
     version: 1.7.48
   - apiVersion: v2
     appVersion: 1.0.0
-    created: "2025-11-17T10:34:19.655702534Z"
+    created: "2025-11-17T10:47:46.093034349Z"
     description: Managing and maintaining cloud resources using crossplane
     digest: 857e6e223d420dfda23396ade2ca5bdf512e3616fa911f9f61abeb2822dd680e
     icon: https://avatars.githubusercontent.com/u/45158470?s=200&v=4
@@ -184,7 +184,7 @@ entries:
     version: 1.7.47
   - apiVersion: v2
     appVersion: 1.0.0
-    created: "2025-11-17T10:34:19.654845453Z"
+    created: "2025-11-17T10:47:46.091921316Z"
     description: Managing and maintaining cloud resources using crossplane
     digest: 5662667678b007dcb479eb36a11b15ff5c5d44724d9a713637851ceaac539aca
     icon: https://avatars.githubusercontent.com/u/45158470?s=200&v=4
@@ -199,7 +199,7 @@ entries:
     version: 1.7.46
   - apiVersion: v2
     appVersion: 1.0.0
-    created: "2025-11-17T10:34:19.654004402Z"
+    created: "2025-11-17T10:47:46.089948814Z"
     description: Managing and maintaining cloud resources using crossplane
     digest: 79d31726675ad952abcfc47403b5f42fac71e869c483eedb8069829d0c67852f
     icon: https://avatars.githubusercontent.com/u/45158470?s=200&v=4
@@ -214,7 +214,7 @@ entries:
     version: 1.7.45
   - apiVersion: v2
     appVersion: 1.0.0
-    created: "2025-11-17T10:34:19.653166316Z"
+    created: "2025-11-17T10:47:46.089096188Z"
     description: Managing and maintaining cloud resources using crossplane
     digest: c7d565aadb3caf7f60172a4ef3a2bd6a763f69a22fce4b89da5a8bcc7f025000
     icon: https://avatars.githubusercontent.com/u/45158470?s=200&v=4
@@ -229,7 +229,7 @@ entries:
     version: 1.7.44
   - apiVersion: v2
     appVersion: 1.0.0
-    created: "2025-11-17T10:34:19.652302422Z"
+    created: "2025-11-17T10:47:46.088227593Z"
     description: Managing and maintaining cloud resources using crossplane
     digest: ee9192db7f8ede71681ca3f2cf10d2191b0f4f7e3cc052adeb548c2d7429f411
     icon: https://avatars.githubusercontent.com/u/45158470?s=200&v=4
@@ -244,7 +244,7 @@ entries:
     version: 1.7.43
   - apiVersion: v2
     appVersion: 1.0.0
-    created: "2025-11-17T10:34:19.651388755Z"
+    created: "2025-11-17T10:47:46.087375638Z"
     description: Managing and maintaining cloud resources using crossplane
     digest: 7a84ade3e48ed98ed1126d67ef6abd014b985dcc6d291ee393109763477b4778
     icon: https://avatars.githubusercontent.com/u/45158470?s=200&v=4
@@ -259,7 +259,7 @@ entries:
     version: 1.7.42
   - apiVersion: v2
     appVersion: 1.0.0
-    created: "2025-11-17T10:34:19.650488253Z"
+    created: "2025-11-17T10:47:46.08651621Z"
     description: Managing and maintaining cloud resources using crossplane
     digest: b827c8588465a60158bd86ed11f7e3b101709550bbcb1317f370d0cf645fc1b9
     icon: https://avatars.githubusercontent.com/u/45158470?s=200&v=4
@@ -274,7 +274,7 @@ entries:
     version: 1.7.41
   - apiVersion: v2
     appVersion: 1.0.0
-    created: "2025-11-17T10:34:19.648940752Z"
+    created: "2025-11-17T10:47:46.085655439Z"
     description: Managing and maintaining cloud resources using crossplane
     digest: 322c8fe6cdabc24d54c1621b092890ea3001410e819c1a7f4b37d247a6453da7
     icon: https://avatars.githubusercontent.com/u/45158470?s=200&v=4
@@ -289,7 +289,7 @@ entries:
     version: 1.7.40
   - apiVersion: v2
     appVersion: 1.0.0
-    created: "2025-11-17T10:34:19.647363365Z"
+    created: "2025-11-17T10:47:46.084105688Z"
     description: Managing and maintaining cloud resources using crossplane
     digest: fc555ac2498da9768dc78139de09643e9bb28f0aaeadb0e33cce18fdf161897a
     icon: https://avatars.githubusercontent.com/u/45158470?s=200&v=4
@@ -304,7 +304,7 @@ entries:
     version: 1.7.39
   - apiVersion: v2
     appVersion: 1.0.0
-    created: "2025-11-17T10:34:19.646545017Z"
+    created: "2025-11-17T10:47:46.082810264Z"
     description: Managing and maintaining cloud resources using crossplane
     digest: 392751d696f830810cdce3845c1693e824313b8c72d7f89e617401823846ae46
     icon: https://avatars.githubusercontent.com/u/45158470?s=200&v=4
@@ -319,7 +319,7 @@ entries:
     version: 1.7.38
   - apiVersion: v2
     appVersion: 1.0.0
-    created: "2025-11-17T10:34:19.64576015Z"
+    created: "2025-11-17T10:47:46.081689436Z"
     description: Managing and maintaining cloud resources using crossplane
     digest: 32dfcc22dc2434ec442f8c11b6d054063bf173694ba3fda63b42240edce5ad8f
     icon: https://avatars.githubusercontent.com/u/45158470?s=200&v=4
@@ -334,7 +334,7 @@ entries:
     version: 1.7.37
   - apiVersion: v2
     appVersion: 1.0.0
-    created: "2025-11-17T10:34:19.644942623Z"
+    created: "2025-11-17T10:47:46.08090586Z"
     description: Managing and maintaining cloud resources using crossplane
     digest: 8859531f70e3fa8dd31519120cc8b5111116f516282cf7f16ad259c315811234
     icon: https://avatars.githubusercontent.com/u/45158470?s=200&v=4
@@ -349,7 +349,7 @@ entries:
     version: 1.7.36
   - apiVersion: v2
     appVersion: 1.0.0
-    created: "2025-11-17T10:34:19.644108024Z"
+    created: "2025-11-17T10:47:46.080113046Z"
     description: Managing and maintaining cloud resources using crossplane
     digest: fbecd00e30325bdb12a65e2082f2aad5fb35c6092bc3ab0bc9d53311903965c1
     icon: https://avatars.githubusercontent.com/u/45158470?s=200&v=4
@@ -364,7 +364,7 @@ entries:
     version: 1.7.35
   - apiVersion: v2
     appVersion: 1.0.0
-    created: "2025-11-17T10:34:19.643269648Z"
+    created: "2025-11-17T10:47:46.079309492Z"
     description: Managing and maintaining cloud resources using crossplane
     digest: cde2b1423021907610848890326e4b4a87d68cdc317106147bd13e4c237d8518
     icon: https://avatars.githubusercontent.com/u/45158470?s=200&v=4
@@ -379,7 +379,7 @@ entries:
     version: 1.7.34
   - apiVersion: v2
     appVersion: 1.0.0
-    created: "2025-11-17T10:34:19.641565873Z"
+    created: "2025-11-17T10:47:46.078491751Z"
     description: Managing and maintaining cloud resources using crossplane
     digest: b31681a39f30e4791d58188f45920519a7e8d2d40d911b74f2e101fdb3ecf0af
     icon: https://avatars.githubusercontent.com/u/45158470?s=200&v=4
@@ -394,7 +394,7 @@ entries:
     version: 1.7.33
   - apiVersion: v2
     appVersion: 1.0.0
-    created: "2025-11-17T10:34:19.640757763Z"
+    created: "2025-11-17T10:47:46.077584553Z"
     description: Managing and maintaining cloud resources using crossplane
     digest: 2a342d012f8118f1dc1b461de046f09925ce2094181062abee81252139db5dea
     icon: https://avatars.githubusercontent.com/u/45158470?s=200&v=4
@@ -409,7 +409,7 @@ entries:
     version: 1.7.32
   - apiVersion: v2
     appVersion: 1.0.0
-    created: "2025-11-17T10:34:19.639924897Z"
+    created: "2025-11-17T10:47:46.076721919Z"
     description: Managing and maintaining cloud resources using crossplane
     digest: 303e93d7df04ade013e8987f19a939139def97f7deb60be5cc8f39a368ad09d7
     icon: https://avatars.githubusercontent.com/u/45158470?s=200&v=4
@@ -424,7 +424,7 @@ entries:
     version: 1.7.31
   - apiVersion: v2
     appVersion: 1.0.0
-    created: "2025-11-17T10:34:19.639091491Z"
+    created: "2025-11-17T10:47:46.075135002Z"
     description: Managing and maintaining cloud resources using crossplane
     digest: f6d81618ce68611218c72030bc160ab25db1a4205630b8b2e759dca8b99738bb
     icon: https://avatars.githubusercontent.com/u/45158470?s=200&v=4
@@ -439,7 +439,7 @@ entries:
     version: 1.7.30
   - apiVersion: v2
     appVersion: 1.0.0
-    created: "2025-11-17T10:34:19.63827757Z"
+    created: "2025-11-17T10:47:46.074319436Z"
     description: Managing and maintaining cloud resources using crossplane
     digest: bc3bb3647bb9a648dcf1127c13c9f464d656a8313573b7341cf01aba19f8edd1
     icon: https://avatars.githubusercontent.com/u/45158470?s=200&v=4
@@ -454,7 +454,7 @@ entries:
     version: 1.7.29
   - apiVersion: v2
     appVersion: 1.0.0
-    created: "2025-11-17T10:34:19.637443452Z"
+    created: "2025-11-17T10:47:46.073491256Z"
     description: Managing and maintaining cloud resources using crossplane
     digest: 370d657f8033851559fefe06dc84c0c44e90f73a441f6067b062ad32c9210739
     icon: https://avatars.githubusercontent.com/u/45158470?s=200&v=4
@@ -469,7 +469,7 @@ entries:
     version: 1.7.28
   - apiVersion: v2
     appVersion: 1.0.0
-    created: "2025-11-17T10:34:19.636593464Z"
+    created: "2025-11-17T10:47:46.072675269Z"
     description: Managing and maintaining cloud resources using crossplane
     digest: 6e48325ef54af397b31d36d478cf142a414fb1034ade3596702615415ac7b07b
     icon: https://avatars.githubusercontent.com/u/45158470?s=200&v=4
@@ -484,7 +484,7 @@ entries:
     version: 1.7.27
   - apiVersion: v2
     appVersion: 1.0.0
-    created: "2025-11-17T10:34:19.635489649Z"
+    created: "2025-11-17T10:47:46.07186872Z"
     description: Managing and maintaining cloud resources using crossplane
     digest: 70fbdb6262c727c02e12941381b5116b10ea4dd296b71eae7a7526b9adef848e
     icon: https://avatars.githubusercontent.com/u/45158470?s=200&v=4
@@ -499,7 +499,7 @@ entries:
     version: 1.7.26
   - apiVersion: v2
     appVersion: 1.0.0
-    created: "2025-11-17T10:34:19.634228824Z"
+    created: "2025-11-17T10:47:46.071010744Z"
     description: Managing and maintaining cloud resources using crossplane
     digest: fd02c5b08d8b93c6f7a37ab00158e6dc16e9450f280fce785ac33951c5a5a42f
     icon: https://avatars.githubusercontent.com/u/45158470?s=200&v=4
@@ -514,7 +514,7 @@ entries:
     version: 1.7.25
   - apiVersion: v2
     appVersion: 1.0.0
-    created: "2025-11-17T10:34:19.633408962Z"
+    created: "2025-11-17T10:47:46.070092144Z"
     description: Managing and maintaining cloud resources using crossplane
     digest: 74b6e0b9b41015645041e3148bdeff41d228407c6976e37a666bc09ef3a35e54
     icon: https://avatars.githubusercontent.com/u/45158470?s=200&v=4
@@ -529,7 +529,7 @@ entries:
     version: 1.7.24
   - apiVersion: v2
     appVersion: 1.0.0
-    created: "2025-11-17T10:34:19.632576547Z"
+    created: "2025-11-17T10:47:46.069081142Z"
     description: Managing and maintaining cloud resources using crossplane
     digest: a7f999006f0d931b2e72d89354d9260b245e3790c1d17728b8c5d8162bd45126
     icon: https://avatars.githubusercontent.com/u/45158470?s=200&v=4
@@ -544,7 +544,7 @@ entries:
     version: 1.7.23
   - apiVersion: v2
     appVersion: 1.0.0
-    created: "2025-11-17T10:34:19.631757547Z"
+    created: "2025-11-17T10:47:46.067411332Z"
     description: Managing and maintaining cloud resources using crossplane
     digest: 25ef466949b438652ac4259536976401c39fd335ef48e9c916ca19ee018f16b0
     icon: https://avatars.githubusercontent.com/u/45158470?s=200&v=4
@@ -559,7 +559,7 @@ entries:
     version: 1.7.22
   - apiVersion: v2
     appVersion: 1.0.0
-    created: "2025-11-17T10:34:19.630940701Z"
+    created: "2025-11-17T10:47:46.066614811Z"
     description: Managing and maintaining cloud resources using crossplane
     digest: 03b7549d84b4fa3829d207e7405a0c17d3ade62bc66d56d2460e4d5ed11ab374
     icon: https://avatars.githubusercontent.com/u/45158470?s=200&v=4
@@ -574,7 +574,7 @@ entries:
     version: 1.7.21
   - apiVersion: v2
     appVersion: 1.0.0
-    created: "2025-11-17T10:34:19.630166195Z"
+    created: "2025-11-17T10:47:46.065849048Z"
     description: Managing and maintaining cloud resources using crossplane
     digest: 0f28ce307abad4b69d0230028da20b74d687c4ada398babc03aa5580b9ded7dc
     icon: https://avatars.githubusercontent.com/u/45158470?s=200&v=4
@@ -589,7 +589,7 @@ entries:
     version: 1.7.20
   - apiVersion: v2
     appVersion: 1.0.0
-    created: "2025-11-17T10:34:19.62938771Z"
+    created: "2025-11-17T10:47:46.065101138Z"
     description: Managing and maintaining cloud resources using crossplane
     digest: 57ef387ee5052bf9fbb2e459910f9693312bd48e576edb4f1fdfc75824fa4f31
     icon: https://avatars.githubusercontent.com/u/45158470?s=200&v=4
@@ -604,7 +604,7 @@ entries:
     version: 1.7.19
   - apiVersion: v2
     appVersion: 1.0.0
-    created: "2025-11-17T10:34:19.628283027Z"
+    created: "2025-11-17T10:47:46.064335575Z"
     description: Managing and maintaining cloud resources using crossplane
     digest: 26684788900e9bb97801c419f6e26830c1d250aa4b2998fdc70cd2b4535bfc71
     icon: https://avatars.githubusercontent.com/u/45158470?s=200&v=4
@@ -619,7 +619,7 @@ entries:
     version: 1.7.18
   - apiVersion: v2
     appVersion: 1.0.0
-    created: "2025-11-17T10:34:19.627093645Z"
+    created: "2025-11-17T10:47:46.063566256Z"
     description: Managing and maintaining cloud resources using crossplane
     digest: dede9ae242b45daa786c18f24962011098b4e683fde97f715e0f87df1467a7b6
     icon: https://avatars.githubusercontent.com/u/45158470?s=200&v=4
@@ -634,7 +634,7 @@ entries:
     version: 1.7.17
   - apiVersion: v2
     appVersion: 1.0.0
-    created: "2025-11-17T10:34:19.626345387Z"
+    created: "2025-11-17T10:47:46.062775335Z"
     description: Managing and maintaining cloud resources using crossplane
     digest: 57a81ef04c47cc9e483fc0aa0e7c2a7ae8cc7238cc686274877c901c5a4c3473
     icon: https://avatars.githubusercontent.com/u/45158470?s=200&v=4
@@ -649,7 +649,7 @@ entries:
     version: 1.7.16
   - apiVersion: v2
     appVersion: 1.0.0
-    created: "2025-11-17T10:34:19.625593382Z"
+    created: "2025-11-17T10:47:46.062002128Z"
     description: Managing and maintaining cloud resources using crossplane
     digest: c9ed56e761249c910f31c0da386ac0965e8ce55ca507e249e5668c36fc607e6c
     icon: https://avatars.githubusercontent.com/u/45158470?s=200&v=4
@@ -664,7 +664,7 @@ entries:
     version: 1.7.15
   - apiVersion: v2
     appVersion: 1.0.0
-    created: "2025-11-17T10:34:19.624867266Z"
+    created: "2025-11-17T10:47:46.060278868Z"
     description: Managing and maintaining cloud resources using crossplane
     digest: 6774e9ef9d663c71505e02c23042f9b216066b1129f1e993d62c16537b191ecb
     icon: https://avatars.githubusercontent.com/u/45158470?s=200&v=4
@@ -679,7 +679,7 @@ entries:
     version: 1.7.14
   - apiVersion: v2
     appVersion: 1.0.0
-    created: "2025-11-17T10:34:19.624112757Z"
+    created: "2025-11-17T10:47:46.059510871Z"
     description: Managing and maintaining cloud resources using crossplane
     digest: 762824f7a3c5f49fea5417eab9312fa83950b01204dfd5e49243d02735b1297c
     icon: https://avatars.githubusercontent.com/u/45158470?s=200&v=4
@@ -694,7 +694,7 @@ entries:
     version: 1.7.13
   - apiVersion: v2
     appVersion: 1.0.0
-    created: "2025-11-17T10:34:19.6233812Z"
+    created: "2025-11-17T10:47:46.058774963Z"
     description: Managing and maintaining cloud resources using crossplane
     digest: 97d87c21889e68316d278076f02f6463dcc4b0e027e91a5800412a8589aa618d
     icon: https://avatars.githubusercontent.com/u/45158470?s=200&v=4
@@ -709,7 +709,7 @@ entries:
     version: 1.7.12
   - apiVersion: v2
     appVersion: 1.0.0
-    created: "2025-11-17T10:34:19.622686512Z"
+    created: "2025-11-17T10:47:46.058099189Z"
     description: Managing and maintaining cloud resources using crossplane
     digest: 062ef75b3f3230745f34744511cc3c4865525186239998a51c017c9c7d29e944
     icon: https://avatars.githubusercontent.com/u/45158470?s=200&v=4
@@ -724,7 +724,7 @@ entries:
     version: 1.7.11
   - apiVersion: v2
     appVersion: 1.0.0
-    created: "2025-11-17T10:34:19.669900624Z"
+    created: "2025-11-17T10:47:46.108683848Z"
     description: Managing and maintaining cloud resources using crossplane
     digest: b664b982a6bc1a46b936f8d47a5de988764cffcfcae7346e58107bdac745176a
     icon: https://avatars.githubusercontent.com/u/45158470?s=200&v=4
@@ -739,7 +739,7 @@ entries:
     version: 1.7.9
   - apiVersion: v2
     appVersion: 1.0.0
-    created: "2025-11-17T10:34:19.669193713Z"
+    created: "2025-11-17T10:47:46.108015938Z"
     description: Managing and maintaining cloud resources using crossplane
     digest: 6830a51eabfd29361a6f6fc43939dabd9c0631d2e968f7e4dfd1eaeb739e6977
     icon: https://avatars.githubusercontent.com/u/45158470?s=200&v=4
@@ -754,7 +754,7 @@ entries:
     version: 1.7.8
   - apiVersion: v2
     appVersion: 1.0.0
-    created: "2025-11-17T10:34:19.668501781Z"
+    created: "2025-11-17T10:47:46.107316179Z"
     description: Managing and maintaining cloud resources using crossplane
     digest: bfde4a4113da145563b42b03df63fa4c185b5d215f6fc762d7acee29705e8cf8
     icon: https://avatars.githubusercontent.com/u/45158470?s=200&v=4
@@ -769,7 +769,7 @@ entries:
     version: 1.7.7
   - apiVersion: v2
     appVersion: 1.0.0
-    created: "2025-11-17T10:34:19.667846146Z"
+    created: "2025-11-17T10:47:46.106569241Z"
     description: Managing and maintaining cloud resources using crossplane
     digest: 83417c38646a5405d0a647114786015678f9275b766ae87bedb4c110cc9ec529
     icon: https://avatars.githubusercontent.com/u/45158470?s=200&v=4
@@ -784,7 +784,7 @@ entries:
     version: 1.7.6
   - apiVersion: v2
     appVersion: 1.0.0
-    created: "2025-11-17T10:34:19.658986984Z"
+    created: "2025-11-17T10:47:46.095713363Z"
     description: Managing and maintaining cloud resources using crossplane
     digest: 820548957c2406c521ead8435195f31e9cf79ca5459da14c7b040d56b4201dc4
     icon: https://avatars.githubusercontent.com/u/45158470?s=200&v=4
@@ -799,7 +799,7 @@ entries:
     version: 1.7.5
   - apiVersion: v2
     appVersion: 1.0.0
-    created: "2025-11-17T10:34:19.648078231Z"
+    created: "2025-11-17T10:47:46.084790771Z"
     description: Managing and maintaining cloud resources using crossplane
     digest: b20bb6609786a9ef619669e4d4a2673c522d1267ae27b0d1d2629ea250538318
     icon: https://avatars.githubusercontent.com/u/45158470?s=200&v=4
@@ -814,7 +814,7 @@ entries:
     version: 1.7.4
   - apiVersion: v2
     appVersion: 1.0.0
-    created: "2025-11-17T10:34:19.621987196Z"
+    created: "2025-11-17T10:47:46.057385012Z"
     description: Managing and maintaining cloud resources using crossplane
     digest: 7bef87531acd0622f215277ddf44f188af88b2159296cf2f145cbf63799206a5
     icon: https://avatars.githubusercontent.com/u/45158470?s=200&v=4
@@ -829,7 +829,7 @@ entries:
     version: 1.6.4
   - apiVersion: v2
     appVersion: 1.0.0
-    created: "2025-11-17T10:34:19.620762513Z"
+    created: "2025-11-17T10:47:46.056774169Z"
     description: Managing and maintaining cloud resources using crossplane
     digest: 801a519fc5333193b0dbcaf643de101f1aa397af5fa588644eb97974c6dd243e
     icon: https://avatars.githubusercontent.com/u/45158470?s=200&v=4
@@ -844,7 +844,7 @@ entries:
     version: 1.6.3
   - apiVersion: v2
     appVersion: 1.0.0
-    created: "2025-11-17T10:34:19.619559466Z"
+    created: "2025-11-17T10:47:46.056173214Z"
     description: Managing and maintaining cloud resources using crossplane
     digest: a6b8ba4b3db001359ffa10edaee4626fb9817ce9c2f0e0895cf406c4d2b073d4
     icon: https://avatars.githubusercontent.com/u/45158470?s=200&v=4
@@ -859,7 +859,7 @@ entries:
     version: 1.6.2
   - apiVersion: v2
     appVersion: 1.0.0
-    created: "2025-11-17T10:34:19.6189676Z"
+    created: "2025-11-17T10:47:46.055527746Z"
     description: Managing and maintaining cloud resources using crossplane
     digest: fc1502fc5c6f8dcf9c0c6cf523291bd7d45324c75eaae3ec9b5c126185d0f6ef
     icon: https://avatars.githubusercontent.com/u/45158470?s=200&v=4
@@ -874,7 +874,7 @@ entries:
     version: 1.6.1
   - apiVersion: v2
     appVersion: 1.0.0
-    created: "2025-11-17T10:34:19.618335499Z"
+    created: "2025-11-17T10:47:46.054881116Z"
     description: Managing and maintaining cloud resources using crossplane
     digest: 82ae1a023f9fce02670e338cb60dad160dd4d74b10cbf9e75ff22dd81e28b1dc
     icon: https://avatars.githubusercontent.com/u/45158470?s=200&v=4
@@ -889,7 +889,7 @@ entries:
     version: 1.6.0
   - apiVersion: v2
     appVersion: 1.0.0
-    created: "2025-11-17T10:34:19.617717495Z"
+    created: "2025-11-17T10:47:46.053345467Z"
     description: Managing and maintaining cloud resources using crossplane
     digest: 60901116b67454e1516ce9da88aaeb41780b443047a369dfde65ad5bfe9f8b51
     icon: https://avatars.githubusercontent.com/u/45158470?s=200&v=4
@@ -904,7 +904,7 @@ entries:
     version: 1.5.0
   - apiVersion: v2
     appVersion: 1.0.0
-    created: "2025-11-17T10:34:19.617096675Z"
+    created: "2025-11-17T10:47:46.052703115Z"
     description: Managing and maintaining cloud resources using crossplane
     digest: 1cefa4365a9870106af107115f322c966f9f2c4c3ee478563dce77971ff381d8
     icon: https://avatars.githubusercontent.com/u/45158470?s=200&v=4
@@ -919,7 +919,7 @@ entries:
     version: 1.4.0
   - apiVersion: v2
     appVersion: 1.0.0
-    created: "2025-11-17T10:34:19.616445929Z"
+    created: "2025-11-17T10:47:46.052068527Z"
     description: Managing and maintaining cloud resources using crossplane
     digest: c50be9e276929fc8c721b8d2c7e4ae160685033bf36b820877ef97b8c6f39c87
     icon: https://avatars.githubusercontent.com/u/45158470?s=200&v=4
@@ -934,7 +934,7 @@ entries:
     version: 1.3.0
   - apiVersion: v2
     appVersion: 1.0.0
-    created: "2025-11-17T10:34:19.615827484Z"
+    created: "2025-11-17T10:47:46.051426836Z"
     description: Managing and maintaining cloud resources using crossplane
     digest: c013584a3120322f2bb3bd84601fef51f9e0679ada72edc634a9b082b5208a27
     icon: https://avatars.githubusercontent.com/u/45158470?s=200&v=4
@@ -949,7 +949,7 @@ entries:
     version: 1.2.0
   - apiVersion: v2
     appVersion: 1.1.0
-    created: "2025-11-17T10:34:19.615470507Z"
+    created: "2025-11-17T10:47:46.051085637Z"
     description: Managing and maintaining cloud resources using crossplane
     digest: 29cea3db06bccd46f6f2900ebb20ac45023511e02191a610924d1e77297d78a5
     icon: https://avatars.githubusercontent.com/u/45158470?s=200&v=4
@@ -964,7 +964,7 @@ entries:
     version: 1.1.0
   - apiVersion: v2
     appVersion: 1.0.0
-    created: "2025-11-17T10:34:19.61519894Z"
+    created: "2025-11-17T10:47:46.050790705Z"
     description: Managing and maintaining cloud resources using crossplane
     digest: 958a7f46bd5e4c8526f430b40b88628ec7dba44be06c730a2831883c16ab4a94
     icon: https://avatars.githubusercontent.com/u/45158470?s=200&v=4
@@ -980,7 +980,7 @@ entries:
   ipfs-cluster:
   - apiVersion: v2
     appVersion: 1.0.0
-    created: "2025-11-17T10:34:19.671999164Z"
+    created: "2025-11-17T10:47:46.110230723Z"
     description: Managing and maintaining IPFS clusters in kubernetes.
     digest: 540d6d889bc8ba3154b8d4f77a70b08d4a420d03141fd09098d5807961c6f1a3
     icon: https://en.wikipedia.org/wiki/InterPlanetary_File_System#/media/File:Ipfs-logo-1024-ice-text.png
@@ -996,7 +996,7 @@ entries:
     version: 1.1.0
   - apiVersion: v2
     appVersion: 1.0.0
-    created: "2025-11-17T10:34:19.670510724Z"
+    created: "2025-11-17T10:47:46.109348051Z"
     description: Managing and maintaining IPFS clusters in kubernetes.
     digest: 11585e3fbc4b84c2f38536e1a7d3ede50d58513bb156261e2e18b3db70e2b3dd
     icon: https://en.wikipedia.org/wiki/InterPlanetary_File_System#/media/File:Ipfs-logo-1024-ice-text.png
@@ -1013,7 +1013,7 @@ entries:
   tha-app:
   - apiVersion: v2
     appVersion: 1.16.0
-    created: "2025-11-17T10:34:19.674558215Z"
+    created: "2025-11-17T10:47:46.113714006Z"
     description: A Helm chart for Kubernetes
     digest: 54c8aa788be31799c7fbfc5c23e8c111fa41370f2ee7db7533f87509df5476ff
     name: tha-app
@@ -1023,7 +1023,7 @@ entries:
     version: 0.1.3
   - apiVersion: v2
     appVersion: 1.16.0
-    created: "2025-11-17T10:34:19.673948736Z"
+    created: "2025-11-17T10:47:46.112992185Z"
     description: A Helm chart for Kubernetes
     digest: e450210bab2592726e2ebb2b70a7be1381af808adbbe3c4d07dc091889b3f163
     name: tha-app
@@ -1033,7 +1033,7 @@ entries:
     version: 0.1.2
   - apiVersion: v2
     appVersion: 1.16.0
-    created: "2025-11-17T10:34:19.673215286Z"
+    created: "2025-11-17T10:47:46.111451198Z"
     description: A Helm chart for Kubernetes
     digest: eb69750e7a25525628f2c4cbe85393086c2783ec871f39313dbf238c2d6a67ad
     name: tha-app
@@ -1043,7 +1043,7 @@ entries:
     version: 0.1.1
   - apiVersion: v2
     appVersion: 1.16.0
-    created: "2025-11-17T10:34:19.672619724Z"
+    created: "2025-11-17T10:47:46.110871052Z"
     description: A Helm chart for Kubernetes
     digest: 96fbf5e8b752883f1a8de50cb186716409026140117ed7507d24627785072875
     name: tha-app
@@ -1054,7 +1054,7 @@ entries:
   universal-chart:
   - apiVersion: v2
     appVersion: 1.16.0
-    created: "2025-11-17T10:34:19.67496245Z"
+    created: "2025-11-17T10:47:46.114113985Z"
     description: A Helm chart for Kubernetes
     digest: 34f8d4b4c67988418234df8cd63ac355b18bd5b75340f249bf012e5d9fcb6c04
     name: universal-chart
@@ -1065,7 +1065,7 @@ entries:
   webapp:
   - apiVersion: v2
     appVersion: 1.0.0
-    created: "2025-11-17T10:34:19.764169578Z"
+    created: "2025-11-17T10:47:46.200696336Z"
     description: Helm Charts for default Web Application
     digest: 2d87367b05dbf576f83d26398f614c58ec41abd0ba1f0dd3435bcb161f3018a4
     icon: https://github.com/Swiss-Digital-Assets-Institute/helm-charts/blob/main/charts/tooling/helm-icon.png
@@ -1080,7 +1080,7 @@ entries:
     version: 0.2.8
   - apiVersion: v2
     appVersion: 1.0.0
-    created: "2025-11-17T10:34:19.760785376Z"
+    created: "2025-11-17T10:47:46.19891897Z"
     description: Helm Charts for default Web Application
     digest: 76bb8a8dfb0346b5d4cb5d9d5c31c34725b39865d62f8a062d161518637b9243
     icon: https://github.com/Swiss-Digital-Assets-Institute/helm-charts/blob/main/charts/tooling/helm-icon.png
@@ -1095,7 +1095,7 @@ entries:
     version: 0.2.7
   - apiVersion: v2
     appVersion: 1.0.0
-    created: "2025-11-17T10:34:19.757421332Z"
+    created: "2025-11-17T10:47:46.197119983Z"
     description: Helm Charts for default Web Application
     digest: 7cfadeeadc3bc61b93ec6df54503ebff25118d4fb41a9ec0df0d16b8443ee6f5
     icon: https://github.com/Swiss-Digital-Assets-Institute/helm-charts/blob/main/charts/tooling/helm-icon.png
@@ -1110,7 +1110,7 @@ entries:
     version: 0.2.6
   - apiVersion: v2
     appVersion: 1.0.0
-    created: "2025-11-17T10:34:19.753964672Z"
+    created: "2025-11-17T10:47:46.194527529Z"
     description: Helm Charts for default Web Application
     digest: 4cb4b8fdc06d2cf0040fbf2c729cec018d68d0452ed4f87b699f1a7f804c839c
     icon: https://github.com/Swiss-Digital-Assets-Institute/helm-charts/blob/main/charts/tooling/helm-icon.png
@@ -1125,7 +1125,7 @@ entries:
     version: 0.2.5
   - apiVersion: v2
     appVersion: 1.0.0
-    created: "2025-11-17T10:34:19.752093096Z"
+    created: "2025-11-17T10:47:46.192761624Z"
     description: Helm Charts for default Web Application
     digest: 19859f6db9d6468cd8468fe76e9bf8e9b5dcbdd21cb3712900b080f1630eab0e
     icon: https://github.com/Swiss-Digital-Assets-Institute/helm-charts/blob/main/charts/tooling/helm-icon.png
@@ -1140,7 +1140,7 @@ entries:
     version: 0.2.4
   - apiVersion: v2
     appVersion: 1.0.0
-    created: "2025-11-17T10:34:19.750354949Z"
+    created: "2025-11-17T10:47:46.191013292Z"
     description: Helm Charts for default Web Application
     digest: 5fea28498b43fc58bac1b956e523bdbd6189a4f5657a252b83680d6febf564ed
     icon: https://github.com/Swiss-Digital-Assets-Institute/helm-charts/blob/main/charts/tooling/helm-icon.png
@@ -1155,7 +1155,7 @@ entries:
     version: 0.2.3
   - apiVersion: v2
     appVersion: 1.0.0
-    created: "2025-11-17T10:34:19.748552662Z"
+    created: "2025-11-17T10:47:46.189242808Z"
     description: Helm Charts for default Web Application
     digest: 291fd47bf15f43f95f5dee1bfc3937a0cdff6ced28c58779925aef42334d0da6
     icon: https://github.com/Swiss-Digital-Assets-Institute/helm-charts/blob/main/charts/tooling/helm-icon.png
@@ -1170,7 +1170,7 @@ entries:
     version: 0.2.2
   - apiVersion: v2
     appVersion: 1.0.0
-    created: "2025-11-17T10:34:19.746760564Z"
+    created: "2025-11-17T10:47:46.186640499Z"
     description: Helm Charts for default Web Application
     digest: 3989c61c798598718864ae757141d4491fdf1c2806b5f63052fd543152c328fb
     icon: https://github.com/Swiss-Digital-Assets-Institute/helm-charts/blob/main/charts/tooling/helm-icon.png
@@ -1185,7 +1185,7 @@ entries:
     version: 0.2.1
   - apiVersion: v2
     appVersion: 1.0.0
-    created: "2025-11-17T10:34:19.743979218Z"
+    created: "2025-11-17T10:47:46.184848636Z"
     description: Helm Charts for default Web Application
     digest: d1ae4991d1cdc1cd2021343a3f4582594b527471ba5211883c62b604558bb144
     icon: https://github.com/Swiss-Digital-Assets-Institute/helm-charts/blob/main/charts/tooling/helm-icon.png
@@ -1200,7 +1200,7 @@ entries:
     version: 0.2.0
   - apiVersion: v2
     appVersion: 1.0.0
-    created: "2025-11-17T10:34:19.742206286Z"
+    created: "2025-11-17T10:47:46.183085376Z"
     description: Helm Charts for default Web Application
     digest: 848721308619b6d6c5a730e0c88c3e0d51355ecba090273eab47ca190b074c6e
     icon: https://github.com/Swiss-Digital-Assets-Institute/helm-charts/blob/main/charts/tooling/helm-icon.png
@@ -1215,7 +1215,7 @@ entries:
     version: 0.1.0
   - apiVersion: v2
     appVersion: 1.0.0
-    created: "2025-11-17T10:34:19.732089067Z"
+    created: "2025-11-17T10:47:46.172738982Z"
     description: Helm Charts for default Web Application
     digest: 1fdde7da0768eee0d064e3d227402c9907b747be82f605559d4befa6d0702648
     icon: https://github.com/Swiss-Digital-Assets-Institute/helm-charts/blob/main/charts/tooling/helm-icon.png
@@ -1230,7 +1230,7 @@ entries:
     version: 0.0.40
   - apiVersion: v2
     appVersion: 1.0.0
-    created: "2025-11-17T10:34:19.728978185Z"
+    created: "2025-11-17T10:47:46.168191224Z"
     description: Helm Charts for default Web Application
     digest: b19a9916d75e2eedf67b58d21fa61bdaa03f82483b76f73fbd00c183e3984d34
     icon: https://github.com/Swiss-Digital-Assets-Institute/helm-charts/blob/main/charts/tooling/helm-icon.png
@@ -1245,7 +1245,7 @@ entries:
     version: 0.0.39
   - apiVersion: v2
     appVersion: 1.0.0
-    created: "2025-11-17T10:34:19.726495608Z"
+    created: "2025-11-17T10:47:46.166435558Z"
     description: Helm Charts for default Web Application
     digest: 49fb8285d2ba5dfccdb616603b331f14bde75ad501668b515f6c6fe23fe5c7a9
     icon: https://github.com/Swiss-Digital-Assets-Institute/helm-charts/blob/main/charts/tooling/helm-icon.png
@@ -1260,7 +1260,7 @@ entries:
     version: 0.0.38
   - apiVersion: v2
     appVersion: 1.0.0
-    created: "2025-11-17T10:34:19.72476768Z"
+    created: "2025-11-17T10:47:46.164671015Z"
     description: Helm Charts for default Web Application
     digest: 50457eb08b5e9eddc27954e0b1923ab5a16a0d47c5ed1a1b82d7666e03b57f5f
     icon: https://github.com/Swiss-Digital-Assets-Institute/helm-charts/blob/main/charts/tooling/helm-icon.png
@@ -1275,7 +1275,7 @@ entries:
     version: 0.0.37
   - apiVersion: v2
     appVersion: 1.0.0
-    created: "2025-11-17T10:34:19.723008153Z"
+    created: "2025-11-17T10:47:46.162899319Z"
     description: Helm Charts for default Web Application
     digest: a7bf35068318a7e907f766aca048b7a19f8d9d21940b60edd34c41d1a8b62f63
     icon: https://github.com/Swiss-Digital-Assets-Institute/helm-charts/blob/main/charts/tooling/helm-icon.png
@@ -1290,7 +1290,7 @@ entries:
     version: 0.0.36
   - apiVersion: v2
     appVersion: 1.0.0
-    created: "2025-11-17T10:34:19.72123456Z"
+    created: "2025-11-17T10:47:46.160179028Z"
     description: Helm Charts for default Web Application
     digest: c06babdd05e6a388d40f666c617ed9323ca9a8e37e8603b5eec0a59178f1a36f
     icon: https://github.com/Swiss-Digital-Assets-Institute/helm-charts/blob/main/charts/tooling/helm-icon.png
@@ -1305,7 +1305,7 @@ entries:
     version: 0.0.35
   - apiVersion: v2
     appVersion: 1.0.0
-    created: "2025-11-17T10:34:19.719483609Z"
+    created: "2025-11-17T10:47:46.158452788Z"
     description: Helm Charts for default Web Application
     digest: 52aa2b02b3ab857d0084224c7eca55678c57c0f319723173e3a2699d6af02860
     icon: https://github.com/Swiss-Digital-Assets-Institute/helm-charts/blob/main/charts/tooling/helm-icon.png
@@ -1320,7 +1320,7 @@ entries:
     version: 0.0.34
   - apiVersion: v2
     appVersion: 1.0.0
-    created: "2025-11-17T10:34:19.716931274Z"
+    created: "2025-11-17T10:47:46.156741224Z"
     description: Helm Charts for default Web Application
     digest: 08a05f57264339830b7d8f49a1ae71cc20028076aec1e06d428244ce97fdc8f8
     icon: https://github.com/Swiss-Digital-Assets-Institute/helm-charts/blob/main/charts/tooling/helm-icon.png
@@ -1335,7 +1335,7 @@ entries:
     version: 0.0.33
   - apiVersion: v2
     appVersion: 1.0.0
-    created: "2025-11-17T10:34:19.715221099Z"
+    created: "2025-11-17T10:47:46.15505043Z"
     description: Helm Charts for default Web Application
     digest: 60f229b386b1bffffecb62519052c1e0c88d1af539083fa3d66b7b19a271af2d
     icon: https://github.com/Swiss-Digital-Assets-Institute/helm-charts/blob/main/charts/tooling/helm-icon.png
@@ -1350,7 +1350,7 @@ entries:
     version: 0.0.32
   - apiVersion: v2
     appVersion: 1.0.0
-    created: "2025-11-17T10:34:19.713601784Z"
+    created: "2025-11-17T10:47:46.153088945Z"
     description: Helm Charts for default Web Application
     digest: 92ce5d5ba2f83911e07d0798ae34d7606b285658f0b9769e84edf22b1e82f9fa
     icon: https://github.com/Swiss-Digital-Assets-Institute/helm-charts/blob/main/charts/tooling/helm-icon.png
@@ -1365,7 +1365,7 @@ entries:
     version: 0.0.31
   - apiVersion: v2
     appVersion: 1.0.0
-    created: "2025-11-17T10:34:19.711855151Z"
+    created: "2025-11-17T10:47:46.151184191Z"
     description: Helm Charts for default Web Application
     digest: e4566ec8d4284dfe4adffd8d9f92d728fd8009dee75a8fb91a235127b379d5e7
     icon: https://github.com/Swiss-Digital-Assets-Institute/helm-charts/blob/main/charts/tooling/helm-icon.png
@@ -1380,7 +1380,7 @@ entries:
     version: 0.0.30
   - apiVersion: v2
     appVersion: 1.0.0
-    created: "2025-11-17T10:34:19.708122816Z"
+    created: "2025-11-17T10:47:46.148171212Z"
     description: Helm Charts for default Web Application
     digest: 7825390ac9bbbae1091df1f432a61ff41626b89f01eb0da5866edbd139bdf152
     icon: https://github.com/Swiss-Digital-Assets-Institute/helm-charts/blob/main/charts/tooling/helm-icon.png
@@ -1395,7 +1395,7 @@ entries:
     version: 0.0.29
   - apiVersion: v2
     appVersion: 1.0.0
-    created: "2025-11-17T10:34:19.706519751Z"
+    created: "2025-11-17T10:47:46.146529128Z"
     description: Helm Charts for default Web Application
     digest: 5c722be5301c160dbbbacefef487d74cdf8d08603de2129bdf389b7c22119d1a
     icon: https://github.com/Swiss-Digital-Assets-Institute/helm-charts/blob/main/charts/tooling/helm-icon.png
@@ -1410,7 +1410,7 @@ entries:
     version: 0.0.28
   - apiVersion: v2
     appVersion: 1.0.0
-    created: "2025-11-17T10:34:19.704949267Z"
+    created: "2025-11-17T10:47:46.1443083Z"
     description: Helm Charts for default Web Application
     digest: 0a6e5e8320440d21621438f0814648092d164a5ec76d81048697d9708b470945
     icon: https://github.com/Swiss-Digital-Assets-Institute/helm-charts/blob/main/charts/tooling/helm-icon.png
@@ -1425,7 +1425,7 @@ entries:
     version: 0.0.27
   - apiVersion: v2
     appVersion: 1.0.0
-    created: "2025-11-17T10:34:19.703335763Z"
+    created: "2025-11-17T10:47:46.142442128Z"
     description: Helm Charts for default Web Application
     digest: 73fdd2d48eb59eb7c148a8d766e9abf9ddc21a5b7315a10eba3e9c48c7ad3d98
     icon: https://github.com/Swiss-Digital-Assets-Institute/helm-charts/blob/main/charts/tooling/helm-icon.png
@@ -1440,7 +1440,7 @@ entries:
     version: 0.0.26
   - apiVersion: v2
     appVersion: 1.0.0
-    created: "2025-11-17T10:34:19.701398321Z"
+    created: "2025-11-17T10:47:46.140895673Z"
     description: Helm Charts for default Web Application
     digest: c995cdc67c0194e22df79ca43320cf7356b85ca10821ffb13a048727720986ea
     icon: https://github.com/Swiss-Digital-Assets-Institute/helm-charts/blob/main/charts/tooling/helm-icon.png
@@ -1455,7 +1455,7 @@ entries:
     version: 0.0.25
   - apiVersion: v2
     appVersion: 1.0.0
-    created: "2025-11-17T10:34:19.699521075Z"
+    created: "2025-11-17T10:47:46.139312049Z"
     description: Helm Charts for default Web Application
     digest: 69d34aff6b4211cdb19bd8a2ed8c1d3fade582894357d55d26ac66a4e2b8a2cc
     icon: https://github.com/Swiss-Digital-Assets-Institute/helm-charts/blob/main/charts/tooling/helm-icon.png
@@ -1470,7 +1470,7 @@ entries:
     version: 0.0.24
   - apiVersion: v2
     appVersion: 1.0.0
-    created: "2025-11-17T10:34:19.698032313Z"
+    created: "2025-11-17T10:47:46.137763671Z"
     description: Helm Charts for default Web Application
     digest: 499464551cc8d42a9f813fbdbf4c347f18fd952b0a04eba7437c99bc9a992a44
     icon: https://github.com/Swiss-Digital-Assets-Institute/helm-charts/blob/main/charts/tooling/helm-icon.png
@@ -1485,7 +1485,7 @@ entries:
     version: 0.0.23
   - apiVersion: v2
     appVersion: 1.0.0
-    created: "2025-11-17T10:34:19.696531049Z"
+    created: "2025-11-17T10:47:46.135464609Z"
     description: Helm Charts for default Web Application
     digest: feee436cd8e1b833230a7b51989943a296c2b4545c825b0e727b4aac80d220bd
     icon: https://github.com/Swiss-Digital-Assets-Institute/helm-charts/blob/main/charts/tooling/helm-icon.png
@@ -1500,7 +1500,7 @@ entries:
     version: 0.0.22
   - apiVersion: v2
     appVersion: 1.0.0
-    created: "2025-11-17T10:34:19.694993827Z"
+    created: "2025-11-17T10:47:46.133954202Z"
     description: Helm Charts for default Web Application
     digest: b4d523c6a926d4aac302fdb63194c48771fbd66985023c5962318e80f606163f
     icon: https://github.com/Swiss-Digital-Assets-Institute/helm-charts/blob/main/charts/tooling/helm-icon.png
@@ -1515,7 +1515,7 @@ entries:
     version: 0.0.21
   - apiVersion: v2
     appVersion: 1.0.0
-    created: "2025-11-17T10:34:19.692714655Z"
+    created: "2025-11-17T10:47:46.132432293Z"
     description: Helm Charts for default Web Application
     digest: dfcf5a8906f53aee8862ed018b61c750c60f6c7ca8c8ed09d4c3c3ca5fd69dc7
     icon: https://github.com/Swiss-Digital-Assets-Institute/helm-charts/blob/main/charts/tooling/helm-icon.png
@@ -1530,7 +1530,7 @@ entries:
     version: 0.0.20
   - apiVersion: v2
     appVersion: 1.0.0
-    created: "2025-11-17T10:34:19.689816651Z"
+    created: "2025-11-17T10:47:46.129536844Z"
     description: Helm Charts for default Web Application
     digest: b1081be7470faa49b599f9a5f3fab337c04ccb78c5424efaec126f20cfad6fc1
     icon: https://github.com/Swiss-Digital-Assets-Institute/helm-charts/blob/main/charts/tooling/helm-icon.png
@@ -1545,7 +1545,7 @@ entries:
     version: 0.0.19
   - apiVersion: v2
     appVersion: 1.0.0
-    created: "2025-11-17T10:34:19.688309646Z"
+    created: "2025-11-17T10:47:46.127238478Z"
     description: Helm Charts for default Web Application
     digest: beeb5e49805aec843d1c63c89910611c480a75d89641589df1fbdd8e96202da0
     icon: https://github.com/devxp-tech/helm-charts/blob/main/charts/tooling/helm-icon.png
@@ -1560,7 +1560,7 @@ entries:
     version: 0.0.17
   - apiVersion: v2
     appVersion: 1.0.0
-    created: "2025-11-17T10:34:19.686832988Z"
+    created: "2025-11-17T10:47:46.125759861Z"
     description: Helm Charts for default Web Application
     digest: 9a47ae6dcbab5876407b0a68f719d284bd471be858c0925805f8e4a45d76460c
     icon: https://github.com/devxp-tech/helm-charts/blob/main/charts/tooling/helm-icon.png
@@ -1575,7 +1575,7 @@ entries:
     version: 0.0.16
   - apiVersion: v2
     appVersion: 1.0.0
-    created: "2025-11-17T10:34:19.685055477Z"
+    created: "2025-11-17T10:47:46.124257759Z"
     description: Helm Charts for default Web Application
     digest: ba4fcba608858c41c3f46c70cb753e9e5f46ac6c6f68895ad65511e108db60fc
     icon: https://github.com/devxp-tech/helm-charts/blob/main/charts/tooling/helm-icon.png
@@ -1590,7 +1590,7 @@ entries:
     version: 0.0.15
   - apiVersion: v2
     appVersion: 1.0.0
-    created: "2025-11-17T10:34:19.683234465Z"
+    created: "2025-11-17T10:47:46.12277279Z"
     description: Helm Charts for default Web Application
     digest: 172e0293e7f4323e32ff6658aea6c8593c26cc01ce21aca113e2fe211739a853
     icon: https://github.com/devxp-tech/helm-charts/blob/main/charts/tooling/helm-icon.png
@@ -1605,7 +1605,7 @@ entries:
     version: 0.0.14
   - apiVersion: v2
     appVersion: 1.0.0
-    created: "2025-11-17T10:34:19.68172182Z"
+    created: "2025-11-17T10:47:46.121286108Z"
     description: Helm Charts for default Web Application
     digest: b78d7d71f28475c5baf066cb5b3f8b64a6cacbbb4477decbee40873dd924483b
     icon: https://github.com/devxp-tech/helm-charts/blob/main/charts/tooling/helm-icon.png
@@ -1620,7 +1620,7 @@ entries:
     version: 0.0.13
   - apiVersion: v2
     appVersion: 1.0.0
-    created: "2025-11-17T10:34:19.680206459Z"
+    created: "2025-11-17T10:47:46.118706069Z"
     description: Helm Charts for default Web Application
     digest: 85b69b8fb347ec4427edbdc6c6c4a51c1cb4d4a23fa0340fc47bf45ce63a6e51
     icon: https://github.com/devxp-tech/helm-charts/blob/main/charts/tooling/helm-icon.png
@@ -1635,7 +1635,7 @@ entries:
     version: 0.0.12
   - apiVersion: v2
     appVersion: 1.0.0
-    created: "2025-11-17T10:34:19.678659729Z"
+    created: "2025-11-17T10:47:46.117207675Z"
     description: Helm Charts for default Web Application
     digest: c273ef9a703a91b10781700fcffd245abc6287dcd46d5f57ee6aa3b9b58507b6
     icon: https://github.com/devxp-tech/helm-charts/blob/main/charts/tooling/helm-icon.png
@@ -1650,7 +1650,7 @@ entries:
     version: 0.0.11
   - apiVersion: v2
     appVersion: 1.0.0
-    created: "2025-11-17T10:34:19.676474885Z"
+    created: "2025-11-17T10:47:46.11565572Z"
     description: Helm Charts for default Web Application
     digest: 13a660e4d2bba4330548358ed0eafe577678acc44c21e9a65524f330c7a93bc6
     icon: https://github.com/devxp-tech/helm-charts/blob/main/charts/tooling/helm-icon.png
@@ -1665,7 +1665,7 @@ entries:
     version: 0.0.10
   - apiVersion: v2
     appVersion: 1.0.0
-    created: "2025-11-17T10:34:19.740365728Z"
+    created: "2025-11-17T10:47:46.18130828Z"
     description: Helm Charts for default Web Application
     digest: be2cd818cbc2c664f895112e7af22dbddd1821d09bbd77f2459f4d04fd5d0480
     icon: https://github.com/devxp-tech/helm-charts/blob/main/charts/tooling/helm-icon.png
@@ -1680,7 +1680,7 @@ entries:
     version: 0.0.9
   - apiVersion: v2
     appVersion: 1.0.0
-    created: "2025-11-17T10:34:19.73884652Z"
+    created: "2025-11-17T10:47:46.179009969Z"
     description: Helm Charts for default Web Application
     digest: ae5c204be0923169bac7e0004407eea7bbdd86885afc821298e30afdb6cd0d0d
     icon: https://github.com/devxp-tech/helm-charts/blob/main/charts/tooling/helm-icon.png
@@ -1695,7 +1695,7 @@ entries:
     version: 0.0.8
   - apiVersion: v2
     appVersion: 1.0.0
-    created: "2025-11-17T10:34:19.737282298Z"
+    created: "2025-11-17T10:47:46.177213366Z"
     description: Helm Charts for default Web Application
     digest: 4559e889fce58910a0fd85a8303e70a343ce6fef0571068d42d986f563901b20
     icon: https://github.com/devxp-tech/helm-charts/blob/main/charts/tooling/helm-icon.png
@@ -1710,7 +1710,7 @@ entries:
     version: 0.0.7
   - apiVersion: v2
     appVersion: 1.0.0
-    created: "2025-11-17T10:34:19.735298532Z"
+    created: "2025-11-17T10:47:46.175753284Z"
     description: Helm Charts for default Web Application
     digest: fd7dc0f3353a0f468f656f86a929a83cf28a45e16e23b86a01292b4ce84e38c6
     icon: https://github.com/devxp-tech/helm-charts/blob/main/charts/tooling/helm-icon.png
@@ -1725,7 +1725,7 @@ entries:
     version: 0.0.6
   - apiVersion: v2
     appVersion: 1.0.0
-    created: "2025-11-17T10:34:19.733593477Z"
+    created: "2025-11-17T10:47:46.174331483Z"
     description: Helm Charts for default Web Application
     digest: 9b98e2eca38c78e42a4d320596bf1ff1569e1ad4acd91d6d713ee2e6c1a3adde
     icon: https://github.com/devxp-tech/helm-charts/blob/main/charts/tooling/helm-icon.png
@@ -1740,7 +1740,7 @@ entries:
     version: 0.0.5
   - apiVersion: v2
     appVersion: 1.0.0
-    created: "2025-11-17T10:34:19.730373522Z"
+    created: "2025-11-17T10:47:46.170082393Z"
     description: Helm Charts for default Web Application
     digest: 3c15e2e74f55a5a3beaaf7dc1bb1875feaafec80fe15dad9c6ffbef0ad757fc9
     icon: https://github.com/devxp-tech/helm-charts/blob/main/charts/tooling/helm-icon.png
@@ -1755,7 +1755,7 @@ entries:
     version: 0.0.4
   - apiVersion: v2
     appVersion: 1.0.0
-    created: "2025-11-17T10:34:19.709872615Z"
+    created: "2025-11-17T10:47:46.14955951Z"
     description: Helm Charts for default Web Application
     digest: 78033b8af678dc3298d77becee41adf0d9d27857036adc31df1bb97d051e3f87
     icon: https://github.com/devxp-tech/helm-charts/blob/main/charts/tooling/helm-icon.png
@@ -1770,7 +1770,7 @@ entries:
     version: 0.0.3
   - apiVersion: v2
     appVersion: 1.0.0
-    created: "2025-11-17T10:34:19.691171602Z"
+    created: "2025-11-17T10:47:46.130914673Z"
     description: Helm Charts for default Web Application
     digest: ec036febf755624939966e2ca454763ec2bb96c16962872a1b5542bdc6b72425
     icon: https://github.com/devxp-tech/helm-charts/blob/main/charts/tooling/helm-icon.png
@@ -1783,4 +1783,4 @@ entries:
     urls:
     - https://raw.githubusercontent.com/Swiss-Digital-Assets-Institute/helm-charts/artifacts/webapp-0.0.2.tgz
     version: 0.0.2
-generated: "2025-11-17T10:47:28.30596022Z"
+generated: "2025-11-17T10:47:46.049379815Z"
