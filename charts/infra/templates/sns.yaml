@@ -16,7 +16,6 @@ spec:
   providerConfigRef:
     name: {{ .Values.aws.providerConfigRef.name | quote }}
 {{- end }}
-...
 
 {{- if and (.Values.aws.enabled | default true) .Values.aws.sns.enabled .Values.aws.sns.sms.enabled }}
 {{ include "infra.checkAwsMandates" . }}
