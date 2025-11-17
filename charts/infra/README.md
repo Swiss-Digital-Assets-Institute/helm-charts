@@ -1,6 +1,6 @@
 # infra
 
-![Version: 1.7.58](https://img.shields.io/badge/Version-1.7.58-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 1.0.0](https://img.shields.io/badge/AppVersion-1.0.0-informational?style=flat-square)
+![Version: 1.7.59](https://img.shields.io/badge/Version-1.7.59-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 1.0.0](https://img.shields.io/badge/AppVersion-1.0.0-informational?style=flat-square)
 
 Managing and maintaining cloud resources using crossplane
 
@@ -162,7 +162,7 @@ Managing and maintaining cloud resources using crossplane
 | aws.sns.sms.defaultSMSType | string | `"Transactional"` |  |
 | aws.sns.sms.defaultSenderID | string | `"MTGATEWAY"` |  |
 | aws.sns.sms.enabled | bool | `false` |  |
-| aws.sns.sms.monthlySpendLimit | string | `"50"` |  |
+| aws.sns.sms.monthlySpendLimit | int | `50` |  |
 | aws.sqs.contentBasedDeduplication | bool | `true` |  |
 | aws.sqs.delaySeconds | int | `0` |  |
 | aws.sqs.enabled | bool | `false` |  |
