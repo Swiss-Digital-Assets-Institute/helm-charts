@@ -30,7 +30,7 @@ metadata:
     name: {{ include "infra.snsTopicName" . }}
 spec:
   forProvider:
-    region: {{ .Values.aws.sns.sms.region | default "eu-central-2" | quote }}
+    region: {{ .Values.aws.region | default "eu-central-2" | quote }}
     attributes:
       DefaultSMSType: {{ .Values.aws.sns.sms.defaultSMSType | default "Transactional" | quote }}
       DefaultSenderID: {{ .Values.aws.sns.sms.defaultSenderID | default "MTGATEWAY" | quote }}
