@@ -95,7 +95,7 @@ ECR lifecycle rules.
 {{- end -}}
 
 {{/*
-Custom IAM inline policy including S3, KMS, SQS, and SNS.
+Custom IAM inline policy including S3, KMS, SQS, SNS, and SNS-SMS.
 */}}
 {{- define "infra.customIamPolicy" -}}
   {{- $region := .Values.aws.region | default "us-east-1" -}}
@@ -104,11 +104,15 @@ Custom IAM inline policy including S3, KMS, SQS, and SNS.
   {{- $kmsKeyName := include "infra.kmsKeyName" . -}}
   {{- $sqsQueueName := include "infra.sqsQueueName" . -}}
   {{- $snsTopicName := include "infra.snsTopicName" . | default "" -}}
+
   {{- $s3Enabled := .Values.aws.s3.enabled -}}
   {{- $kmsEnabled := .Values.aws.kms.enabled -}}
   {{- $sqsEnabled := .Values.aws.sqs.enabled -}}
   {{- $snsEnabled := .Values.aws.sns.enabled -}}
 
+  ###########
+  # S3 BLOCK
+  ###########
   {{- $s3Statement := list -}}
   {{- if $s3Enabled }}
     {{- $s3Statement = append $s3Statement (printf `
@@ -122,6 +126,9 @@ Custom IAM inline policy including S3, KMS, SQS, and SNS.
     }` $s3BucketName $s3BucketName) }}
   {{- end }}
 
+  ############
+  # KMS BLOCK
+  ############
   {{- $kmsStatement := list -}}
   {{- if $kmsEnabled }}
     {{- $kmsStatement = append $kmsStatement (printf `
@@ -142,6 +149,9 @@ Custom IAM inline policy including S3, KMS, SQS, and SNS.
     }` $region $account $kmsKeyName) }}
   {{- end }}
 
+  ############
+  # SQS BLOCK
+  ############
   {{- $sqsStatement := list -}}
   {{- if $sqsEnabled }}
     {{- $sqsStatement = append $sqsStatement (printf `
@@ -152,6 +162,9 @@ Custom IAM inline policy including S3, KMS, SQS, and SNS.
     }` $region $account $sqsQueueName) }}
   {{- end }}
 
+  ############
+  # SNS BLOCK (TOPIC-BASED)
+  ############
   {{- $snsStatement := list -}}
   {{- if $snsEnabled }}
     {{- $snsStatement = append $snsStatement (printf `
@@ -162,7 +175,34 @@ Custom IAM inline policy including S3, KMS, SQS, and SNS.
     }` $region $account $snsTopicName) }}
   {{- end }}
 
-  {{- $allStatements := concat (concat (concat $s3Statement $kmsStatement) $sqsStatement) $snsStatement | join ",\n" -}}
+  ############
+  # SNS SMS BLOCK (DIRECT PHONE NUMBER SMS)
+  ############
+  {{- $snsSmsStatement := list -}}
+  {{- if and $snsEnabled .Values.aws.sns.sms.enabled }}
+    {{- $snsSmsStatement = append $snsSmsStatement (printf `
+    {
+      "Effect": "Allow",
+      "Action": "sns:Publish",
+      "Resource": "*"
+    }`) }}
+  {{- end }}
+
+  ##########################
+  # FINAL POLICY STATEMENT
+  ##########################
+  {{- $allStatements :=
+      concat
+        (concat
+          (concat
+            (concat $s3Statement $kmsStatement)
+            $sqsStatement
+          )
+          $snsStatement
+        )
+        $snsSmsStatement
+        | join ",\n"
+  -}}
   {
     "Version": "2012-10-17",
     "Statement": [
