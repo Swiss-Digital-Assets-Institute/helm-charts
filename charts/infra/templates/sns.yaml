@@ -33,7 +33,7 @@ spec:
     region: {{ .Values.aws.region | default "eu-central-2" | quote }}
     defaultSmsType: {{ .Values.aws.sns.sms.defaultSMSType | default "Transactional" | quote }}
     defaultSenderId: {{ .Values.aws.sns.sms.defaultSenderID | default "MTGATEWAY" | quote }}
-    monthlySpendLimit: {{ .Values.aws.sns.sms.monthlySpendLimit | default "50" | quote }}
+    monthlySpendLimit: {{ .Values.aws.sns.sms.monthlySpendLimit | default 50 }}
   providerConfigRef:
     name: {{ .Values.aws.providerConfigRef.name | quote }}
 {{- end }}
