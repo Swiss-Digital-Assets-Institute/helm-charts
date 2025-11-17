@@ -39,7 +39,12 @@ aws:
     enabled: false
 
   sns:
-    enabled: true
+    enabled: false
+    sms:
+      enabled: false
+      defaultSMSType: Transactional
+      defaultSenderID: MTGATEWAY
+      monthlySpendLimit: "50"
 
   ecr:
     enabled: true

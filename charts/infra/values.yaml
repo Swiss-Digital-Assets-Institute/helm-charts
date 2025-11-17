@@ -211,6 +211,11 @@ aws:
 
   sns:
     enabled: false
+    sms:
+      enabled: false
+      defaultSMSType: Transactional
+      defaultSenderID: MTGATEWAY
+      monthlySpendLimit: "50"
 
   cognito:
     userpool:
