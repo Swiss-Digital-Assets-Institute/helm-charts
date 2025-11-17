@@ -24,10 +24,10 @@ spec:
 apiVersion: sns.aws.upbound.io/v1beta1
 kind: SMSPreferences
 metadata:
-  name: {{ include "infra.snsTopicName" . }}
+  name: {{ include "infra.snsTopicName" . }}-sms-preferences
   namespace: {{ .Release.Namespace }}
   labels:
-    name: {{ include "infra.snsTopicName" . }}
+    name: {{ include "infra.snsTopicName" . }}-sms-preferences
 spec:
   forProvider:
     region: {{ .Values.aws.region | default "eu-central-2" | quote }}
