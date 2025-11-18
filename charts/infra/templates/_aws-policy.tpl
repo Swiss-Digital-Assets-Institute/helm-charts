@@ -110,9 +110,7 @@ Custom IAM inline policy including S3, KMS, SQS, SNS, and SNS-SMS.
   {{- $sqsEnabled := .Values.aws.sqs.enabled -}}
   {{- $snsEnabled := .Values.aws.sns.enabled -}}
 
-  ###########
-  # S3 BLOCK
-  ###########
+  {{- /* S3 BLOCK */ -}}
   {{- $s3Statement := list -}}
   {{- if $s3Enabled }}
     {{- $s3Statement = append $s3Statement (printf `
@@ -126,9 +124,7 @@ Custom IAM inline policy including S3, KMS, SQS, SNS, and SNS-SMS.
     }` $s3BucketName $s3BucketName) }}
   {{- end }}
 
-  ############
-  # KMS BLOCK
-  ############
+  {{- /* KMS BLOCK */ -}}
   {{- $kmsStatement := list -}}
   {{- if $kmsEnabled }}
     {{- $kmsStatement = append $kmsStatement (printf `
@@ -149,9 +145,7 @@ Custom IAM inline policy including S3, KMS, SQS, SNS, and SNS-SMS.
     }` $region $account $kmsKeyName) }}
   {{- end }}
 
-  ############
-  # SQS BLOCK
-  ############
+  {{- /* SQS BLOCK */ -}}
   {{- $sqsStatement := list -}}
   {{- if $sqsEnabled }}
     {{- $sqsStatement = append $sqsStatement (printf `
@@ -162,9 +156,7 @@ Custom IAM inline policy including S3, KMS, SQS, SNS, and SNS-SMS.
     }` $region $account $sqsQueueName) }}
   {{- end }}
 
-  ############
-  # SNS BLOCK (TOPIC-BASED)
-  ############
+  {{- /* SNS BLOCK (TOPIC-BASED) */ -}}
   {{- $snsStatement := list -}}
   {{- if $snsEnabled }}
     {{- $snsStatement = append $snsStatement (printf `
@@ -175,9 +167,7 @@ Custom IAM inline policy including S3, KMS, SQS, SNS, and SNS-SMS.
     }` $region $account $snsTopicName) }}
   {{- end }}
 
-  ############
-  # SNS SMS BLOCK (DIRECT PHONE NUMBER SMS)
-  ############
+  {{- /* SNS SMS BLOCK (DIRECT PHONE NUMBER SMS) */ -}}
   {{- $snsSmsStatement := list -}}
   {{- if and $snsEnabled .Values.aws.sns.sms.enabled }}
     {{- $snsSmsStatement = append $snsSmsStatement (printf `
@@ -188,9 +178,7 @@ Custom IAM inline policy including S3, KMS, SQS, SNS, and SNS-SMS.
     }`) }}
   {{- end }}
 
-  ##########################
-  # FINAL POLICY STATEMENT
-  ##########################
+  {{- /* FINAL POLICY STATEMENT */ -}}
   {{- $allStatements :=
       concat
         (concat
@@ -201,12 +189,11 @@ Custom IAM inline policy including S3, KMS, SQS, SNS, and SNS-SMS.
           $snsStatement
         )
         $snsSmsStatement
-        | join ",\n"
   -}}
   {
     "Version": "2012-10-17",
     "Statement": [
-      {{ $allStatements }}
+      {{ $allStatements | join ",\n" }}
     ]
   }
 {{- end -}}
