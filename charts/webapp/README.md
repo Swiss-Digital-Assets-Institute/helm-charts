@@ -1,6 +1,6 @@
 # webapp
 
-![Version: 0.2.8](https://img.shields.io/badge/Version-0.2.8-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 1.0.0](https://img.shields.io/badge/AppVersion-1.0.0-informational?style=flat-square)
+![Version: 0.2.9](https://img.shields.io/badge/Version-0.2.9-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 1.0.0](https://img.shields.io/badge/AppVersion-1.0.0-informational?style=flat-square)
 
 Helm Charts for default Web Application
 
@@ -136,7 +136,7 @@ Helm Charts for default Web Application
 | logging.podLogs | object | `{"enabled":true,"relabelings":[{"sourceLabels":["__meta_kubernetes_pod_node_name"],"targetLabel":"__host__"},{"action":"labelmap","regex":"__meta_kubernetes_pod_label_(.+)"},{"action":"replace","sourceLabels":["__meta_kubernetes_namespace"],"targetLabel":"namespace"},{"action":"replace","sourceLabels":["__meta_kubernetes_pod_name"],"targetLabel":"pod"},{"action":"replace","sourceLabels":["__meta_kubernetes_container_name"],"targetLabel":"container"},{"replacement":"/var/log/pods/*$1/*.log","separator":"/","sourceLabels":["__meta_kubernetes_pod_uid","__meta_kubernetes_pod_container_name"],"targetLabel":"__path__"}]}` | If enabled, create a PodLogs resource for logging |
 | migration | object | `{"enabled":false}` | migration Set liquibase migration |
 | migration.enabled | bool | `false` | migration.enable liquibase migration |
-| monitoring | object | `{"alerts":{"annotations":{},"enabled":false,"labels":{},"namespace":null},"rules":{"additionalGroups":[],"alerting":true,"annotations":{},"enabled":false,"labels":{},"namespace":null},"serviceMonitor":{"annotations":{},"enabled":false,"extraPort":{"enabled":false,"name":"tcp-metrics","number":9090,"protocol":"TCP","targetPort":9090},"interval":"60s","labels":{},"namespace":null,"namespaceSelector":{},"path":"/metrics","relabelings":[],"scheme":"http","scrapeTimeout":"15s"}}` | monitoring Enable Monitoring Features |
+| monitoring | object | `{"alerts":{"annotations":{},"enabled":false,"labels":{},"namespace":null},"rules":{"additionalGroups":[],"alerting":true,"annotations":{},"enabled":false,"labels":{},"namespace":null},"serviceMonitor":{"annotations":{},"enabled":false,"extraPort":{"enabled":false,"name":"tcp-metrics","number":9090,"protocol":"TCP","targetPort":9090},"interval":"60s","labels":{},"namespace":null,"namespaceSelector":{},"path":"/metrics","relabelings":[],"scheme":"http","scrapeTimeout":"15s"},"tracing":{"enabled":false,"port":9090}}` | monitoring Enable Monitoring Features |
 | monitoring.alerts.annotations | object | `{}` | Additional annotations for the alerts PrometheusRule resource |
 | monitoring.alerts.enabled | bool | `false` | If enabled, create PrometheusRule resource with app alerting rules |
 | monitoring.alerts.labels | object | `{}` | Additional labels for the alerts PrometheusRule resource |
@@ -163,6 +163,8 @@ Helm Charts for default Web Application
 | monitoring.serviceMonitor.relabelings | list | `[]` | ServiceMonitor relabel configs to apply to samples before scraping https://github.com/prometheus-operator/prometheus-operator/blob/master/Documentation/api.md#relabelconfig |
 | monitoring.serviceMonitor.scheme | string | `"http"` | ServiceMonitor will use http by default, but you can pick https as well |
 | monitoring.serviceMonitor.scrapeTimeout | string | `"15s"` | ServiceMonitor scrape timeout in Go duration format (e.g. 15s) |
+| monitoring.tracing.enabled | bool | `false` | If enabled, automatically inject OpenTelemetry environment variables When enabled, the following environment variables are automatically populated with defaults: - OTEL_SERVICE_NAME (defaults to Release.Namespace) - OTEL_EXPORTER_OTLP_ENDPOINT (defaults to http://alloy.observability.svc.cluster.local:4318/v1/traces) - METRICS_PORT (defaults to 9090) - METRICS_APP_NAME (defaults to Release.Name) |
+| monitoring.tracing.port | int | `9090` | Port for the application (optional, defaults to 9090) |
 | name | string | `""` | name is the GitHub repository name of this application deployment |
 | nameOverride | object | `{}` | nameOverride allows partial override of the name |
 | namespace | object | `{"annotations":{},"enabled":false,"labels":{}}` | namespace configuration |
