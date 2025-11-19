@@ -17,6 +17,18 @@
 {{- range $key, $value := $secrets }}
   {{- $list = append $list (dict "name" $key "valueFrom" $value )}}
 {{- end }}
+
+{{- if .Values.monitoring.tracing.enabled }}
+  {{- $otelServiceName := .Values.monitoring.tracing.serviceName | default .Release.Namespace }}
+  {{- $metricsAppName := .Values.monitoring.tracing.metricsAppName | default .Release.Name }}
+  {{- $exporterEndpoint := .Values.monitoring.tracing.exporterEndpoint | default "http://alloy.observability.svc.cluster.local:4318/v1/traces" }}
+  {{- $metricsPort := .Values.monitoring.tracing.port | default 9090 }}
+  {{- $list = append $list (dict "name" "OTEL_SERVICE_NAME" "value" $otelServiceName) }}
+  {{- $list = append $list (dict "name" "OTEL_EXPORTER_OTLP_ENDPOINT" "value" $exporterEndpoint) }}
+  {{- $list = append $list (dict "name" "METRICS_PORT" "value" (toString $metricsPort)) }}
+  {{- $list = append $list (dict "name" "METRICS_APP_NAME" "value" $metricsAppName) }}
+{{- end }}
+
 {{- toYaml $list }}
 {{- end }}
 
@@ -44,6 +56,14 @@
 {{- range $key, $value := $secrets }}
   {{- $list = append $list (dict "name" $key "valueFrom" $value )}}
 {{- end }}
+
+{{- if and .tracing .tracing.enabled }}
+  {{- $list = append $list (dict "name" "OTEL_SERVICE_NAME" "value" (.tracing.serviceName | default .releaseNamespace)) }}
+  {{- $list = append $list (dict "name" "OTEL_EXPORTER_OTLP_ENDPOINT" "value" (.tracing.exporterEndpoint | default "http://alloy.observability.svc.cluster.local:4318/v1/traces")) }}
+  {{- $list = append $list (dict "name" "METRICS_PORT" "value" (toString (.tracing.port | default 9090))) }}
+  {{- $list = append $list (dict "name" "METRICS_APP_NAME" "value" (.tracing.metricsAppName | default .releaseName)) }}
+{{- end }}
+
 {{- toYaml $list }}
 {{- end }}
 

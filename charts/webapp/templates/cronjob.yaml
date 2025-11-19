@@ -32,7 +32,13 @@ spec:
             command: {{ toYaml (default list .command) | nindent 14 }}
             args: {{ toYaml (default list .args) | nindent 14 }}
             resources: {{ default $root.Values.resources .resources | toYaml | nindent 14 }}
-            env: {{- (include "merged-envs" (dict "overrides" .envs "envs" $root.Values.envs )) | nindent 14 }}
+            env: {{- (include "merged-envs" (dict
+              "overrides" .envs
+              "envs" $root.Values.envs
+              "tracing" $root.Values.monitoring.tracing
+              "releaseNamespace" $root.Release.Namespace
+              "releaseName" $root.Release.Name
+            )) | nindent 14 }}
             envFrom: {{- toYaml $root.Values.envFrom | nindent 14 }}
             volumeMounts: {{  toYaml $root.Values.volumeMounts | nindent 14 }}
           nodeSelector: {{ toYaml $root.Values.nodeSelector | nindent 12 }}
