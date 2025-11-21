@@ -100,9 +100,9 @@ Return the SNS Topic name
 {{- end }}
 
 {{/*
-infra.cognito.Userpool.Name:
+infra.cognitoUserPoolName:
 Defaults to org-env-releaseName unless overridden.
 */}}
-{{- define "infra.cognitoUserpoolName" -}}
-    {{- default (include "infra.resourceName" .) .Values.aws.cdn.distributionNameOverride -}}
+{{- define "infra.cognitoUserPoolName" -}}
+    {{- default (include "infra.resourceName" .) .Values.aws.cognito.userpool.nameOverride | default "" -}}
 {{- end -}}
