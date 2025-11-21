@@ -4,20 +4,20 @@
 apiVersion: {{ include "infra.CognotoUserpoolApiVersion" . }}
 kind: CognitoUserPool
 metadata:
-  name: {{ include "infra.cognitoUserpoolName" . }}-userpool
+  name: {{ include "infra.cognitoUserPoolName" . }}-userpool
   namespace: {{ .Release.Namespace }}
   labels:
-    name: {{ include "infra.cognitoUserpoolName" . }}-userpool
+    name: {{ include "infra.cognitoUserPoolName" . }}-userpool
 spec:
-  region: {{ default "eu-central-2" .Values.aws.region | quote }} 
-  userPoolName: {{ include "infra.cognitoUserpoolName" . }}-userpool
+  region: {{ default "eu-central-2" .Values.aws.region | quote }}
+  userPoolName: {{ include "infra.cognitoUserPoolName" . }}-userpool
   signInIdentifiers:
     email: {{ if has "email" .Values.aws.cognito.userpool.signInIdentifiers }}enabled{{ else }}disabled{{ end }}
     phoneNumber: {{ if has "phoneNumber" .Values.aws.cognito.userpool.signInIdentifiers }}enabled{{ else }}disabled{{ end }}
     username: {{ if has "username" .Values.aws.cognito.userpool.signInIdentifiers }}enabled{{ else }}disabled{{ end }}
   enableSelfRegistration: {{ default false .Values.aws.cognito.userpool.enableSelfRegistration }}
   connectionSecretRef:
-    name: {{ include "infra.cognitoUserpoolName" . }}-infra-cognito-userpool
+    name: {{ include "infra.cognitoUserPoolName" . }}-infra-cognito-userpool
     namespace: {{ .Release.Namespace }}
   requiredAttributes:
     {{- range .Values.aws.cognito.userpool.requiredAttributes }}
