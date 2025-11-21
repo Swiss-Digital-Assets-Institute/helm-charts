@@ -104,11 +104,13 @@ Custom IAM inline policy including S3, KMS, SQS, SNS, and SNS-SMS.
   {{- $kmsKeyName := include "infra.kmsKeyName" . -}}
   {{- $sqsQueueName := include "infra.sqsQueueName" . -}}
   {{- $snsTopicName := include "infra.snsTopicName" . | default "" -}}
+  {{- $cognitoUserPoolName := include "infra.cognitoUserPoolName" . | default "" -}}
 
   {{- $s3Enabled := .Values.aws.s3.enabled -}}
   {{- $kmsEnabled := .Values.aws.kms.enabled -}}
   {{- $sqsEnabled := .Values.aws.sqs.enabled -}}
   {{- $snsEnabled := .Values.aws.sns.enabled -}}
+  {{- $cognitoEnabled := .Values.aws.cognito.userpool.enabled -}}
 
   {{- /* S3 BLOCK */ -}}
   {{- $s3Statement := list -}}
@@ -178,17 +180,40 @@ Custom IAM inline policy including S3, KMS, SQS, SNS, and SNS-SMS.
     }`) }}
   {{- end }}
 
+  {{- /* COGNITO USER POOL BLOCK */ -}}
+  {{- $cognitoStatement := list -}}
+  {{- if $cognitoEnabled }}
+    {{- $cognitoStatement = append $cognitoStatement (printf `
+    {
+      "Effect": "Allow",
+      "Action": [
+        "cognito-identity:*",
+        "cognito-idp:*",
+        "cognito-sync:*"
+      ],
+      "Resource": "*",
+      "Condition": {
+        "StringEquals": {
+          "aws:ResourceTag/crossplane-name": "%s-userpool"
+        }
+      }
+    }` $cognitoUserPoolName) }}
+  {{- end }}
+
   {{- /* FINAL POLICY STATEMENT */ -}}
   {{- $allStatements :=
       concat
         (concat
           (concat
-            (concat $s3Statement $kmsStatement)
-            $sqsStatement
+            (concat
+              (concat $s3Statement $kmsStatement)
+              $sqsStatement
+            )
+            $snsStatement
           )
-          $snsStatement
+          $snsSmsStatement
         )
-        $snsSmsStatement
+        $cognitoStatement
   -}}
   {
     "Version": "2012-10-17",
