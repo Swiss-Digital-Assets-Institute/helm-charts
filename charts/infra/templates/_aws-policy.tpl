@@ -95,7 +95,7 @@ ECR lifecycle rules.
 {{- end -}}
 
 {{/*
-Custom IAM inline policy including S3, KMS, SQS, SNS, and SNS-SMS.
+Custom IAM inline policy including S3, KMS, SQS, SNS, SNS-SMS, and DynamoDB.
 */}}
 {{- define "infra.customIamPolicy" -}}
   {{- $region := .Values.aws.region | default "us-east-1" -}}
@@ -111,6 +111,7 @@ Custom IAM inline policy including S3, KMS, SQS, SNS, and SNS-SMS.
   {{- $sqsEnabled := .Values.aws.sqs.enabled -}}
   {{- $snsEnabled := .Values.aws.sns.enabled -}}
   {{- $cognitoEnabled := .Values.aws.cognito.userpool.enabled -}}
+  {{- $dynamodbEnabled := .Values.aws.dynamodb.enabled -}}
 
   {{- /* S3 BLOCK */ -}}
   {{- $s3Statement := list -}}
@@ -200,20 +201,62 @@ Custom IAM inline policy including S3, KMS, SQS, SNS, and SNS-SMS.
     }` $cognitoUserPoolName) }}
   {{- end }}
 
+  {{- /* DYNAMODB BLOCK */ -}}
+  {{- $dynamodbStatement := list -}}
+  {{- if $dynamodbEnabled }}
+    {{- $tables := .Values.aws.dynamodb.tables | default list -}}
+    {{- if $tables }}
+      {{- $resources := list -}}
+      {{- $org := .Values.global.org -}}
+      {{- $env := .Values.global.env -}}
+      {{- range $table := $tables }}
+        {{- $tableName := "" -}}
+        {{- if $table.nameOverride -}}
+          {{- $tableName = $table.nameOverride -}}
+        {{- else -}}
+          {{- $tableName = printf "%s-%s-%s" $org $env $table.name -}}
+        {{- end -}}
+        {{- $resources = append $resources (printf "arn:aws:dynamodb:%s:%s:table/%s" $region $account $tableName) -}}
+        {{- if or $table.globalSecondaryIndex $table.localSecondaryIndex }}
+          {{- $resources = append $resources (printf "arn:aws:dynamodb:%s:%s:table/%s/index/*" $region $account $tableName) -}}
+        {{- end }}
+      {{- end }}
+      {{- $dynamodbStatement = append $dynamodbStatement (printf `
+    {
+      "Effect": "Allow",
+      "Action": [
+        "dynamodb:GetItem",
+        "dynamodb:PutItem",
+        "dynamodb:UpdateItem",
+        "dynamodb:DeleteItem",
+        "dynamodb:BatchGetItem",
+        "dynamodb:BatchWriteItem",
+        "dynamodb:Query",
+        "dynamodb:Scan",
+        "dynamodb:DescribeTable"
+      ],
+      "Resource": %s
+    }` (toJson $resources)) }}
+    {{- end }}
+  {{- end }}
+
   {{- /* FINAL POLICY STATEMENT */ -}}
   {{- $allStatements :=
       concat
         (concat
           (concat
             (concat
-              (concat $s3Statement $kmsStatement)
-              $sqsStatement
+              (concat
+                (concat $s3Statement $kmsStatement)
+                $sqsStatement
+              )
+              $snsStatement
             )
-            $snsStatement
+            $snsSmsStatement
           )
-          $snsSmsStatement
+          $cognitoStatement
         )
-        $cognitoStatement
+        $dynamodbStatement
   -}}
   {
     "Version": "2012-10-17",
