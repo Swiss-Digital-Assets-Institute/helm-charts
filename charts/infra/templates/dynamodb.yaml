@@ -5,8 +5,10 @@
 apiVersion: {{ include "infra.dynamodbApiVersion" $ }}
 kind: Table
 metadata:
-  name: {{ include "infra.dynamodbTableName" (dict "root" $ "name" .name "nameOverride" (default "" .nameOverride)) }}
+  name: {{ .nameOverride | default .name }}
   namespace: {{ $.Release.Namespace }}
+  annotations:
+    crossplane.io/external-name: {{ .nameOverride | default .name }}
   labels:
     app.kubernetes.io/name: {{ include "infra.releaseName" $ }}
     app.kubernetes.io/instance: {{ include "infra.releaseName" $ }}

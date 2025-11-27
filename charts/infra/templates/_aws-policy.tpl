@@ -207,15 +207,8 @@ Custom IAM inline policy including S3, KMS, SQS, SNS, SNS-SMS, and DynamoDB.
     {{- $tables := .Values.aws.dynamodb.tables | default list -}}
     {{- if $tables }}
       {{- $resources := list -}}
-      {{- $org := .Values.global.org -}}
-      {{- $env := .Values.global.env -}}
       {{- range $table := $tables }}
-        {{- $tableName := "" -}}
-        {{- if $table.nameOverride -}}
-          {{- $tableName = $table.nameOverride -}}
-        {{- else -}}
-          {{- $tableName = printf "%s-%s-%s" $org $env $table.name -}}
-        {{- end -}}
+        {{- $tableName := $table.nameOverride | default $table.name -}}
         {{- $resources = append $resources (printf "arn:aws:dynamodb:%s:%s:table/%s" $region $account $tableName) -}}
         {{- if or $table.globalSecondaryIndex $table.localSecondaryIndex }}
           {{- $resources = append $resources (printf "arn:aws:dynamodb:%s:%s:table/%s/index/*" $region $account $tableName) -}}
