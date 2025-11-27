@@ -1,6 +1,6 @@
 # infra
 
-![Version: 1.7.62](https://img.shields.io/badge/Version-1.7.62-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 1.0.0](https://img.shields.io/badge/AppVersion-1.0.0-informational?style=flat-square)
+![Version: 1.7.63](https://img.shields.io/badge/Version-1.7.63-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 1.0.0](https://img.shields.io/badge/AppVersion-1.0.0-informational?style=flat-square)
 
 Managing and maintaining cloud resources using crossplane
 
@@ -63,6 +63,9 @@ Managing and maintaining cloud resources using crossplane
 | aws.cognito.userpool.requiredAttributes | list | `[]` |  |
 | aws.cognito.userpool.signInIdentifiers | list | `[]` |  |
 | aws.cognito.userpool.tags | object | `{}` |  |
+| aws.dynamodb.additional_tags | object | `{}` |  |
+| aws.dynamodb.enabled | bool | `false` |  |
+| aws.dynamodb.tables | list | `[]` |  |
 | aws.ecr.accountAccessList | list | `[]` |  |
 | aws.ecr.additionalAnnotations | object | `{}` |  |
 | aws.ecr.additional_tags | object | `{}` |  |
