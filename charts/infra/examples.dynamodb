@@ -1,0 +1,289 @@
+aws:
+  enabled: true
+  region: "us-west-1"
+  providerConfigRef:
+    name: "aws-provider"
+
+  dynamodb:
+    enabled: true
+
+    # ---------------------------------------------------------
+    # Global tags applied to all DynamoDB tables
+    # ---------------------------------------------------------
+    additional_tags:
+      Environment: "production"
+      ManagedBy: "crossplane"
+      CostCenter: "engineering"
+      Team: "platform"
+
+    tables:
+      # ---------------------------------------------------------
+      # Example 1: Simple PAY_PER_REQUEST table
+      # Minimal configuration for on-demand billing
+      # ---------------------------------------------------------
+      - name: users-simple
+        billingMode: PAY_PER_REQUEST
+        attribute:
+          - name: UserId
+            type: S
+        hashKey: UserId
+        ttl:
+          attributeName: expires_at
+          enabled: true
+
+      # ---------------------------------------------------------
+      # Example 2: Provisioned table with Read/Write capacity
+      # ---------------------------------------------------------
+      - name: orders-provisioned
+        billingMode: PROVISIONED
+        readCapacity: 20
+        writeCapacity: 10
+        attribute:
+          - name: OrderId
+            type: S
+          - name: OrderDate
+            type: S
+        hashKey: OrderId
+        rangeKey: OrderDate
+        tags:
+          Application: "order-service"
+          Version: "2.0"
+
+      # ---------------------------------------------------------
+      # Example 3: Table with Global Secondary Index (GSI)
+      # GSI allows querying on different attributes
+      # ---------------------------------------------------------
+      - name: customers-with-gsi
+        billingMode: PROVISIONED
+        readCapacity: 15
+        writeCapacity: 5
+        attribute:
+          - name: CustomerId
+            type: S
+          - name: Email
+            type: S
+          - name: Country
+            type: S
+          - name: CreatedAt
+            type: S
+        hashKey: CustomerId
+        globalSecondaryIndex:
+          # GSI 1: Query by Email
+          - name: EmailIndex
+            hashKey: Email
+            projectionType: INCLUDE
+            nonKeyAttributes:
+              - CustomerId
+              - Country
+            readCapacity: 5
+            writeCapacity: 2
+          # GSI 2: Query by Country + CreatedAt
+          - name: CountryCreatedIndex
+            hashKey: Country
+            rangeKey: CreatedAt
+            projectionType: ALL
+            readCapacity: 10
+            writeCapacity: 5
+
+      # ---------------------------------------------------------
+      # Example 4: Table with Local Secondary Index (LSI)
+      # LSI must be created at table creation time
+      # Must have same hash key as main table, different range key
+      # ---------------------------------------------------------
+      - name: audit-logs
+        billingMode: PROVISIONED
+        readCapacity: 25
+        writeCapacity: 15
+        attribute:
+          - name: AuditId
+            type: S
+          - name: Timestamp
+            type: "N"
+          - name: UserId
+            type: S
+          - name: Severity
+            type: S
+        hashKey: AuditId
+        rangeKey: Timestamp
+        localSecondaryIndex:
+          - name: UserIdIndex
+            rangeKey: UserId
+            projectionType: INCLUDE
+            nonKeyAttributes:
+              - Severity
+          - name: SeverityIndex
+            rangeKey: Severity
+            projectionType: ALL
+
+      # ---------------------------------------------------------
+      # Example 5: Table with DynamoDB Streams enabled
+      # Streams capture item-level modifications
+      # ---------------------------------------------------------
+      - name: events-with-stream
+        billingMode: PAY_PER_REQUEST
+        attribute:
+          - name: EventType
+            type: S
+          - name: EventId
+            type: S
+          - name: OccurredAt
+            type: "N"
+        hashKey: EventType
+        rangeKey: EventId
+        streamSpecification:
+          streamViewType: NEW_AND_OLD_IMAGES
+        ttl:
+          attributeName: expiration
+          enabled: true
+
+      # ---------------------------------------------------------
+      # Example 6: Table with Point-in-Time Recovery (PITR)
+      # Allows recovery to any point within the retention window
+      # ---------------------------------------------------------
+      - name: transactions-with-pitr
+        billingMode: PROVISIONED
+        readCapacity: 30
+        writeCapacity: 20
+        attribute:
+          - name: TransactionId
+            type: S
+          - name: AccountId
+            type: S
+          - name: TransactionDate
+            type: S
+        hashKey: TransactionId
+        rangeKey: TransactionDate
+        globalSecondaryIndex:
+          - name: AccountIdIndex
+            hashKey: AccountId
+            projectionType: ALL
+            readCapacity: 10
+            writeCapacity: 5
+        pointInTimeRecoverySpecification:
+          pointInTimeRecoveryEnabled: true
+
+      # ---------------------------------------------------------
+      # Example 7: Complex multi-index table
+      # Demonstrates multiple GSIs, TTL, streams, and custom naming
+      # ---------------------------------------------------------
+      - name: products-catalog
+        nameOverride: ecommerce-products
+        billingMode: PROVISIONED
+        readCapacity: 50
+        writeCapacity: 20
+        attribute:
+          - name: ProductId
+            type: S
+          - name: SKU
+            type: S
+          - name: Category
+            type: S
+          - name: Price
+            type: "N"
+          - name: CreatedDate
+            type: S
+          - name: LastModified
+            type: "N"
+        hashKey: ProductId
+        globalSecondaryIndex:
+          # Search products by SKU
+          - name: SKUIndex
+            hashKey: SKU
+            projectionType: ALL
+            readCapacity: 20
+            writeCapacity: 10
+          # Browse by Category and Price range
+          - name: CategoryPriceIndex
+            hashKey: Category
+            rangeKey: Price
+            projectionType: INCLUDE
+            nonKeyAttributes:
+              - ProductId
+              - SKU
+              - CreatedDate
+            readCapacity: 15
+            writeCapacity: 8
+          # Recently modified products
+          - name: LastModifiedIndex
+            hashKey: Category
+            rangeKey: LastModified
+            projectionType: KEYS_ONLY
+            readCapacity: 10
+            writeCapacity: 5
+        streamSpecification:
+          streamViewType: NEW_IMAGE
+        ttl:
+          attributeName: deletion_scheduled_at
+          enabled: true
+        pointInTimeRecoverySpecification:
+          pointInTimeRecoveryEnabled: true
+
+      # ---------------------------------------------------------
+      # Example 8: Table with custom name override
+      # Useful for maintaining backward compatibility or naming conventions
+      # ---------------------------------------------------------
+      - name: sessions
+        nameOverride: user-session-store
+        billingMode: PAY_PER_REQUEST
+        attribute:
+          - name: SessionId
+            type: S
+          - name: UserId
+            type: S
+        hashKey: SessionId
+        globalSecondaryIndex:
+          - name: UserIdIndex
+            hashKey: UserId
+            projectionType: KEYS_ONLY
+            readCapacity: 10
+            writeCapacity: 10
+        ttl:
+          attributeName: expires_at
+          enabled: true
+
+      # ---------------------------------------------------------
+      # Example 9: Composite key table (hash + range)
+      # Useful for time-series or hierarchical data
+      # ---------------------------------------------------------
+      - name: metrics
+        billingMode: PROVISIONED
+        readCapacity: 40
+        writeCapacity: 30
+        attribute:
+          - name: MetricName
+            type: S
+          - name: Timestamp
+            type: "N"
+          - name: Source
+            type: S
+          - name: Value
+            type: "N"
+        hashKey: MetricName
+        rangeKey: Timestamp
+        globalSecondaryIndex:
+          - name: SourceTimestampIndex
+            hashKey: Source
+            rangeKey: Timestamp
+            projectionType: INCLUDE
+            nonKeyAttributes:
+              - Value
+            readCapacity: 20
+            writeCapacity: 15
+        streamSpecification:
+          streamViewType: NEW_AND_OLD_IMAGES
+        ttl:
+          attributeName: ttl
+          enabled: true
+        pointInTimeRecoverySpecification:
+          pointInTimeRecoveryEnabled: true
+
+      # ---------------------------------------------------------
+      # Example 10: Minimal table (Pay-per-request, no extras)
+      # For development, testing, or low-volume workloads
+      # ---------------------------------------------------------
+      - name: dev-scratch
+        billingMode: PAY_PER_REQUEST
+        attribute:
+          - name: Id
+            type: S
+        hashKey: Id

@@ -249,6 +249,41 @@ aws:
       mfaConfiguration: "OFF"
       tags: {}
 
+  dynamodb:
+    enabled: false
+    additional_tags: {}
+    tables: []
+    # Example table configuration:
+    # - name: users-table
+    #   nameOverride: ""  # Optional: override the full table name
+    #   attribute:
+    #     - name: UserId
+    #       type: S
+    #     - name: GameTitle
+    #       type: S
+    #     - name: TopScore
+    #       type: "N"
+    #   hashKey: UserId
+    #   rangeKey: GameTitle
+    #   billingMode: PROVISIONED  # PROVISIONED or PAY_PER_REQUEST (default: PAY_PER_REQUEST)
+    #   readCapacity: 20  # Required if billingMode is PROVISIONED
+    #   writeCapacity: 20  # Required if billingMode is PROVISIONED
+    #   globalSecondaryIndex:
+    #     - name: GameTitleIndex
+    #       hashKey: GameTitle
+    #       rangeKey: TopScore
+    #       projectionType: INCLUDE
+    #       nonKeyAttributes:
+    #         - UserId
+    #       readCapacity: 10   # Required for PROVISIONED tables
+    #       writeCapacity: 10  # Required for PROVISIONED tables
+    #   localSecondaryIndex: []  # Optional local secondary indexes
+    #   ttl:
+    #     attributeName: TimeToExist
+    #     enabled: false
+    #   streamSpecification: {}  # Optional stream configuration
+    #   pointInTimeRecoverySpecification: {}  # Optional point-in-time recovery
+
 externalSecrets:
   enabled: false
   nameOverride: ""
