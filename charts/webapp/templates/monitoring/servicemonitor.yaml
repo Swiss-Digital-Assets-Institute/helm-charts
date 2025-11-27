@@ -15,5 +15,5 @@ spec:
     matchLabels:
       app.kubernetes.io/name: {{ .Values.name }}
   endpoints:
-    {{- include "service-monitor" ( dict "monitor" .Values.monitoring "port" .Values.service.port.name "actuator" .Values.actuator ) | indent 4 }}
+    {{- include "service-monitor" ( dict "monitor" .Values.monitoring "port" .Values.service.port.name "actuator" .Values.actuator "root" . ) | indent 4 }}
 {{- end }}
