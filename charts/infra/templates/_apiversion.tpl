@@ -36,3 +36,7 @@ edge.hashgraphgroup.com/v1alpha1
 {{- define "infra.CognotoUserpoolApiVersion" -}}
 identity.hashgraphgroup.com/v1alpha1
 {{- end -}}
+
+{{- define "infra.dynamodbApiVersion" -}}
+dynamodb.aws.upbound.io/v1beta2
+{{- end -}}

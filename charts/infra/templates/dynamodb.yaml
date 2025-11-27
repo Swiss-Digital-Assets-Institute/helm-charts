@@ -1,0 +1,68 @@
+{{- if and .Values.aws.dynamodb.enabled (default true .Values.aws.enabled) }}
+{{ include "infra.checkAwsMandates" . }}
+{{- range .Values.aws.dynamodb.tables }}
+---
+apiVersion: {{ include "infra.dynamodbApiVersion" $ }}
+kind: Table
+metadata:
+  name: {{ include "infra.dynamodbTableName" (dict "root" $ "name" .name "nameOverride" (default "" .nameOverride)) }}
+  namespace: {{ $.Release.Namespace }}
+  labels:
+    app.kubernetes.io/name: {{ include "infra.releaseName" $ }}
+    app.kubernetes.io/instance: {{ include "infra.releaseName" $ }}
+    app.kubernetes.io/version: {{ $.Chart.AppVersion | quote }}
+    app.kubernetes.io/managed-by: {{ $.Release.Service | quote }}
+    helm.sh/chart: {{ printf "%s-%s" $.Chart.Name ($.Chart.Version | replace "+" "_") }}
+spec:
+  forProvider:
+    region: {{ $.Values.aws.region | quote }}
+    {{- if .attribute }}
+    attribute:
+{{ toYaml .attribute | indent 4 }}
+    {{- end }}
+    {{- if .hashKey }}
+    hashKey: {{ .hashKey | quote }}
+    {{- end }}
+    {{- if .rangeKey }}
+    rangeKey: {{ .rangeKey | quote }}
+    {{- end }}
+    billingMode: {{ .billingMode | default "PAY_PER_REQUEST" | quote }}
+    {{- if and (ne (.billingMode | default "PAY_PER_REQUEST") "PAY_PER_REQUEST") .readCapacity }}
+    readCapacity: {{ .readCapacity | int }}
+    {{- end }}
+    {{- if and (ne (.billingMode | default "PAY_PER_REQUEST") "PAY_PER_REQUEST") .writeCapacity }}
+    writeCapacity: {{ .writeCapacity | int }}
+    {{- end }}
+    {{- if .globalSecondaryIndex }}
+    globalSecondaryIndex:
+{{ toYaml .globalSecondaryIndex | indent 4 }}
+    {{- end }}
+    {{- if .localSecondaryIndex }}
+    localSecondaryIndex:
+{{ toYaml .localSecondaryIndex | indent 4 }}
+    {{- end }}
+    tags:
+{{ include "infra.allTags" (dict "Values" $.Values "section" $.Values.aws.dynamodb) | indent 6 }}
+    {{- if .ttl }}
+    {{- if or .ttl.attributeName .ttl.enabled }}
+    ttl:
+      {{- if .ttl.attributeName }}
+      attributeName: {{ .ttl.attributeName | quote }}
+      {{- end }}
+      {{- if .ttl.enabled }}
+      enabled: {{ .ttl.enabled }}
+      {{- end }}
+    {{- end }}
+    {{- end }}
+    {{- if .streamSpecification }}
+    streamSpecification:
+{{ toYaml .streamSpecification | indent 6 }}
+    {{- end }}
+    {{- if .pointInTimeRecoverySpecification }}
+    pointInTimeRecoverySpecification:
+{{ toYaml .pointInTimeRecoverySpecification | indent 6 }}
+    {{- end }}
+  providerConfigRef:
+    name: {{ $.Values.aws.providerConfigRef.name | quote }}
+{{- end }}
+{{- end }}

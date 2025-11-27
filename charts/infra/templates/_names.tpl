@@ -106,3 +106,17 @@ Defaults to org-env-releaseName unless overridden.
 {{- define "infra.cognitoUserPoolName" -}}
     {{- default (include "infra.resourceName" .) .Values.aws.cognito.userpool.nameOverride | default "" -}}
 {{- end -}}
+
+{{/*
+infra.dynamodbTableName:
+Takes table name from the table configuration.
+Prefixes with org-env- unless a nameOverride is provided.
+*/}}
+{{- define "infra.dynamodbTableName" -}}
+  {{- $table := . -}}
+  {{- if $table.nameOverride -}}
+    {{- $table.nameOverride -}}
+  {{- else -}}
+    {{- printf "%s-%s-%s" .root.Values.global.org .root.Values.global.env $table.name -}}
+  {{- end -}}
+{{- end -}}
