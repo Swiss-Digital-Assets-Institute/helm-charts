@@ -226,7 +226,8 @@ Custom IAM inline policy including S3, KMS, SQS, SNS, SNS-SMS, and DynamoDB.
         "dynamodb:BatchWriteItem",
         "dynamodb:Query",
         "dynamodb:Scan",
-        "dynamodb:DescribeTable"
+        "dynamodb:DescribeTable",
+        "dynamodb:ListTables"
       ],
       "Resource": %s
     }` (toJson $resources)) }}
