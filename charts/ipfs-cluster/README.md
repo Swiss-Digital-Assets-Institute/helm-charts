@@ -1,6 +1,6 @@
 # ipfs-cluster
 
-![Version: 1.1.0](https://img.shields.io/badge/Version-1.1.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 1.0.0](https://img.shields.io/badge/AppVersion-1.0.0-informational?style=flat-square)
+![Version: 1.1.1](https://img.shields.io/badge/Version-1.1.1-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 1.0.0](https://img.shields.io/badge/AppVersion-1.0.0-informational?style=flat-square)
 
 Managing and maintaining IPFS clusters in kubernetes.
 
@@ -38,6 +38,7 @@ Managing and maintaining IPFS clusters in kubernetes.
 | cluster.storage.storageClassName | string | `""` |  |
 | cluster.storage.volumeSize | string | `"1Gi"` |  |
 | cluster.tolerations | list | `[]` |  |
+| cluster.topologySpreadConstraints | list | `[]` |  |
 | fullnameOverride | string | `""` |  |
 | ipfs.affinity.podAntiAffinity.preferredDuringSchedulingIgnoredDuringExecution[0].podAffinityTerm.labelSelector.matchExpressions[0].key | string | `"nodeType"` |  |
 | ipfs.affinity.podAntiAffinity.preferredDuringSchedulingIgnoredDuringExecution[0].podAffinityTerm.labelSelector.matchExpressions[0].operator | string | `"In"` |  |
@@ -70,6 +71,7 @@ Managing and maintaining IPFS clusters in kubernetes.
 | ipfs.storage.storageClassName | string | `""` |  |
 | ipfs.storage.volumeSize | string | `"50Gi"` |  |
 | ipfs.tolerations | list | `[]` |  |
+| ipfs.topologySpreadConstraints | list | `[]` |  |
 | istio.adminEnabled | bool | `false` |  |
 | istio.adminGateways | list | `[]` |  |
 | istio.adminHosts | list | `[]` |  |
