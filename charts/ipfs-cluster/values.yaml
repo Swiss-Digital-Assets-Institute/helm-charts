@@ -108,7 +108,7 @@ cluster:
   tolerations: []
   
   # Affinity rules for pod assignment
-  affinity: 
+  affinity:
     podAntiAffinity:
       preferredDuringSchedulingIgnoredDuringExecution:
         - weight: 100
@@ -120,6 +120,15 @@ cluster:
                   values:
                     - cluster
             topologyKey: kubernetes.io/hostname
+
+  # Topology spread constraints for pod distribution
+  topologySpreadConstraints: []
+  #   - maxSkew: 1
+  #     topologyKey: topology.kubernetes.io/zone
+  #     whenUnsatisfiable: DoNotSchedule
+  #     labelSelector:
+  #       matchLabels:
+  #         nodeType: cluster
 
 # IPFS node configuration
 ipfs:
@@ -188,7 +197,7 @@ ipfs:
   tolerations: []
   
   # Affinity rules for pod assignment
-  affinity: 
+  affinity:
     podAntiAffinity:
       preferredDuringSchedulingIgnoredDuringExecution:
         - weight: 100
@@ -200,6 +209,15 @@ ipfs:
                   values:
                     - ipfs
             topologyKey: kubernetes.io/hostname
+
+  # Topology spread constraints for pod distribution
+  topologySpreadConstraints: []
+  #   - maxSkew: 1
+  #     topologyKey: topology.kubernetes.io/zone
+  #     whenUnsatisfiable: DoNotSchedule
+  #     labelSelector:
+  #       matchLabels:
+  #         nodeType: ipfs
 
 # Istio VirtualService configuration
 istio:
