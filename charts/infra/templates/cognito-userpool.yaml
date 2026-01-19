@@ -69,6 +69,32 @@ spec:
     requireSymbols: {{ default true .Values.aws.cognito.userpool.passwordPolicy.requireSymbols }}
     temporaryPasswordValidityDays: {{ default 7 .Values.aws.cognito.userpool.passwordPolicy.temporaryPasswordValidityDays }}
   mfaConfiguration: {{ default "OFF" .Values.aws.cognito.userpool.mfaConfiguration | quote }}
+  {{- if .Values.aws.cognito.userpool.extensions }}
+  extensions:
+    enabled: {{ default false .Values.aws.cognito.userpool.extensions.enabled }}
+    {{- if .Values.aws.cognito.userpool.extensions.triggers }}
+    triggers:
+      {{- range .Values.aws.cognito.userpool.extensions.triggers }}
+      - type: {{ .type }}
+        {{- if .events }}
+        events:
+          {{- range .events }}
+          - {{ . }}
+          {{- end }}
+        {{- end }}
+        {{- if .eventVersions }}
+        eventVersions:
+          {{- range .eventVersions }}
+          - {{ . }}
+          {{- end }}
+        {{- end }}
+      {{- end }}
+    {{- else }} []
+    {{- end }}
+    lambdaFunction:
+      name: {{ required "aws.cognito.userpool.extensions.lambdaFunction.name is required" .Values.aws.cognito.userpool.extensions.lambdaFunction.name | quote }}
+      arn: {{ required "aws.cognito.userpool.extensions.lambdaFunction.arn is required" .Values.aws.cognito.userpool.extensions.lambdaFunction.arn | quote }}
+  {{- end }}
   tags:
     {{- $section := dict "additional_tags" (default dict .Values.aws.cognito.userpool.tags) -}}
     {{- include "infra.allTags" (dict "Values" .Values "section" $section) | nindent 4 }}
