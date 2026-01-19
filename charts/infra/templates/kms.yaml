@@ -35,7 +35,7 @@ spec:
 {{ include "infra.allTags" (dict "Values" .Values "section" .Values.aws.kms) | indent 6 }}
 
   providerConfigRef:
-    name: {{ .Values.aws.providerConfigRef.name | quote }}
+    name: {{ (.Values.aws.kms.providerConfigRef.name | default .Values.aws.providerConfigRef.name) | quote }}
 
 {{- if .Values.aws.kms.alias.enabled }}
 ---
@@ -46,7 +46,7 @@ metadata:
   namespace: {{ .Release.Namespace }}
 spec:
   providerConfigRef:
-    name: {{ .Values.aws.providerConfigRef.name | quote }}
+    name: {{ (.Values.aws.kms.providerConfigRef.name | default .Values.aws.providerConfigRef.name) | quote }}
   forProvider:
     region: {{ .Values.aws.region | quote }}
     targetKeyIdRef:

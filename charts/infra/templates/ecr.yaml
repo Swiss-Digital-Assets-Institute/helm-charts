@@ -28,7 +28,7 @@ spec:
     tags:
 {{ include "infra.allTags" (dict "Values" $.Values "section" $.Values.aws.ecr) | indent 6 }}
   providerConfigRef:
-    name: {{ $.Values.aws.providerConfigRef.name | quote }}
+    name: {{ ($.Values.aws.ecr.providerConfigRef.name | default $.Values.aws.providerConfigRef.name) | quote }}
 
 {{ if and $.Values.aws.ecr.accountAccessList (gt (len $.Values.aws.ecr.accountAccessList) 0) }}
 ---
@@ -51,7 +51,7 @@ spec:
       matchLabels:
         name: {{ $k8sName }}
   providerConfigRef:
-    name: {{ $.Values.aws.providerConfigRef.name | quote }}
+    name: {{ ($.Values.aws.ecr.providerConfigRef.name | default $.Values.aws.providerConfigRef.name) | quote }}
 {{ end }}
 
 {{ if $.Values.aws.ecr.lifecyclePolicy.rules }}
@@ -77,7 +77,7 @@ spec:
     region: {{ $.Values.aws.region | quote }}
     repository: {{ $fullRepo }}
   providerConfigRef:
-    name: {{ $.Values.aws.providerConfigRef.name | quote }}
+    name: {{ ($.Values.aws.ecr.providerConfigRef.name | default $.Values.aws.providerConfigRef.name) | quote }}
 {{ end }}
   {{- end }}
 {{- else -}}
@@ -107,7 +107,7 @@ spec:
     tags:
 {{ include "infra.allTags" (dict "Values" .Values "section" .Values.aws.ecr) | indent 6 }}
   providerConfigRef:
-    name: {{ .Values.aws.providerConfigRef.name | quote }}
+    name: {{ (.Values.aws.ecr.providerConfigRef.name | default .Values.aws.providerConfigRef.name) | quote }}
 
 {{- if and .Values.aws.ecr.accountAccessList (gt (len .Values.aws.ecr.accountAccessList) 0) }}
 ---
@@ -130,7 +130,7 @@ spec:
       matchLabels:
         name: {{ $k8sName }}
   providerConfigRef:
-    name: {{ .Values.aws.providerConfigRef.name | quote }}
+    name: {{ (.Values.aws.ecr.providerConfigRef.name | default .Values.aws.providerConfigRef.name) | quote }}
 {{- end }}
 
 {{- if .Values.aws.ecr.lifecyclePolicy.rules }}
@@ -156,7 +156,7 @@ spec:
     region: {{ .Values.aws.region | quote }}
     repository: {{ include "infra.ecrRepoName" . | trim }}
   providerConfigRef:
-    name: {{ .Values.aws.providerConfigRef.name | quote }}
+    name: {{ (.Values.aws.ecr.providerConfigRef.name | default .Values.aws.providerConfigRef.name) | quote }}
 {{- end }}
 {{- end }}
 {{- end }}
