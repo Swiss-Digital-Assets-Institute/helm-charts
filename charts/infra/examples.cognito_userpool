@@ -101,12 +101,26 @@ aws:
 
       # ----------------------------------------------------------------------
       # 11. MFA Configuration
-      # Acceptable values: "ON" or "OFF"
+      # Acceptable values: "ON", "OFF", or "OPTIONAL"
       # ----------------------------------------------------------------------
       mfaConfiguration: "OFF"
 
       # ----------------------------------------------------------------------
-      # 12. Additional Tags (optional)
+      # 12. Lambda Trigger Extensions (optional)
+      # Configure Lambda triggers for customizing Cognito User Pool behavior
+      # ----------------------------------------------------------------------
+      # extensions:
+      #   enabled: true
+      #   triggers:
+      #     - type: messaging  # Options: sign_up, authentication, custom_authentication, messaging
+      #       events: []  # Optional: specific events for this trigger
+      #       eventVersions: []  # Optional: event versions
+      #   lambdaFunction:
+      #     name: my-cognito-lambda-function  # Required: Lambda function name
+      #     arn: arn:aws:lambda:eu-central-2:123456789012:function:my-cognito-lambda-function  # Required: Lambda function ARN
+
+      # ----------------------------------------------------------------------
+      # 13. Additional Tags (optional)
       # These are merged into global/common tags via the helper function.
       # ----------------------------------------------------------------------
       tags:
