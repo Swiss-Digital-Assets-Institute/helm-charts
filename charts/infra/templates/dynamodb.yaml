@@ -65,6 +65,6 @@ spec:
 {{ toYaml .pointInTimeRecoverySpecification | indent 6 }}
     {{- end }}
   providerConfigRef:
-    name: {{ ($.Values.aws.dynamodb.providerConfigRef.name | default $.Values.aws.providerConfigRef.name) | quote }}
+    name: {{ include "infra.getProviderConfigRefName" (dict "Values" $.Values "section" "dynamodb") | quote }}
 {{- end }}
 {{- end }}

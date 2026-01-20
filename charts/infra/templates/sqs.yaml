@@ -10,7 +10,7 @@ metadata:
     name: {{ include "infra.sqsQueueName" . }}
 spec:
   providerConfigRef:
-    name: {{ (.Values.aws.sqs.providerConfigRef.name | default .Values.aws.providerConfigRef.name) | quote }}
+    name: {{ include "infra.getProviderConfigRefName" (dict "Values" .Values "section" "sqs") | quote }}
   forProvider:
     region: {{ .Values.aws.region | quote }}
     name: {{ include "infra.sqsQueueName" . }}

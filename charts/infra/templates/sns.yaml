@@ -14,7 +14,7 @@ spec:
     tags:
 {{ include "infra.allTags" (dict "Values" .Values "section" .Values.aws.sns) | indent 6 }}
   providerConfigRef:
-    name: {{ (.Values.aws.sns.providerConfigRef.name | default .Values.aws.providerConfigRef.name) | quote }}
+    name: {{ include "infra.getProviderConfigRefName" (dict "Values" .Values "section" "sns") | quote }}
 {{- end }}
 
 {{- if and (.Values.aws.enabled | default true) .Values.aws.sns.enabled .Values.aws.sns.sms.enabled }}
@@ -34,5 +34,5 @@ spec:
     defaultSenderId: {{ .Values.aws.sns.sms.defaultSenderID | default "MTGATEWAY" | quote }}
     monthlySpendLimit: {{ .Values.aws.sns.sms.monthlySpendLimit | default 50 }}
   providerConfigRef:
-    name: {{ (.Values.aws.sns.providerConfigRef.name | default .Values.aws.providerConfigRef.name) | quote }}
+    name: {{ include "infra.getProviderConfigRefName" (dict "Values" .Values "section" "sns") | quote }}
 {{- end }}
