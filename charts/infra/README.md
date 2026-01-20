@@ -1,6 +1,6 @@
 # infra
 
-![Version: 1.7.66](https://img.shields.io/badge/Version-1.7.66-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 1.0.0](https://img.shields.io/badge/AppVersion-1.0.0-informational?style=flat-square)
+![Version: 1.7.67](https://img.shields.io/badge/Version-1.7.67-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 1.0.0](https://img.shields.io/badge/AppVersion-1.0.0-informational?style=flat-square)
 
 Managing and maintaining cloud resources using crossplane
 
@@ -51,6 +51,10 @@ Managing and maintaining cloud resources using crossplane
 | aws.cognito.userpool.callbackUrls | list | `[]` |  |
 | aws.cognito.userpool.enableSelfRegistration | bool | `false` |  |
 | aws.cognito.userpool.enabled | bool | `false` |  |
+| aws.cognito.userpool.extensions.enabled | bool | `false` |  |
+| aws.cognito.userpool.extensions.lambdaFunction.arn | string | `""` |  |
+| aws.cognito.userpool.extensions.lambdaFunction.name | string | `""` |  |
+| aws.cognito.userpool.extensions.triggers | list | `[]` |  |
 | aws.cognito.userpool.groups | list | `[]` |  |
 | aws.cognito.userpool.logoutUrls | list | `[]` |  |
 | aws.cognito.userpool.mfaConfiguration | string | `"OFF"` |  |
