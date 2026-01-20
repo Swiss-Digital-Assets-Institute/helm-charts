@@ -20,7 +20,7 @@ spec:
     tags:
 {{ include "infra.allTags" (dict "Values" .Values "section" .Values.aws.s3) | indent 6 }}
   providerConfigRef:
-    name: {{ .Values.aws.providerConfigRef.name | quote }}
+    name: {{ (.Values.aws.s3.providerConfigRef.name | default .Values.aws.providerConfigRef.name) | quote }}
 
 
 ---
@@ -46,7 +46,7 @@ spec:
     rule:
       objectOwnership: {{ .Values.aws.s3.objectOwnership | default "BucketOwnerEnforced" | quote }}
   providerConfigRef:
-    name: {{ .Values.aws.providerConfigRef.name | quote }}
+    name: {{ (.Values.aws.s3.providerConfigRef.name | default .Values.aws.providerConfigRef.name) | quote }}
 
 {{- if and .Values.aws.s3.enabled .Values.aws.s3.lifeCycleConfiguration.enabled }}
 ---
@@ -72,7 +72,7 @@ spec:
     rule:
 {{ toYaml .Values.aws.s3.lifeCycleConfiguration.rules | indent 6 }}
   providerConfigRef:
-    name: {{ .Values.aws.providerConfigRef.name | quote }}
+    name: {{ (.Values.aws.s3.providerConfigRef.name | default .Values.aws.providerConfigRef.name) | quote }}
 {{- end }}
 
 {{- if and .Values.aws.s3.enabled .Values.aws.s3.versioning.enabled }}
@@ -120,7 +120,7 @@ spec:
     corsRule:
 {{ toYaml .Values.aws.s3.corsConfiguration.corsRules | indent 6 }}
   providerConfigRef:
-    name: {{ .Values.aws.providerConfigRef.name | quote }}
+    name: {{ (.Values.aws.s3.providerConfigRef.name | default .Values.aws.providerConfigRef.name) | quote }}
 {{- end }}
 
 {{- if and .Values.aws.s3.enabled .Values.aws.s3.bucketWebsiteConfiguration.enabled }}
@@ -157,7 +157,7 @@ spec:
 {{ toYaml .Values.aws.s3.bucketWebsiteConfiguration.routingRules | indent 6 }}
 {{- end }}
   providerConfigRef:
-    name: {{ .Values.aws.providerConfigRef.name | quote }}
+    name: {{ (.Values.aws.s3.providerConfigRef.name | default .Values.aws.providerConfigRef.name) | quote }}
 {{- end }}
 
 {{- if and .Values.aws.s3.enabled .Values.aws.s3.bucketPublicAccessBlock.enabled }}
@@ -186,6 +186,6 @@ spec:
     ignorePublicAcls: {{ .Values.aws.s3.bucketPublicAccessBlock.ignorePublicAcls }}
     restrictPublicBuckets: {{ .Values.aws.s3.bucketPublicAccessBlock.restrictPublicBuckets }}
   providerConfigRef:
-    name: {{ .Values.aws.providerConfigRef.name | quote }}
+    name: {{ (.Values.aws.s3.providerConfigRef.name | default .Values.aws.providerConfigRef.name) | quote }}
 {{- end }}
 {{- end }}
