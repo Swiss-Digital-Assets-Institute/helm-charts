@@ -144,3 +144,31 @@ app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
 app.kubernetes.io/managed-by: {{ .Release.Service | quote }}
 helm.sh/chart: {{ printf "%s-%s" .Chart.Name (.Chart.Version | replace "+" "_") }}
 {{- end -}}
+
+
+##########################################################
+# Helper function for AWS ProviderConfigRef resolution #
+##########################################################
+
+{{/*
+infra.getProviderConfigRefName:
+Resolves the providerConfigRef.name with fallback logic.
+Precedence:
+  1) .Values.aws.<section>.providerConfigRef.name (section-specific override)
+  2) .Values.aws.providerConfigRef.name (global AWS default)
+
+Usage:
+  {{ include "infra.getProviderConfigRefName" (dict "Values" .Values "section" "sqs") | quote }}
+*/}}
+{{- define "infra.getProviderConfigRefName" -}}
+  {{- $section := .section -}}
+  {{- $sectionConfig := (index .Values.aws $section).providerConfigRef | default dict -}}
+  {{- $globalConfig := .Values.aws.providerConfigRef | default dict -}}
+  {{- if $sectionConfig.name -}}
+    {{- $sectionConfig.name -}}
+  {{- else if $globalConfig.name -}}
+    {{- $globalConfig.name -}}
+  {{- else -}}
+    {{- fail (printf "providerConfigRef.name not found for section '%s' and no global default configured" $section) -}}
+  {{- end -}}
+{{- end -}}

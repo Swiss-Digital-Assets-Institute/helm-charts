@@ -23,5 +23,5 @@ spec:
         policy: |
 {{ include "infra.customIamPolicy" . | indent 10 }}
   providerConfigRef:
-    name: {{ (.Values.aws.iam.providerConfigRef.name | default .Values.aws.providerConfigRef.name) | quote }}
+    name: {{ include "infra.getProviderConfigRefName" (dict "Values" .Values "section" "iam") | quote }}
 {{- end }}
