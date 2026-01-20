@@ -24,10 +24,18 @@ Defaults to org-env-releaseName unless overridden.
 
 {{/*
 infra.ecrRepoName:
-Returns the external ECR repo name <namespace>/<releaseName>.
+Returns the external ECR repo name.
+Precedence:
+  1) aws.ecr.repoNameOverride (new)
+  2) <namespace>/<releaseName> (default)
 */}}
 {{- define "infra.ecrRepoName" -}}
-{{ printf "%s/%s" .Release.Namespace .Release.Name | replace " " "-" | lower }}
+  {{- $override := .Values.aws.ecr.repoNameOverride | default "" -}}
+  {{- if $override -}}
+    {{- printf "%s" $override -}}
+  {{- else -}}
+    {{- printf "%s/%s" .Release.Namespace .Release.Name | replace " " "-" | lower -}}
+  {{- end -}}
 {{- end -}}
 
 {{/*
