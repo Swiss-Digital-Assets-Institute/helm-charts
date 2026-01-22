@@ -27,7 +27,7 @@ aws:
           - name: UserId
             type: S
         hashKey: UserId
-        ttl:
+        timeToLiveSpecification:
           attributeName: expires_at
           enabled: true
 
@@ -45,9 +45,6 @@ aws:
             type: S
         hashKey: OrderId
         rangeKey: OrderDate
-        tags:
-          Application: "order-service"
-          Version: "2.0"
 
       # ---------------------------------------------------------
       # Example 3: Table with Global Secondary Index (GSI)
@@ -68,22 +65,24 @@ aws:
             type: S
         hashKey: CustomerId
         globalSecondaryIndex:
-          # GSI 1: Query by Email
-          - name: EmailIndex
-            hashKey: Email
-            projectionType: INCLUDE
-            nonKeyAttributes:
-              - CustomerId
-              - Country
-            readCapacity: 5
-            writeCapacity: 2
-          # GSI 2: Query by Country + CreatedAt
-          - name: CountryCreatedIndex
-            hashKey: Country
-            rangeKey: CreatedAt
-            projectionType: ALL
-            readCapacity: 10
-            writeCapacity: 5
+          enabled: true
+          indexes:
+            # GSI 1: Query by Email
+            - name: EmailIndex
+              hashKey: Email
+              projectionType: INCLUDE
+              nonKeyAttributes:
+                - CustomerId
+                - Country
+              readCapacity: 5
+              writeCapacity: 2
+            # GSI 2: Query by Country + CreatedAt
+            - name: CountryCreatedIndex
+              hashKey: Country
+              rangeKey: CreatedAt
+              projectionType: ALL
+              readCapacity: 10
+              writeCapacity: 5
 
       # ---------------------------------------------------------
       # Example 4: Table with Local Secondary Index (LSI)
@@ -106,14 +105,16 @@ aws:
         hashKey: AuditId
         rangeKey: Timestamp
         localSecondaryIndex:
-          - name: UserIdIndex
-            rangeKey: UserId
-            projectionType: INCLUDE
-            nonKeyAttributes:
-              - Severity
-          - name: SeverityIndex
-            rangeKey: Severity
-            projectionType: ALL
+          enabled: true
+          indexes:
+            - name: UserIdIndex
+              rangeKey: UserId
+              projectionType: INCLUDE
+              nonKeyAttributes:
+                - Severity
+            - name: SeverityIndex
+              rangeKey: Severity
+              projectionType: ALL
 
       # ---------------------------------------------------------
       # Example 5: Table with DynamoDB Streams enabled
@@ -131,8 +132,9 @@ aws:
         hashKey: EventType
         rangeKey: EventId
         streamSpecification:
+          enabled: true
           streamViewType: NEW_AND_OLD_IMAGES
-        ttl:
+        timeToLiveSpecification:
           attributeName: expiration
           enabled: true
 
@@ -154,13 +156,15 @@ aws:
         hashKey: TransactionId
         rangeKey: TransactionDate
         globalSecondaryIndex:
-          - name: AccountIdIndex
-            hashKey: AccountId
-            projectionType: ALL
-            readCapacity: 10
-            writeCapacity: 5
-        pointInTimeRecoverySpecification:
-          pointInTimeRecoveryEnabled: true
+          enabled: true
+          indexes:
+            - name: AccountIdIndex
+              hashKey: AccountId
+              projectionType: ALL
+              readCapacity: 10
+              writeCapacity: 5
+        pointInTimeRecovery:
+          enabled: true
 
       # ---------------------------------------------------------
       # Example 7: Complex multi-index table
@@ -186,37 +190,40 @@ aws:
             type: "N"
         hashKey: ProductId
         globalSecondaryIndex:
-          # Search products by SKU
-          - name: SKUIndex
-            hashKey: SKU
-            projectionType: ALL
-            readCapacity: 20
-            writeCapacity: 10
-          # Browse by Category and Price range
-          - name: CategoryPriceIndex
-            hashKey: Category
-            rangeKey: Price
-            projectionType: INCLUDE
-            nonKeyAttributes:
-              - ProductId
-              - SKU
-              - CreatedDate
-            readCapacity: 15
-            writeCapacity: 8
-          # Recently modified products
-          - name: LastModifiedIndex
-            hashKey: Category
-            rangeKey: LastModified
-            projectionType: KEYS_ONLY
-            readCapacity: 10
-            writeCapacity: 5
+          enabled: true
+          indexes:
+            # Search products by SKU
+            - name: SKUIndex
+              hashKey: SKU
+              projectionType: ALL
+              readCapacity: 20
+              writeCapacity: 10
+            # Browse by Category and Price range
+            - name: CategoryPriceIndex
+              hashKey: Category
+              rangeKey: Price
+              projectionType: INCLUDE
+              nonKeyAttributes:
+                - ProductId
+                - SKU
+                - CreatedDate
+              readCapacity: 15
+              writeCapacity: 8
+            # Recently modified products
+            - name: LastModifiedIndex
+              hashKey: Category
+              rangeKey: LastModified
+              projectionType: KEYS_ONLY
+              readCapacity: 10
+              writeCapacity: 5
         streamSpecification:
+          enabled: true
           streamViewType: NEW_IMAGE
-        ttl:
+        timeToLiveSpecification:
           attributeName: deletion_scheduled_at
           enabled: true
-        pointInTimeRecoverySpecification:
-          pointInTimeRecoveryEnabled: true
+        pointInTimeRecovery:
+          enabled: true
 
       # ---------------------------------------------------------
       # Example 8: Table with custom name override
@@ -232,12 +239,15 @@ aws:
             type: S
         hashKey: SessionId
         globalSecondaryIndex:
-          - name: UserIdIndex
-            hashKey: UserId
-            projectionType: KEYS_ONLY
-            readCapacity: 10
-            writeCapacity: 10
-        ttl:
+          enabled: true
+          indexes:
+            - name: UserIdIndex
+              hashKey: UserId
+              projectionType: KEYS_ONLY
+              onDemandThroughput:
+                maxReadRequestUnits: 500
+                maxWriteRequestUnits: 200
+        timeToLiveSpecification:
           attributeName: expires_at
           enabled: true
 
@@ -261,21 +271,24 @@ aws:
         hashKey: MetricName
         rangeKey: Timestamp
         globalSecondaryIndex:
-          - name: SourceTimestampIndex
-            hashKey: Source
-            rangeKey: Timestamp
-            projectionType: INCLUDE
-            nonKeyAttributes:
-              - Value
-            readCapacity: 20
-            writeCapacity: 15
+          enabled: true
+          indexes:
+            - name: SourceTimestampIndex
+              hashKey: Source
+              rangeKey: Timestamp
+              projectionType: INCLUDE
+              nonKeyAttributes:
+                - Value
+              readCapacity: 20
+              writeCapacity: 15
         streamSpecification:
+          enabled: true
           streamViewType: NEW_AND_OLD_IMAGES
-        ttl:
+        timeToLiveSpecification:
           attributeName: ttl
           enabled: true
-        pointInTimeRecoverySpecification:
-          pointInTimeRecoveryEnabled: true
+        pointInTimeRecovery:
+          enabled: true
 
       # ---------------------------------------------------------
       # Example 10: Minimal table (Pay-per-request, no extras)
@@ -287,3 +300,78 @@ aws:
           - name: Id
             type: S
         hashKey: Id
+
+      # ---------------------------------------------------------
+      # Example 11: Table with On-Demand throughput limits
+      # Limits concurrent requests in PAY_PER_REQUEST mode
+      # ---------------------------------------------------------
+      - name: api-cache
+        billingMode: PAY_PER_REQUEST
+        attribute:
+          - name: CacheKey
+            type: S
+          - name: ExpiresAt
+            type: "N"
+        hashKey: CacheKey
+        rangeKey: ExpiresAt
+        onDemandThroughput:
+          maxReadRequestUnits: 1000
+          maxWriteRequestUnits: 500
+        timeToLiveSpecification:
+          attributeName: ExpiresAt
+          enabled: true
+
+      # ---------------------------------------------------------
+      # Example 12: Table with server-side encryption
+      # Using KMS for encryption at rest
+      # ---------------------------------------------------------
+      - name: sensitive-data
+        billingMode: PAY_PER_REQUEST
+        attribute:
+          - name: RecordId
+            type: S
+        hashKey: RecordId
+        serverSideEncryption:
+          enabled: true
+          kmsKeyArn: "arn:aws:kms:us-west-1:123456789012:key/12345678-1234-1234-1234-123456789012"
+        deletionProtectionEnabled: true
+
+      # ---------------------------------------------------------
+      # Example 13: Table with Global Table replicas
+      # Multi-region replication for disaster recovery
+      # ---------------------------------------------------------
+      - name: global-replicated
+        billingMode: PROVISIONED
+        readCapacity: 10
+        writeCapacity: 10
+        attribute:
+          - name: Id
+            type: S
+        hashKey: Id
+        replica:
+          enabled: true
+          regions:
+            - regionName: us-east-1
+              propagateTags: true
+              pointInTimeRecovery: true
+            - regionName: eu-west-1
+              propagateTags: true
+              pointInTimeRecovery: true
+
+      # ---------------------------------------------------------
+      # Example 14: Table with custom table class
+      # STANDARD_INFREQUENT_ACCESS for cost optimization
+      # ---------------------------------------------------------
+      - name: archived-logs
+        billingMode: PAY_PER_REQUEST
+        tableClass: STANDARD_INFREQUENT_ACCESS
+        attribute:
+          - name: LogId
+            type: S
+          - name: Timestamp
+            type: "N"
+        hashKey: LogId
+        rangeKey: Timestamp
+        timeToLiveSpecification:
+          attributeName: Timestamp
+          enabled: true
