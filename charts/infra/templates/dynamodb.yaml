@@ -35,6 +35,15 @@ spec:
     {{- if and (ne (.billingMode | default "PAY_PER_REQUEST") "PAY_PER_REQUEST") .writeCapacity }}
     writeCapacity: {{ .writeCapacity | int }}
     {{- end }}
+    {{- if and (eq (.billingMode | default "PAY_PER_REQUEST") "PAY_PER_REQUEST") .onDemandThroughput }}
+    onDemandThroughput:
+      {{- if .onDemandThroughput.maxReadRequestUnits }}
+      maxReadRequestUnits: {{ .onDemandThroughput.maxReadRequestUnits | int }}
+      {{- end }}
+      {{- if .onDemandThroughput.maxWriteRequestUnits }}
+      maxWriteRequestUnits: {{ .onDemandThroughput.maxWriteRequestUnits | int }}
+      {{- end }}
+    {{- end }}
     {{- if .globalSecondaryIndex }}
     globalSecondaryIndex:
 {{ toYaml .globalSecondaryIndex | indent 4 }}
@@ -42,6 +51,27 @@ spec:
     {{- if .localSecondaryIndex }}
     localSecondaryIndex:
 {{ toYaml .localSecondaryIndex | indent 4 }}
+    {{- end }}
+    {{- if (default true .deletionProtectionEnabled) }}
+    deletionProtectionEnabled: {{ .deletionProtectionEnabled | default true }}
+    {{- end }}
+    {{- if .tableClass }}
+    tableClass: {{ .tableClass | default "STANDARD" | quote }}
+    {{- end }}
+    {{- if .serverSideEncryption }}
+    {{- if (default false .serverSideEncryption.enabled) }}
+    serverSideEncryption:
+      enabled: {{ .serverSideEncryption.enabled }}
+      {{- if .serverSideEncryption.kmsKeyArn }}
+      kmsKeyArn: {{ .serverSideEncryption.kmsKeyArn | quote }}
+      {{- end }}
+    {{- end }}
+    {{- end }}
+    {{- if (default false .streamEnabled) }}
+    streamEnabled: {{ .streamEnabled }}
+    {{- end }}
+    {{- if and (default false .streamEnabled) .streamViewType }}
+    streamViewType: {{ .streamViewType | default "NEW_AND_OLD_IMAGES" | quote }}
     {{- end }}
     tags:
 {{ include "infra.allTags" (dict "Values" $.Values "section" $.Values.aws.dynamodb) | indent 6 }}
@@ -63,6 +93,75 @@ spec:
     {{- if .pointInTimeRecoverySpecification }}
     pointInTimeRecoverySpecification:
 {{ toYaml .pointInTimeRecoverySpecification | indent 6 }}
+    {{- end }}
+    {{- if .pointInTimeRecovery }}
+    {{- if (default false .pointInTimeRecovery.enabled) }}
+    pointInTimeRecovery:
+      enabled: {{ .pointInTimeRecovery.enabled }}
+    {{- end }}
+    {{- end }}
+    {{- if .replica }}
+    {{- if (default false .replica.enabled) }}
+    {{- if .replica.regions }}
+    replica:
+    {{- range .replica.regions }}
+    - regionName: {{ .regionName | quote }}
+      {{- if .propagateTags }}
+      propagateTags: {{ .propagateTags }}
+      {{- end }}
+      {{- if .pointInTimeRecovery }}
+      pointInTimeRecovery: {{ .pointInTimeRecovery }}
+      {{- end }}
+      {{- if .kmsKeyArn }}
+      kmsKeyArn: {{ .kmsKeyArn | quote }}
+      {{- end }}
+    {{- end }}
+    {{- end }}
+    {{- end }}
+    {{- end }}
+    {{- if .restoreOptions }}
+    {{- if (default false .restoreOptions.enabled) }}
+    {{- if .restoreOptions.useLatestRestorableTime }}
+    restoreToLatestTime: {{ .restoreOptions.useLatestRestorableTime }}
+    {{- end }}
+    {{- if .restoreOptions.restoreDateTime }}
+    restoreDateTime: {{ .restoreOptions.restoreDateTime | quote }}
+    {{- end }}
+    {{- if .restoreOptions.sourceTableArn }}
+    restoreSourceTableArn: {{ .restoreOptions.sourceTableArn | quote }}
+    {{- end }}
+    {{- end }}
+    {{- end }}
+    {{- if .importTable }}
+    {{- if (default false .importTable.enabled) }}
+    importTable:
+      {{- if .importTable.inputFormat }}
+      inputFormat: {{ .importTable.inputFormat | quote }}
+      {{- end }}
+      {{- if .importTable.inputCompressionType }}
+      inputCompressionType: {{ .importTable.inputCompressionType | quote }}
+      {{- end }}
+      {{- if .importTable.inputFormatOptions }}
+      inputFormatOptions:
+{{ toYaml .importTable.inputFormatOptions | indent 8 }}
+      {{- end }}
+      {{- if .importTable.s3BucketSource }}
+      s3BucketSource:
+        {{- if .importTable.s3BucketSource.bucket }}
+        bucket: {{ .importTable.s3BucketSource.bucket | quote }}
+        {{- end }}
+        {{- if .importTable.s3BucketSource.bucketOwner }}
+        bucketOwner: {{ .importTable.s3BucketSource.bucketOwner | quote }}
+        {{- end }}
+        {{- if .importTable.s3BucketSource.keyPrefix }}
+        keyPrefix: {{ .importTable.s3BucketSource.keyPrefix | quote }}
+        {{- end }}
+      {{- end }}
+      {{- if .importTable.tableCreationParameters }}
+      tableCreationParameters:
+{{ toYaml .importTable.tableCreationParameters | indent 8 }}
+      {{- end }}
+    {{- end }}
     {{- end }}
   providerConfigRef:
     name: {{ include "infra.getProviderConfigRefName" (dict "Values" $.Values "section" "dynamodb") | quote }}
