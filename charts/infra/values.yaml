@@ -296,7 +296,7 @@ aws:
     #       - name: GameTitleIndex
     #         hashKey: GameTitle
     #         rangeKey: TopScore
-    #         projectionType: INCLUDE  # KEYS_ONLY, INCLUDE, ALL
+    #         projectionType: INCLUDE  # KEYS_ONLY, INCLUDE, ALL (default: KEYS_ONLY if not specified)
     #         nonKeyAttributes:
     #           - UserId
     #         # For PROVISIONED billing mode:
@@ -314,7 +314,7 @@ aws:
     #     indexes:
     #       - name: GameScoreIndex
     #         rangeKey: TopScore
-    #         projectionType: KEYS_ONLY  # KEYS_ONLY, INCLUDE, ALL
+    #         projectionType: KEYS_ONLY  # KEYS_ONLY, INCLUDE, ALL (default: KEYS_ONLY if not specified)
     #         nonKeyAttributes: []
     #
     #   # ===== DELETION PROTECTION =====
@@ -335,9 +335,10 @@ aws:
     #     streamViewType: NEW_AND_OLD_IMAGES  # KEYS_ONLY, NEW_IMAGE, OLD_IMAGE, NEW_AND_OLD_IMAGES (default: NEW_AND_OLD_IMAGES)
     #
     #   # ===== TIME-TO-LIVE SPECIFICATION =====
+    #   # Note: attributeName MUST be provided when enabled is true
     #   timeToLiveSpecification:
     #     enabled: false  # (default: false)
-    #     attributeName: TimeToExist
+    #     attributeName: TimeToExist  # Required if enabled=true, must not be empty
     #
     #   # ===== POINT-IN-TIME RECOVERY =====
     #   pointInTimeRecovery:
