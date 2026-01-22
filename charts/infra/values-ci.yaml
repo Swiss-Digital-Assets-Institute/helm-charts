@@ -81,6 +81,11 @@ aws:
     enabled: true
     fifo: true
 
+  dynamodb:
+    enabled: false
+    additional_tags: {}
+    tables: []
+
   cognito:
     userpool:
       enabled: false

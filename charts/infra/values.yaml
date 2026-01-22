@@ -262,6 +262,9 @@ aws:
     # Example table configuration:
     # - name: users-table
     #   nameOverride: ""  # Optional: override the full table name
+    #   deletionPolicy: Delete  # Crossplane deletion policy (default: Delete)
+    #
+    #   # ===== KEYS & ATTRIBUTES =====
     #   attribute:
     #     - name: UserId
     #       type: S
@@ -271,24 +274,114 @@ aws:
     #       type: "N"
     #   hashKey: UserId
     #   rangeKey: GameTitle
-    #   billingMode: PROVISIONED  # PROVISIONED or PAY_PER_REQUEST (default: PAY_PER_REQUEST)
-    #   readCapacity: 20  # Required if billingMode is PROVISIONED
-    #   writeCapacity: 20  # Required if billingMode is PROVISIONED
+    #
+    #   # ===== BILLING MODE =====
+    #   billingMode: PAY_PER_REQUEST  # PROVISIONED or PAY_PER_REQUEST (default: PAY_PER_REQUEST)
+    #
+    #   # ===== PROVISIONED THROUGHPUT =====
+    #   # Only required if billingMode is PROVISIONED
+    #   readCapacity: 20
+    #   writeCapacity: 20
+    #
+    #   # ===== ON-DEMAND THROUGHPUT =====
+    #   # Only for PAY_PER_REQUEST billing mode
+    #   onDemandThroughput:
+    #     maxReadRequestUnits: 1000
+    #     maxWriteRequestUnits: 500
+    #
+    #   # ===== GLOBAL SECONDARY INDEXES =====
     #   globalSecondaryIndex:
-    #     - name: GameTitleIndex
-    #       hashKey: GameTitle
-    #       rangeKey: TopScore
-    #       projectionType: INCLUDE
-    #       nonKeyAttributes:
-    #         - UserId
-    #       readCapacity: 10   # Required for PROVISIONED tables
-    #       writeCapacity: 10  # Required for PROVISIONED tables
-    #   localSecondaryIndex: []  # Optional local secondary indexes
-    #   ttl:
+    #     enabled: false  # (default: false)
+    #     indexes:
+    #       - name: GameTitleIndex
+    #         hashKey: GameTitle
+    #         rangeKey: TopScore
+    #         projectionType: INCLUDE  # KEYS_ONLY, INCLUDE, ALL
+    #         nonKeyAttributes:
+    #           - UserId
+    #         # For PROVISIONED billing mode:
+    #         readCapacity: 10
+    #         writeCapacity: 10
+    #         # For PAY_PER_REQUEST billing mode:
+    #         onDemandThroughput:
+    #           maxReadRequestUnits: 500  # (default: 500)
+    #           maxWriteRequestUnits: 200  # (default: 200)
+    #
+    #   # ===== LOCAL SECONDARY INDEXES =====
+    #   # Note: Only allowed at table creation time
+    #   localSecondaryIndex:
+    #     enabled: false  # (default: false)
+    #     indexes:
+    #       - name: GameScoreIndex
+    #         rangeKey: TopScore
+    #         projectionType: KEYS_ONLY  # KEYS_ONLY, INCLUDE, ALL
+    #         nonKeyAttributes: []
+    #
+    #   # ===== DELETION PROTECTION =====
+    #   deletionProtectionEnabled: true  # (default: true)
+    #
+    #   # ===== TABLE CLASS =====
+    #   tableClass: STANDARD  # STANDARD or STANDARD_INFREQUENT_ACCESS (default: STANDARD)
+    #
+    #   # ===== SERVER-SIDE ENCRYPTION =====
+    #   serverSideEncryption:
+    #     enabled: false  # (default: false)
+    #     kmsKeyArn: "arn:aws:kms:eu-central-2:123456789012:key/xxxx"  # Optional
+    #
+    #   # ===== DYNAMODB STREAMS =====
+    #   # Using streamSpecification (newer format):
+    #   streamSpecification:
+    #     enabled: false  # (default: false)
+    #     streamViewType: NEW_AND_OLD_IMAGES  # KEYS_ONLY, NEW_IMAGE, OLD_IMAGE, NEW_AND_OLD_IMAGES (default: NEW_AND_OLD_IMAGES)
+    #
+    #   # ===== TIME-TO-LIVE SPECIFICATION =====
+    #   timeToLiveSpecification:
+    #     enabled: false  # (default: false)
     #     attributeName: TimeToExist
-    #     enabled: false
-    #   streamSpecification: {}  # Optional stream configuration
-    #   pointInTimeRecoverySpecification: {}  # Optional point-in-time recovery
+    #
+    #   # ===== POINT-IN-TIME RECOVERY =====
+    #   pointInTimeRecovery:
+    #     enabled: false  # (default: false)
+    #
+    #   # ===== GLOBAL TABLE REPLICAS =====
+    #   replica:
+    #     enabled: false  # (default: false)
+    #     regions:
+    #       - regionName: us-east-1
+    #         propagateTags: true
+    #         pointInTimeRecovery: true
+    #         kmsKeyArn: "arn:aws:kms:us-east-1:123456789012:key/xxxx"  # Optional
+    #
+    #   # ===== RESTORE OPTIONS =====
+    #   restoreOptions:
+    #     enabled: false  # (default: false)
+    #     useLatestRestorableTime: false
+    #     restoreDateTime: "2025-01-20T12:00:00Z"  # ISO 8601 format
+    #     sourceTableArn: "arn:aws:dynamodb:eu-central-2:123456789012:table/old-table"
+    #
+    #   # ===== IMPORT FROM S3 =====
+    #   importTable:
+    #     enabled: false  # (default: false)
+    #     inputFormat: DYNAMODB_JSON  # DYNAMODB_JSON or ION
+    #     inputCompressionType: GZIP  # GZIP or NONE
+    #     inputFormatOptions:
+    #       csv:
+    #         delimiter: ","
+    #         headerList:
+    #           - id
+    #           - sk
+    #           - gsi_pk
+    #     s3BucketSource:
+    #       bucket: my-import-bucket
+    #       bucketOwner: "123456789012"  # Optional
+    #       keyPrefix: dynamodb/imports/
+    #     tableCreationParameters:
+    #       # Same schema as the main table (attribute, hashKey, rangeKey, etc.)
+    #       attribute:
+    #         - name: id
+    #           type: S
+    #       hashKey: id
+    #       billingMode: PAY_PER_REQUEST
 
 externalSecrets:
   enabled: false
