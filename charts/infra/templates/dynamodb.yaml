@@ -71,6 +71,8 @@ spec:
           {{- end }}
           {{- if .projectionType }}
           projectionType: {{ .projectionType | quote }}
+          {{- else }}
+          projectionType: KEYS_ONLY
           {{- end }}
           {{- if .nonKeyAttributes }}
           nonKeyAttributes:
@@ -105,6 +107,8 @@ spec:
           rangeKey: {{ .rangeKey | quote }}
           {{- if .projectionType }}
           projectionType: {{ .projectionType | quote }}
+          {{- else }}
+          projectionType: KEYS_ONLY
           {{- end }}
           {{- if .nonKeyAttributes }}
           nonKeyAttributes:
@@ -148,13 +152,13 @@ spec:
 
     # TIME-TO-LIVE SPECIFICATION
     {{- if .timeToLiveSpecification }}
-      {{- if and (default false .timeToLiveSpecification.enabled) .timeToLiveSpecification.attributeName }}
+      {{- if and (default false .timeToLiveSpecification.enabled) (and .timeToLiveSpecification.attributeName (ne .timeToLiveSpecification.attributeName "")) }}
     timeToLiveSpecification:
       attributeName: {{ .timeToLiveSpecification.attributeName | quote }}
       enabled: {{ .timeToLiveSpecification.enabled }}
       {{- end }}
     {{- else if .ttl }}
-      {{- if and (default false .ttl.enabled) .ttl.attributeName }}
+      {{- if and (default false .ttl.enabled) (and .ttl.attributeName (ne .ttl.attributeName "")) }}
     ttl:
       attributeName: {{ .ttl.attributeName | quote }}
       enabled: {{ .ttl.enabled }}
