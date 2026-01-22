@@ -119,7 +119,7 @@ spec:
     {{- end }}
 
     # DELETION PROTECTION
-    deletionProtectionEnabled: {{ .deletionProtectionEnabled | default true }}
+    deletionProtectionEnabled: {{ if kindIs "bool" .deletionProtectionEnabled }}{{ .deletionProtectionEnabled }}{{ else }}true{{ end }}
 
     # TABLE CLASS
     tableClass: {{ .tableClass | default "STANDARD" | quote }}
