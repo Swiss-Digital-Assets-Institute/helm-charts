@@ -188,4 +188,65 @@ spec:
   providerConfigRef:
     name: {{ include "infra.getProviderConfigRefName" (dict "Values" .Values "section" "s3") | quote }}
 {{- end }}
+
+{{- if and .Values.aws.s3.enabled .Values.aws.s3.encryption.enabled }}
+---
+apiVersion: {{ include "infra.s3ApiVersion" . }}
+kind: BucketServerSideEncryptionConfiguration
+metadata:
+  name: {{ include "infra.s3BucketName" . }}-encryption
+  namespace: {{ .Release.Namespace }}
+  annotations:
+    crossplane.io/external-name: {{ include "infra.s3BucketName" . }}
+  labels:
+{{ include "infra.labels" . | indent 4 }}
+spec:
+  forProvider:
+    region: {{ .Values.aws.region | quote }}
+    bucketSelector:
+      matchLabels:
+        app.kubernetes.io/name: {{ include "infra.releaseName" . }}
+        app.kubernetes.io/instance: {{ include "infra.releaseName" . }}
+        app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
+        app.kubernetes.io/managed-by: {{ .Release.Service | quote }}
+        helm.sh/chart: {{ printf "%s-%s" .Chart.Name (.Chart.Version | replace "+" "_") }}
+    rule:
+      - applyServerSideEncryptionByDefault:
+{{- if eq (default "AES256" .Values.aws.s3.encryption.type) "KMS" }}
+          sseAlgorithm: "aws:kms"
+{{- if .Values.aws.s3.encryption.kmsKeyId }}
+          kmsMasterKeyId: {{ .Values.aws.s3.encryption.kmsKeyId | quote }}
+{{- end }}
+{{- else }}
+          sseAlgorithm: "AES256"
+{{- end }}
+  providerConfigRef:
+    name: {{ include "infra.getProviderConfigRefName" (dict "Values" .Values "section" "s3") | quote }}
+{{- end }}
+
+{{- if and .Values.aws.s3.enabled .Values.aws.s3.bucketPolicy.enabled }}
+---
+apiVersion: s3.aws.upbound.io/v1beta1
+kind: BucketPolicy
+metadata:
+  name: {{ include "infra.s3BucketName" . }}-policy
+  namespace: {{ .Release.Namespace }}
+  annotations:
+    crossplane.io/external-name: {{ include "infra.s3BucketName" . }}
+  labels:
+{{ include "infra.labels" . | indent 4 }}
+spec:
+  forProvider:
+    region: {{ .Values.aws.region | quote }}
+    bucketSelector:
+      matchLabels:
+        app.kubernetes.io/name: {{ include "infra.releaseName" . }}
+        app.kubernetes.io/instance: {{ include "infra.releaseName" . }}
+        app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
+        app.kubernetes.io/managed-by: {{ .Release.Service | quote }}
+        helm.sh/chart: {{ printf "%s-%s" .Chart.Name (.Chart.Version | replace "+" "_") }}
+    policy: {{ .Values.aws.s3.bucketPolicy.policy | toJson | quote }}
+  providerConfigRef:
+    name: {{ include "infra.getProviderConfigRefName" (dict "Values" .Values "section" "s3") | quote }}
+{{- end }}
 {{- end }}

@@ -43,6 +43,10 @@ aws:
       enabled: false
     bucketPublicAccessBlock:
       enabled: false
+    encryption:
+      enabled: false
+    bucketPolicy:
+      enabled: false
 
   kms:
     enabled: false

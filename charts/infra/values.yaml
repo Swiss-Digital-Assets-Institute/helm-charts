@@ -70,6 +70,15 @@ aws:
       ignorePublicAcls: false
       restrictPublicBuckets: false
 
+    encryption:
+      enabled: false
+      type: "AES256"    # "AES256" (default) or "KMS"
+      kmsKeyId: ""      # Required only when type is "KMS"
+
+    bucketPolicy:
+      enabled: false
+      policy: {}        # Provide policy in YAML format; it will be converted to JSON
+
     additional_tags: {}
 
   kms:
