@@ -33,6 +33,17 @@ aws:
   iam:
     roleNameOverride: ""
 
+  iamRoleCustom:
+    enabled: false
+    policies: []
+    # Example custom policy:
+    # policies:
+    #   - Version: "2012-10-17"
+    #     Statement:
+    #       - Effect: Allow
+    #         Action: "*"
+    #         Resource: "*"
+
   s3:
     enabled: false
     bucketNameOverride: ""

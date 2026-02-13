@@ -1,3 +1,14 @@
+# ProviderConfig Name Override Examples
+
+Examples demonstrating how to override the Crossplane `providerConfigRef` name
+on a per-resource basis. This is useful when different AWS resources need to
+use different Crossplane provider configurations.
+
+---
+
+## Full configuration with per-resource provider overrides
+
+```yaml
 global:
   env: "qa"
   org: "thg"
@@ -100,3 +111,4 @@ commonLabels:
 
 externalSecrets:
   enabled: false
+```

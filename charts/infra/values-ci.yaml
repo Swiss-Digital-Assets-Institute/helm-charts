@@ -22,6 +22,15 @@ aws:
   region: "eu-central-2"
   eksOidcId: "0000000000000000000000"
 
+  iamRoleCustom:
+    enabled: true
+    policies:
+      - Version: "2012-10-17"
+        Statement:
+          - Effect: Allow
+            Action: "s3:GetObject"
+            Resource: "arn:aws:s3:::ci-test-bucket/*"
+
   s3:
     enabled: true
     lifeCycleConfiguration:

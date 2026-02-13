@@ -1,3 +1,13 @@
+# KMS Key Examples
+
+Examples of KMS key configurations including symmetric encryption keys,
+asymmetric signing keys, key rotation, deletion windows, and alias settings.
+
+---
+
+## Full KMS configuration
+
+```yaml
 aws:
   enabled: true
 
@@ -58,15 +68,15 @@ aws:
 
     # ---------------------------------------------------------
     # Key rotation
-    # Asymmetric keys → rotation MUST be false
-    # Symmetric keys → can be true or false
+    # Asymmetric keys -> rotation MUST be false
+    # Symmetric keys  -> can be true or false
     #
     # Default: false
     # ---------------------------------------------------------
     enableKeyRotation: ""
 
     # ---------------------------------------------------------
-    # Deletion window (7–30 days)
+    # Deletion window (7-30 days)
     # ---------------------------------------------------------
     deletionWindowInDays: 30
 
@@ -85,3 +95,4 @@ aws:
       enabled: true
       # If empty, template will use KMS key name automatically
       name: ""
+```

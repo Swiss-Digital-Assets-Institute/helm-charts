@@ -1,5 +1,14 @@
-# values.yaml
+# Cognito User Pool Examples
 
+Examples of Cognito User Pool configurations including sign-in identifiers,
+self-registration, required attributes, authentication (email/phone), groups,
+password policy, MFA, Lambda triggers, and tags.
+
+---
+
+## Full Cognito User Pool configuration
+
+```yaml
 aws:
   enabled: true
   region: eu-central-2
@@ -12,7 +21,8 @@ aws:
       # 1. Sign-In Identifiers
       # Options: email, phoneNumber, username
       # Only identifiers listed here will be enabled; all others are disabled.
-      # All options can be found here https://docs.aws.amazon.com/cognito/latest/developerguide/user-pool-settings-attributes.html
+      # All options can be found here:
+      # https://docs.aws.amazon.com/cognito/latest/developerguide/user-pool-settings-attributes.html
       # ----------------------------------------------------------------------
       signInIdentifiers:
         - email
@@ -25,7 +35,7 @@ aws:
       enableSelfRegistration: false
 
       # ----------------------------------------------------------------------
-      # 4. Required Attributes
+      # 3. Required Attributes
       # Define the user attributes that are required.
       # ----------------------------------------------------------------------
       requiredAttributes:
@@ -34,7 +44,7 @@ aws:
         - family_name
 
       # ----------------------------------------------------------------------
-      # 5. Callback URLs
+      # 4. Callback URLs
       # List of callback URLs after authentication.
       # ----------------------------------------------------------------------
       callbackUrls: []
@@ -44,7 +54,7 @@ aws:
       #   - https://app.example.com/auth/callback
 
       # ----------------------------------------------------------------------
-      # 6. Logout URLs
+      # 5. Logout URLs
       # List of URLs users are redirected to after logout.
       # ----------------------------------------------------------------------
       logoutUrls: []
@@ -54,7 +64,7 @@ aws:
       #   - https://app.example.com/auth/logout
 
       # ----------------------------------------------------------------------
-      # 7. Authentication Configuration
+      # 6. Authentication Configuration
       # ----------------------------------------------------------------------
       authentication:
 
@@ -75,7 +85,7 @@ aws:
           fromPhoneNumber: "" # Must be in E.164 format (+12345678900)
 
       # ----------------------------------------------------------------------
-      # 9. Groups
+      # 7. Groups
       # Define user groups and precedence (lower = higher priority)
       # ----------------------------------------------------------------------
       groups: []
@@ -89,7 +99,7 @@ aws:
       #     precedence: 100
 
       # ----------------------------------------------------------------------
-      # 10. Password Policy
+      # 8. Password Policy
       # ----------------------------------------------------------------------
       passwordPolicy:
         minimumLength: 12
@@ -100,13 +110,13 @@ aws:
         temporaryPasswordValidityDays: 7
 
       # ----------------------------------------------------------------------
-      # 11. MFA Configuration
+      # 9. MFA Configuration
       # Acceptable values: "ON", "OFF", or "OPTIONAL"
       # ----------------------------------------------------------------------
       mfaConfiguration: "OFF"
 
       # ----------------------------------------------------------------------
-      # 12. Lambda Trigger Extensions (optional)
+      # 10. Lambda Trigger Extensions (optional)
       # Configure Lambda triggers for customizing Cognito User Pool behavior
       # ----------------------------------------------------------------------
       # extensions:
@@ -120,7 +130,7 @@ aws:
       #     arn: arn:aws:lambda:eu-central-2:123456789012:function:my-cognito-lambda-function  # Required: Lambda function ARN
 
       # ----------------------------------------------------------------------
-      # 13. Additional Tags (optional)
+      # 11. Additional Tags (optional)
       # These are merged into global/common tags via the helper function.
       # ----------------------------------------------------------------------
       tags:
@@ -134,3 +144,4 @@ global:
 commonLabels:
   Team: platform
   CostCenter: engineering
+```
