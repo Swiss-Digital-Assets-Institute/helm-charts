@@ -234,6 +234,16 @@ Custom IAM inline policy including S3, KMS, SQS, SNS, SNS-SMS, and DynamoDB.
     {{- end }}
   {{- end }}
 
+  {{- /* CUSTOM IAM ROLE POLICY BLOCK */ -}}
+  {{- $customStatements := list -}}
+  {{- if and .Values.aws.iamRoleCustom.enabled .Values.aws.iamRoleCustom.policies -}}
+    {{- range $policy := .Values.aws.iamRoleCustom.policies -}}
+      {{- range $statement := $policy.Statement -}}
+        {{- $customStatements = append $customStatements (toJson $statement) -}}
+      {{- end -}}
+    {{- end -}}
+  {{- end -}}
+
   {{- /* FINAL POLICY STATEMENT */ -}}
   {{- $allStatements :=
       concat
@@ -241,16 +251,19 @@ Custom IAM inline policy including S3, KMS, SQS, SNS, SNS-SMS, and DynamoDB.
           (concat
             (concat
               (concat
-                (concat $s3Statement $kmsStatement)
-                $sqsStatement
+                (concat
+                  (concat $s3Statement $kmsStatement)
+                  $sqsStatement
+                )
+                $snsStatement
               )
-              $snsStatement
+              $snsSmsStatement
             )
-            $snsSmsStatement
+            $cognitoStatement
           )
-          $cognitoStatement
+          $dynamodbStatement
         )
-        $dynamodbStatement
+        $customStatements
   -}}
   {
     "Version": "2012-10-17",

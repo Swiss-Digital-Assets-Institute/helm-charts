@@ -1,3 +1,13 @@
+# DynamoDB Table Examples
+
+Examples of DynamoDB table configurations covering billing modes, indexes,
+streams, encryption, TTL, point-in-time recovery, global replicas, and more.
+
+---
+
+## Full DynamoDB configuration with multiple table examples
+
+```yaml
 aws:
   enabled: true
   region: "us-west-1"
@@ -7,9 +17,7 @@ aws:
   dynamodb:
     enabled: true
 
-    # ---------------------------------------------------------
     # Global tags applied to all DynamoDB tables
-    # ---------------------------------------------------------
     additional_tags:
       Environment: "production"
       ManagedBy: "crossplane"
@@ -375,3 +383,4 @@ aws:
         timeToLiveSpecification:
           attributeName: Timestamp
           enabled: true
+```
