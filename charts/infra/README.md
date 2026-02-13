@@ -95,6 +95,8 @@ Managing and maintaining cloud resources using crossplane
 | aws.eksOidcId | string | `""` |  |
 | aws.enabled | bool | `true` |  |
 | aws.iam.roleNameOverride | string | `""` |  |
+| aws.iamRoleCustom.enabled | bool | `false` |  |
+| aws.iamRoleCustom.policies | list | `[]` |  |
 | aws.irsa.serviceAccountNameOverride | string | `""` |  |
 | aws.kms.additional_tags | object | `{}` |  |
 | aws.kms.alias.enabled | bool | `false` |  |
@@ -142,6 +144,8 @@ Managing and maintaining cloud resources using crossplane
 | aws.region | string | `"eu-central-2"` |  |
 | aws.s3.additional_tags | object | `{}` |  |
 | aws.s3.bucketNameOverride | string | `""` |  |
+| aws.s3.bucketPolicy.enabled | bool | `false` |  |
+| aws.s3.bucketPolicy.policy | object | `{}` |  |
 | aws.s3.bucketPublicAccessBlock.blockPublicAcls | bool | `false` |  |
 | aws.s3.bucketPublicAccessBlock.blockPublicPolicy | bool | `false` |  |
 | aws.s3.bucketPublicAccessBlock.enabled | bool | `false` |  |
@@ -154,6 +158,9 @@ Managing and maintaining cloud resources using crossplane
 | aws.s3.corsConfiguration.corsRules | list | `[]` |  |
 | aws.s3.corsConfiguration.enabled | bool | `false` |  |
 | aws.s3.enabled | bool | `false` |  |
+| aws.s3.encryption.enabled | bool | `false` |  |
+| aws.s3.encryption.kmsKeyId | string | `""` |  |
+| aws.s3.encryption.type | string | `"AES256"` |  |
 | aws.s3.lifeCycleConfiguration.enabled | bool | `false` |  |
 | aws.s3.lifeCycleConfiguration.rules | list | `[]` |  |
 | aws.s3.objectOwnership | string | `"BucketOwnerEnforced"` |  |
