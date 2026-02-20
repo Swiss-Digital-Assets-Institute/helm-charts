@@ -47,9 +47,21 @@ resources:
   limits:
     memory: 717Mi
 
+podSecurityContext:
+  runAsNonRoot: true
+  fsGroup: 10001
+  seccompProfile:
+    type: RuntimeDefault
+
 securityContext:
-  fsGroup: 1000
-  runAsUser: 1000
+  allowPrivilegeEscalation: false
+  readOnlyRootFilesystem: true
+  runAsNonRoot: true
+  runAsUser: 10001
+  runAsGroup: 10001
+  capabilities:
+    drop:
+      - ALL
 
 serviceAccount:
   enabled: true
@@ -58,7 +70,7 @@ serviceAccount:
 
 livenessProbe:
   enabled: true
-  path: /v1/health
+  path: /v1/health/liveness
   initialDelaySeconds: 30
   periodSeconds: 15
   timeoutSeconds: 10
@@ -67,7 +79,7 @@ livenessProbe:
 
 readinessProbe:
   enabled: true
-  path: /v1/health
+  path: /v1/health/readiness
   initialDelaySeconds: 30
   periodSeconds: 5
   timeoutSeconds: 3
