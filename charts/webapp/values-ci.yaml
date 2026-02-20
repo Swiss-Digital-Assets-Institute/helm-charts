@@ -70,7 +70,7 @@ serviceAccount:
 
 livenessProbe:
   enabled: true
-  path: /v1/health/liveness
+  path: /v1/health
   initialDelaySeconds: 30
   periodSeconds: 15
   timeoutSeconds: 10
@@ -79,7 +79,7 @@ livenessProbe:
 
 readinessProbe:
   enabled: true
-  path: /v1/health/readiness
+  path: /v1/health
   initialDelaySeconds: 30
   periodSeconds: 5
   timeoutSeconds: 3

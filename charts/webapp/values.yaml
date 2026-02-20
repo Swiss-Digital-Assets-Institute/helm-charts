@@ -679,7 +679,7 @@ extraContainer:
 
 # --networkPolicy defines the baseline network policy for the application pods
 networkPolicy:
-  enabled: true
+  enabled: false
   ingress:
     enabled: true
     from:

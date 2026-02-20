@@ -49,7 +49,7 @@ spec:
           containerPort:  {{ .Values.actuator.port.targetPort }}
         {{- end }}
         {{- if .Values.livenessProbe.enabled }}
-        {{- include "liveness-probe" ( dict "liveness" .Values.livenessProbe "readiness" .Values.readinessProbe "port" .Values.container.port "actuator" .Values.actuator ) | indent 8 }}
+        {{- include "liveness-probe" ( dict "liveness" .Values.livenessProbe "port" .Values.container.port "actuator" .Values.actuator ) | indent 8 }}
         {{- end }}
         {{- if .Values.readinessProbe.enabled }}
         {{- include "readiness-probe" ( dict "readiness" .Values.readinessProbe "port" .Values.container.port "actuator" .Values.actuator ) | indent 8 }}
