@@ -104,8 +104,8 @@ Helm Charts for default Web Application
 | global.otel | object | `{"argument":"0.25","endpoint":"","port":""}` | otel sets the endpoint for OpenTelemetry collector |
 | global.prometheus | object | `{"server":""}` | prometheus sets the Prometheus server URL |
 | global.prometheus.server | string | `""` | server sets prometheus endpoint |
-| image | object | `{"pullPolicy":"IfNotPresent","repository":"","tag":"latest"}` | image is the object to specify the image to run in the deployment |
-| image.pullPolicy | string | `"IfNotPresent"` | pullPolicy is the prop to setup the behavior of pull police. options is: IfNotPresent \| allways |
+| image | object | `{"pullPolicy":"Always","repository":"","tag":"latest"}` | image is the object to specify the image to run in the deployment |
+| image.pullPolicy | string | `"Always"` | pullPolicy is the prop to setup the behavior of pull police. options is: IfNotPresent \| Always |
 | image.repository | string | `""` | repository: is the registry of your application ex:556684128444.dkr.ecr.us-east-1.amazonaws.com/YOU-APP-ECR-REPO-NAME if empty this helm will auto generate the image using aws.registry/values.name:values.image.tag |
 | image.tag | string | `"latest"` | especify the tag of your image to deploy |
 | imagePullSecrets | list | `[]` | imagePullSecrets secret used to download image on private container registry |
@@ -171,11 +171,12 @@ Helm Charts for default Web Application
 | namespace.annotations | object | `{}` | Annotations to be added to the namespace |
 | namespace.enabled | bool | `false` | Specifies whether the namespace is enabled |
 | namespace.labels | object | `{}` | Labels to be added to the namespace |
+| networkPolicy | object | `{"egress":{"enabled":true,"to":[{}]},"enabled":false,"ingress":{"enabled":true,"from":[{"podSelector":{}}]}}` | networkPolicy defines the baseline network policy for the application pods |
 | nginx | object | `{"enabled":false,"image":{"imagePullPolicy":"IfNotPresent","repository":"nginx","tag":"alpine"},"livenessProbe":{"enabled":true,"exec":{},"failureThreshold":3,"initialDelaySeconds":5,"path":"/health-check/liveness","periodSeconds":10,"scheme":"HTTP","successThreshold":1,"timeoutSeconds":3},"resources":{"limits":{"cpu":"50m","memory":"50Mi"},"requests":{"cpu":"10m","memory":"10Mi"}},"shared":{"enabled":false,"path":"/var/www/html/"}}` | nginx configuration for php-fpm the nginx sidecar |
 | nginx.enabled | bool | `false` | If enabled, create a sidecar container with nginx |
 | nodeSelector | object | `{}` | nodeSelector allows you to constrain a Pod to only be able to run on particular node(s) |
 | podAnnotations | object | `{}` | podAnnotations adds custom annotations to the pod |
-| podSecurityContext | object | `{}` | podSecurityContext sets the security context for the pod |
+| podSecurityContext | object | `{"fsGroup":10001,"runAsNonRoot":true,"seccompProfile":{"type":"RuntimeDefault"}}` | podSecurityContext sets the security context for the pod |
 | quota | object | `{"enabled":false,"resources":{"hard":{"limits.cpu":"2","limits.memory":"2Gi","requests.cpu":"1","requests.memory":"1Gi"}}}` | ResourceQuota provides constraints that limit aggregate resource consumption per namespace |
 | quota.enabled | bool | `false` | Specifies whether a resource quota should be created |
 | quota.resources | object | `{"hard":{"limits.cpu":"2","limits.memory":"2Gi","requests.cpu":"1","requests.memory":"1Gi"}}` | resources Specifies the hard resources |
@@ -195,9 +196,9 @@ Helm Charts for default Web Application
 | readinessProbe.successThreshold | int | `1` | Minimum consecutive successes for the probe to be considered successful after having failed |
 | readinessProbe.timeoutSeconds | int | `3` | Number of seconds after which the readiness probe times out |
 | replicaCount | int | `1` | replicaCount is used when autoscaling.enabled is false to set a manually number of pods |
-| resources | object | `{}` | resources set deployment resources |
+| resources | object | `{"limits":{"ephemeral-storage":"256Mi","memory":"256Mi"},"requests":{"cpu":"100m","ephemeral-storage":"128Mi","memory":"128Mi"}}` | resources set deployment resources |
 | restartPolicy | string | `"Always"` | restartPolicy is the object to specify the restart policy for the container |
-| securityContext | object | `{}` | securityContext sets the security context for the container |
+| securityContext | object | `{"allowPrivilegeEscalation":false,"capabilities":{"drop":["ALL"]},"readOnlyRootFilesystem":true,"runAsGroup":10001,"runAsNonRoot":true,"runAsUser":10001}` | securityContext sets the security context for the container |
 | service | object | `{"annotations":{},"enabled":true,"externalDns":{"enabled":false},"labels":{},"nodePort":{},"port":{"name":"tcp-node","port":80,"targetPort":8080},"type":"ClusterIP"}` | service |
 | service.annotations | object | `{}` | Annotations to add to the service |
 | service.enabled | bool | `true` | service.enabled to enable and disable the creation of service |
@@ -217,6 +218,7 @@ Helm Charts for default Web Application
 | serviceAccount.irsa | object | `{"enabled":false}` | Specifies whether IRSA (IAM Roles for Service Accounts) is enabled |
 | serviceAccount.irsa.enabled | bool | `false` | Specifies whether IRSA (IAM Roles for Service Accounts) is enabled |
 | terminationGracePeriodSeconds | int | `30` | terminationGracePeriodSeconds is the number of seconds to wait before terminating a pod |
+| testConnection | object | `{"image":{"pullPolicy":"Always","repository":"busybox","tag":"1.36.1"},"podSecurityContext":{"runAsNonRoot":true,"seccompProfile":{"type":"RuntimeDefault"}},"resources":{"limits":{"cpu":"10m","ephemeral-storage":"64Mi","memory":"64Mi"},"requests":{"cpu":"10m","ephemeral-storage":"64Mi","memory":"64Mi"}},"securityContext":{"allowPrivilegeEscalation":false,"capabilities":{"drop":["ALL"]},"readOnlyRootFilesystem":true,"runAsGroup":10001,"runAsNonRoot":true,"runAsUser":10001}}` | testConnection configures the helm test pod |
 | tolerations | list | `[]` | tolerations allows the pods to schedule onto nodes with taints |
 | topologySpreadConstraints | object | `{"enabled":true,"maxSkew":1,"topologyKey":"topology.kubernetes.io/zone","whenUnsatisfiable":"ScheduleAnyway"}` | topologySpreadConstraints allows you to constrain the pods to run on nodes with a certain topology |
 | topologySpreadConstraints.enabled | bool | `true` | topologySpreadConstraints.enabled specifies whether topology spread constraints should be applied |
