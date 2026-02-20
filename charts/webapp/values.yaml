@@ -262,8 +262,8 @@ image:
   # --repository: is the registry of your application ex:556684128444.dkr.ecr.us-east-1.amazonaws.com/YOU-APP-ECR-REPO-NAME
   # if empty this helm will auto generate the image using aws.registry/values.name:values.image.tag
   repository: ""
-  # --pullPolicy is the prop to setup the behavior of pull police. options is: IfNotPresent \| allways
-  pullPolicy: IfNotPresent
+  # --pullPolicy is the prop to setup the behavior of pull police. options is: IfNotPresent \| Always
+  pullPolicy: Always
   # --especify the tag of your image to deploy
   tag: "latest"
 
@@ -274,7 +274,14 @@ imagePullSecrets: []
   # name: ghcr-secret
 
 # --resources set deployment resources
-resources: {}
+resources:
+  requests:
+    cpu: 100m
+    memory: 128Mi
+    ephemeral-storage: 128Mi
+  limits:
+    memory: 256Mi
+    ephemeral-storage: 256Mi
   # --Resource requests are the minimum amount of CPU and memory that Kubernetes guarantees for the container
   # requests:
   #   cpu: {}
@@ -414,17 +421,22 @@ topologySpreadConstraints:
 podAnnotations: {}
 
 # --podSecurityContext sets the security context for the pod
-podSecurityContext: {}
-  # fsGroup: 2000
+podSecurityContext:
+  runAsNonRoot: true
+  fsGroup: 10001
+  seccompProfile:
+    type: RuntimeDefault
 
 # --securityContext sets the security context for the container
-securityContext: {}
-  # capabilities:
-  #   drop:
-  #   - ALL
-  # readOnlyRootFilesystem: true
-  # runAsNonRoot: true
-  # runAsUser: 1000
+securityContext:
+  allowPrivilegeEscalation: false
+  readOnlyRootFilesystem: true
+  runAsNonRoot: true
+  runAsUser: 10001
+  runAsGroup: 10001
+  capabilities:
+    drop:
+      - ALL
 
 envs: []
   # examples:
@@ -664,3 +676,44 @@ extraContainer:
   volumeMounts:
     - name: config-volume
       mountPath: /etc/config
+
+# --networkPolicy defines the baseline network policy for the application pods
+networkPolicy:
+  enabled: false
+  ingress:
+    enabled: true
+    from:
+      - podSelector: {}
+  egress:
+    enabled: true
+    to:
+      - {}
+
+# --testConnection configures the helm test pod
+testConnection:
+  image:
+    repository: busybox
+    tag: "1.36.1"
+    pullPolicy: Always
+  resources:
+    requests:
+      cpu: 10m
+      memory: 64Mi
+      ephemeral-storage: 64Mi
+    limits:
+      cpu: 10m
+      memory: 64Mi
+      ephemeral-storage: 64Mi
+  podSecurityContext:
+    runAsNonRoot: true
+    seccompProfile:
+      type: RuntimeDefault
+  securityContext:
+    allowPrivilegeEscalation: false
+    readOnlyRootFilesystem: true
+    runAsNonRoot: true
+    runAsUser: 10001
+    runAsGroup: 10001
+    capabilities:
+      drop:
+        - ALL
