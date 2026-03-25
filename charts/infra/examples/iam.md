@@ -5,11 +5,14 @@ to the IAM role created by this Helm chart. Custom policies are converted from
 YAML to JSON and appended alongside any auto-generated service policies
 (S3, KMS, SQS, SNS, DynamoDB, Cognito).
 
-Three scenarios are covered below:
+The following scenarios are covered below:
 
 - **Scenario A** -- Only AWS services enabled (existing behavior, no custom policies)
 - **Scenario B** -- AWS services + custom policies (both merged)
+- **Scenario B (complex)** -- S3 + multi-statement custom policy
 - **Scenario C** -- Only custom policies (no services enabled)
+- **Scenario D** -- Multiple custom policies with multiple statements each
+- **Scenario E** -- All services + custom policies (complete example)
 
 ---
 
@@ -218,3 +221,175 @@ aws:
               StringLike:
                 cloudwatch:namespace: AWS/EKS
 ```
+
+---
+
+## Scenario D: Multiple custom policies with multiple statements
+
+You can define multiple policy documents in the `policies` list. Each policy
+can contain multiple statements. All statements from all policies are merged
+into the final inline policy. This is useful for organizing related permissions
+into logical groups.
+
+```yaml
+aws:
+  enabled: true
+  account: "123456789012"
+  region: "eu-central-2"
+  eksOidcId: "EXAMPLED539D4633E53DE1B71EXAMPLE"
+
+  s3:
+    enabled: false
+  kms:
+    enabled: false
+  sqs:
+    enabled: false
+  dynamodb:
+    enabled: false
+
+  iamRoleCustom:
+    enabled: true
+    policies:
+      # First policy: KMS and AIOps permissions
+      - Version: "2012-10-17"
+        Statement:
+          - Sid: CustomKMSAccess
+            Effect: Allow
+            Action:
+              - kms:CreateKey
+              - kms:Decrypt
+              - kms:CreateGrant
+              - kms:CreateCustomKeyStore
+            Resource: "*"
+          - Sid: CustomAIOpsAccess
+            Effect: Allow
+            Action:
+              - aiops:CreateInvestigation
+              - aiops:CreateInvestigationEvent
+              - aiops:CreateInvestigationGroup
+            Resource: "*"
+            Condition:
+              ArnEquals:
+                "aws:SourceArn": "arn:aws:aiops:eu-central-2:123456789012:investigation/*"
+
+      # Second policy: EC2 and CloudWatch Logs permissions
+      - Version: "2012-10-17"
+        Statement:
+          - Sid: CustomEC2Access
+            Effect: Allow
+            Action:
+              - ec2:DescribeInstances
+              - ec2:DescribeSecurityGroups
+              - ec2:DescribeSubnets
+              - ec2:DescribeVpcs
+            Resource: "*"
+          - Sid: CustomLogsAccess
+            Effect: Allow
+            Action:
+              - logs:CreateLogGroup
+              - logs:CreateLogStream
+              - logs:PutLogEvents
+            Resource: "arn:aws:logs:*:*:log-group:/aws/eks/*"
+```
+
+---
+
+## Scenario E: All services + custom policies (complete example)
+
+This example enables all supported AWS services (S3, KMS, SQS, SNS with SMS,
+and DynamoDB) alongside custom policies. All auto-generated service policies
+and custom policy statements are merged into a single inline policy document.
+
+```yaml
+aws:
+  enabled: true
+  account: "123456789012"
+  region: "eu-central-2"
+  eksOidcId: "EXAMPLED539D4633E53DE1B71EXAMPLE"
+
+  # S3 bucket
+  s3:
+    enabled: true
+    bucketNameOverride: "my-app-bucket"
+
+  # KMS key
+  kms:
+    enabled: true
+    keyNameOverride: "my-app-key"
+
+  # SQS queue
+  sqs:
+    enabled: true
+    queueNameOverride: "my-app-queue"
+
+  # SNS topic with SMS
+  sns:
+    enabled: true
+    sms:
+      enabled: true
+
+  # DynamoDB table
+  dynamodb:
+    enabled: true
+    tables:
+      - name: users-table
+        attribute:
+          - name: UserId
+            type: S
+        hashKey: UserId
+        billingMode: PAY_PER_REQUEST
+
+  # Custom policies merged with all service policies
+  iamRoleCustom:
+    enabled: true
+    policies:
+      - Version: "2012-10-17"
+        Statement:
+          - Sid: CustomKMSAccess
+            Effect: Allow
+            Action:
+              - kms:CreateKey
+              - kms:Decrypt
+              - kms:CreateGrant
+              - kms:CreateCustomKeyStore
+            Resource: "*"
+          - Sid: CustomAIOpsAccess
+            Effect: Allow
+            Action:
+              - aiops:CreateInvestigation
+              - aiops:CreateInvestigationEvent
+              - aiops:CreateInvestigationGroup
+            Resource: "*"
+            Condition:
+              ArnEquals:
+                "aws:SourceArn": "arn:aws:aiops:eu-central-2:123456789012:investigation/*"
+      - Version: "2012-10-17"
+        Statement:
+          - Sid: CustomEC2Access
+            Effect: Allow
+            Action:
+              - ec2:DescribeInstances
+              - ec2:DescribeSecurityGroups
+              - ec2:DescribeSubnets
+              - ec2:DescribeVpcs
+            Resource: "*"
+          - Sid: CustomLogsAccess
+            Effect: Allow
+            Action:
+              - logs:CreateLogGroup
+              - logs:CreateLogStream
+              - logs:PutLogEvents
+            Resource: "arn:aws:logs:*:*:log-group:/aws/eks/*"
+```
+
+The resulting IAM inline policy will contain statements for:
+- S3 bucket access (`s3:*` on the bucket ARN)
+- KMS key operations (encrypt, decrypt, describe, sign)
+- SQS queue operations (`sqs:*` on the queue ARN)
+- SNS topic operations (`sns:*` on the topic ARN)
+- SNS SMS publishing (`sns:Publish` on `*`)
+- DynamoDB table operations (CRUD on the table ARN)
+- Custom KMS access (CreateKey, Decrypt, CreateGrant, CreateCustomKeyStore)
+- Custom AIOps access with ARN condition
+- Custom EC2 describe operations
+- Custom CloudWatch Logs access
