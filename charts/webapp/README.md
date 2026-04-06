@@ -1,6 +1,6 @@
 # webapp
 
-![Version: 0.2.10](https://img.shields.io/badge/Version-0.2.10-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 1.0.0](https://img.shields.io/badge/AppVersion-1.0.0-informational?style=flat-square)
+![Version: 0.2.11](https://img.shields.io/badge/Version-0.2.11-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 1.0.0](https://img.shields.io/badge/AppVersion-1.0.0-informational?style=flat-square)
 
 Helm Charts for default Web Application
 
@@ -218,7 +218,7 @@ Helm Charts for default Web Application
 | serviceAccount.irsa | object | `{"enabled":false}` | Specifies whether IRSA (IAM Roles for Service Accounts) is enabled |
 | serviceAccount.irsa.enabled | bool | `false` | Specifies whether IRSA (IAM Roles for Service Accounts) is enabled |
 | terminationGracePeriodSeconds | int | `30` | terminationGracePeriodSeconds is the number of seconds to wait before terminating a pod |
-| testConnection | object | `{"image":{"pullPolicy":"Always","repository":"busybox","tag":"1.36.1"},"podSecurityContext":{"runAsNonRoot":true,"seccompProfile":{"type":"RuntimeDefault"}},"resources":{"limits":{"cpu":"10m","ephemeral-storage":"64Mi","memory":"64Mi"},"requests":{"cpu":"10m","ephemeral-storage":"64Mi","memory":"64Mi"}},"securityContext":{"allowPrivilegeEscalation":false,"capabilities":{"drop":["ALL"]},"readOnlyRootFilesystem":true,"runAsGroup":10001,"runAsNonRoot":true,"runAsUser":10001}}` | testConnection configures the helm test pod |
+| testConnection | object | `{"enabled":true,"image":{"pullPolicy":"Always","repository":"busybox","tag":"1.36.1"},"podSecurityContext":{"runAsNonRoot":true,"seccompProfile":{"type":"RuntimeDefault"}},"resources":{"limits":{"cpu":"10m","ephemeral-storage":"64Mi","memory":"64Mi"},"requests":{"cpu":"10m","ephemeral-storage":"64Mi","memory":"64Mi"}},"securityContext":{"allowPrivilegeEscalation":false,"capabilities":{"drop":["ALL"]},"readOnlyRootFilesystem":true,"runAsGroup":10001,"runAsNonRoot":true,"runAsUser":10001}}` | testConnection configures the helm test pod |
 | tolerations | list | `[]` | tolerations allows the pods to schedule onto nodes with taints |
 | topologySpreadConstraints | object | `{"enabled":true,"maxSkew":1,"topologyKey":"topology.kubernetes.io/zone","whenUnsatisfiable":"ScheduleAnyway"}` | topologySpreadConstraints allows you to constrain the pods to run on nodes with a certain topology |
 | topologySpreadConstraints.enabled | bool | `true` | topologySpreadConstraints.enabled specifies whether topology spread constraints should be applied |
