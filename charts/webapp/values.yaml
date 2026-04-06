@@ -690,6 +690,7 @@ networkPolicy:
       - {}
 
 # --testConnection configures the helm test pod
+# Adding enable/ disable test connection configuration to values.yaml to avoid hardcoding it in the test-connection.yaml and make it more flexible for users to configure the test connection according to their needs.
 testConnection:
   enabled: true
   image:
