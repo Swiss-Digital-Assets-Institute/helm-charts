@@ -94,6 +94,22 @@ aws:
     enabled: true
     fifo: true
 
+  mq:
+    enabled: true
+    instanceType: mq.m5.large
+    deploymentMode: SINGLE_INSTANCE
+    engineVersion: "3.13"
+    autoMinorVersionUpgrade: true
+    publiclyAccessible: false
+    maintenanceWindowStartTime:
+      dayOfWeek: SUNDAY
+      timeOfDay: "03:00"
+      timeZone: UTC
+    adminUsername: ci-user
+    adminPasswordSecretRef:
+      key: RABBITMQ_ADMIN_PASSWORD
+    additional_tags: {}
+
   dynamodb:
     enabled: false
     additional_tags: {}
@@ -141,3 +157,4 @@ externalSecrets:
   enabled: true
   secrets:
     - DB_PASSWORD
+    - RABBITMQ_ADMIN_PASSWORD
