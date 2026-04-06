@@ -108,6 +108,14 @@ Return the SNS Topic name
 {{- end }}
 
 {{/*
+infra.mqBrokerName:
+Defaults to org-env-releaseName unless overridden.
+*/}}
+{{- define "infra.mqBrokerName" -}}
+    {{- default (include "infra.resourceName" .) .Values.aws.mq.brokerNameOverride -}}
+{{- end -}}
+
+{{/*
 infra.cognitoUserPoolName:
 Defaults to org-env-releaseName unless overridden.
 */}}
