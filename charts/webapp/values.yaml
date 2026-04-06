@@ -691,6 +691,7 @@ networkPolicy:
 
 # --testConnection configures the helm test pod
 testConnection:
+  enabled: true
   image:
     repository: busybox
     tag: "1.36.1"
