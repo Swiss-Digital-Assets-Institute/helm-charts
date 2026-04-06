@@ -41,6 +41,6 @@ identity.hashgraphgroup.com/v1alpha1
 dynamodb.aws.upbound.io/v1beta2
 {{- end -}}
 
-+{{- define "infra.mqApiVersion" -}}
-+messaging.hashgraphgroup.com/v1alpha1
-+{{- end -}}
+{{- define "infra.mqApiVersion" -}}
+messaging.hashgraphgroup.com/v1alpha1
+{{- end -}}
