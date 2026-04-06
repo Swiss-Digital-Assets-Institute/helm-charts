@@ -40,3 +40,7 @@ identity.hashgraphgroup.com/v1alpha1
 {{- define "infra.dynamodbApiVersion" -}}
 dynamodb.aws.upbound.io/v1beta2
 {{- end -}}
+
++{{- define "infra.mqApiVersion" -}}
++messaging.hashgraphgroup.com/v1alpha1
++{{- end -}}
