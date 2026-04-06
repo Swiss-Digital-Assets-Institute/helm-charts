@@ -229,6 +229,23 @@ aws:
     visibilityTimeoutSeconds: 60
     messageRetentionSeconds: 1209600 # 14 days
 
+  mq:
+    enabled: false
+    brokerNameOverride: ""        # Defaults to <org>-<env>-<releaseName> via infra.resourceName
+    instanceType: "mq.m5.large"
+    deploymentMode: "SINGLE_INSTANCE"   # SINGLE_INSTANCE or CLUSTER_MULTI_AZ
+    engineVersion: "3.13"
+    autoMinorVersionUpgrade: true
+    publiclyAccessible: false
+    maintenanceWindowStartTime:
+      dayOfWeek: "SUNDAY"
+      timeOfDay: "03:00"
+      timeZone: "UTC"
+    adminUsername: ""
+    adminPasswordSecretRef:
+      key: "RABBITMQ_ADMIN_PASSWORD"    # Key in the ExternalSecret-managed secret
+    additional_tags: {}
+  
   sns:
     enabled: false
     sms:
