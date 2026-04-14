@@ -98,16 +98,16 @@ ECR lifecycle rules.
 Custom IAM inline policy including S3, KMS, SQS, SNS, SNS-SMS, and DynamoDB.
 */}}
 {{- define "infra.customIamPolicy" -}}
-  {{- $region := .Values.aws.region | default "us-east-1" -}}
+  {{- $region := .Values.aws.region | default "eu-central-2" -}}
   {{- $account := required "You must set .Values.aws.account (AWS Account)" .Values.aws.account -}}
   {{- $s3BucketName := include "infra.s3BucketName" . -}}
-  {{- $kmsKeyName := include "infra.kmsKeyName" . -}}
   {{- $sqsQueueName := include "infra.sqsQueueName" . -}}
   {{- $snsTopicName := include "infra.snsTopicName" . | default "" -}}
   {{- $cognitoUserPoolName := include "infra.cognitoUserPoolName" . | default "" -}}
 
   {{- $s3Enabled := .Values.aws.s3.enabled -}}
   {{- $kmsEnabled := .Values.aws.kms.enabled -}}
+  {{- $kmsIamGrantKeyArns := .Values.aws.kms.iamGrantKeyArns | default list -}}
   {{- $sqsEnabled := .Values.aws.sqs.enabled -}}
   {{- $snsEnabled := .Values.aws.sns.enabled -}}
   {{- $cognitoEnabled := .Values.aws.cognito.userpool.enabled -}}
@@ -127,25 +127,41 @@ Custom IAM inline policy including S3, KMS, SQS, SNS, SNS-SMS, and DynamoDB.
     }` $s3BucketName $s3BucketName) }}
   {{- end }}
 
-  {{- /* KMS BLOCK */ -}}
+  {{- /* KMS BLOCK (KEY-BASED) */ -}}
   {{- $kmsStatement := list -}}
   {{- if $kmsEnabled }}
     {{- $kmsStatement = append $kmsStatement (printf `
     {
       "Effect": "Allow",
-      "Action": ["kms:Encrypt", "kms:Decrypt", "kms:DescribeKey", "kms:ListAliases", "kms:ListKeys", "kms:Sign"],
+      "Action": ["kms:ListAliases", "kms:ListKeys", "kms:DescribeKey"],
       "Resource": "*"
     },
     {
       "Effect": "Allow",
-      "Action": "kms:*",
-      "Resource": "arn:aws:kms:%s:%s:key/*",
-      "Condition": {
-        "StringEquals": {
-          "kms:RequestAlias": "alias/%s"
-        }
-      }
-    }` $region $account $kmsKeyName) }}
+      "Action": [
+        "kms:Encrypt",
+        "kms:Decrypt",
+        "kms:DescribeKey",
+        "kms:GenerateDataKey",
+        "kms:Sign",
+        "kms:Verify",
+        "kms:GetPublicKey"
+      ],
+      "Resource": "arn:aws:kms:%s:%s:key/*"
+    }` $region $account) }}
+  {{- end }}
+  {{- if gt (len $kmsIamGrantKeyArns) 0 }}
+    {{- $kmsStatement = append $kmsStatement (printf `
+    {
+      "Effect": "Allow",
+      "Action": [
+        "kms:Encrypt",
+        "kms:Decrypt",
+        "kms:DescribeKey",
+        "kms:GenerateDataKey"
+      ],
+      "Resource": %s
+    }` (toJson $kmsIamGrantKeyArns)) }}
   {{- end }}
 
   {{- /* SQS BLOCK */ -}}

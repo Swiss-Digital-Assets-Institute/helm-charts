@@ -83,6 +83,9 @@ aws:
 
   kms:
     enabled: false
+    # Optional CMK ARNs for IRSA (Decrypt/Encrypt/DescribeKey/GenerateDataKey) when the key is not
+    # managed by this chart (e.g. HashiCorp Vault AWS KMS auto-unseal with an existing key).
+    iamGrantKeyArns: []
     keyNameOverride: ""
     signingEnabled: false
     deletionWindowInDays: 365
