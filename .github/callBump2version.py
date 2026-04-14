@@ -26,8 +26,9 @@ class ProductType(Enum, metaclass=MyEnumMeta):
     THA_APP = 'tha-app'
     WEBAPP = 'webapp'
     INFRA = 'infra'
-    UNIVERSAL_CHART = 'universal_chart'
+    UNIVERSAL_CHART = 'universal-chart'
     IPFS_CLUSTER = 'ipfs-cluster'
+    AUSTRALIAN_PAYMENTS_PLUS = 'australian-payments-plus'
 
 
 def handle_subprocess_error(subprocess_result, error_message):

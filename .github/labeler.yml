@@ -29,7 +29,7 @@ australian-payments-plus:
       - any-glob-to-any-file: "charts/australian-payments-plus/**"
 
 feature:
-  - head-branch: ["^feature", "feature"]
+  - head-branch: ["^feature", "feature", "^feat", "feat"]
 
 hotfix:
   - head-branch: ["^fix", "fix", "^hotfix", "hotfix", "^bugfix", "bugfix"]

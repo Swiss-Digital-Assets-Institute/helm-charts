@@ -1,11 +1,8 @@
-# Apply label "bugfix" if head matches one of "bugfix/*" or "hotfix/*"
 patch:
-  head: ["fix/*", "bugfix/*", "hotfix/*", "feature/*"]
+  head: ["fix/*", "bugfix/*", "hotfix/*"]
 
-# Apply label "feature" if head matches "feature/*"
 minor:
-  head: ["release/*"]
+  head: ["feature/*", "feat/*", "release/*"]
 
-# Apply label "feature" if head matches "feature/*"
 major:
   head: ["breaking/*", "major/*", "BREAKING/*"]
