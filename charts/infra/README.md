@@ -102,6 +102,7 @@ Managing and maintaining cloud resources using crossplane
 | aws.kms.alias.enabled | bool | `false` |  |
 | aws.kms.deletionWindowInDays | int | `365` |  |
 | aws.kms.enabled | bool | `false` |  |
+| aws.kms.iamGrantKeyArns | list | `[]` |  |
 | aws.kms.keyNameOverride | string | `""` |  |
 | aws.kms.rotateKey | bool | `false` |  |
 | aws.kms.signingEnabled | bool | `false` |  |
